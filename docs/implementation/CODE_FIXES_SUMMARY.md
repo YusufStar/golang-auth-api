@@ -218,12 +218,12 @@ c.JSON(http.StatusOK, dto.UserResponse{
 ### 1. Restart Application
 
 ```bash
-cd /c/work/AI/Cursor/auth_api/v1.0.0
+cd /c/work/AI/Cursor/golang-auth-api/v1.0.0
 
 # Stop old instance (Ctrl+C)
 
 # Start with new code
-./auth_api.exe
+./golang-auth-api.exe
 
 # Wait for migration to complete
 ```

@@ -110,7 +110,7 @@ make docker-dev
 
 ```bash
 # Check logs
-docker logs auth_api_dev
+docker logs golang-auth-api_dev
 
 # Should see:
 # "Database migration completed!"
@@ -146,14 +146,14 @@ git checkout v1.1.0
 
 ```bash
 go mod download
-go build -o auth_api cmd/api/main.go
+go build -o golang-auth-api cmd/api/main.go
 ```
 
 **Step 4: Apply Migration**
 
 ```bash
 # Migration applies automatically on startup
-./auth_api
+./golang-auth-api
 
 # OR apply manually:
 psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields.sql
@@ -170,7 +170,7 @@ echo "LOG_CLEANUP_INTERVAL=24h" >> .env
 **Step 6: Start Application**
 
 ```bash
-./auth_api
+./golang-auth-api
 ```
 
 ### Post-Upgrade Tasks
@@ -263,7 +263,7 @@ docker-compose up -d
 
 ```bash
 # Check logs
-docker logs auth_api_dev | grep -i cleanup
+docker logs golang-auth-api_dev | grep -i cleanup
 
 # Verify migration applied
 docker exec -i auth_db psql -U postgres -d auth_db -c "\d activity_logs"

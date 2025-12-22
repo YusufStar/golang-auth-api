@@ -36,16 +36,16 @@ The new database columns haven't been created yet because:
 ### Step 2: Rebuild Application
 
 ```bash
-cd /c/work/AI/Cursor/auth_api/v1.0.0
+cd /c/work/AI/Cursor/golang-auth-api/v1.0.0
 
 # Rebuild with new code
-go build -o auth_api.exe cmd/api/main.go
+go build -o golang-auth-api.exe cmd/api/main.go
 ```
 
 ### Step 3: Start Application (Migration Runs Automatically)
 
 ```bash
-./auth_api.exe
+./golang-auth-api.exe
 ```
 
 **Watch for these log messages:**
@@ -153,7 +153,7 @@ Server starts - New columns now available
 
 ```bash
 # Check binary modification time
-ls -lh auth_api.exe
+ls -lh golang-auth-api.exe
 
 # Should show recent timestamp (today)
 ```
@@ -230,21 +230,21 @@ Run all these commands in sequence:
 
 ```bash
 # 1. Navigate to project
-cd /c/work/AI/Cursor/auth_api/v1.0.0
+cd /c/work/AI/Cursor/golang-auth-api/v1.0.0
 
 # 2. Stop old application (Ctrl+C if running)
 
 # 3. Rebuild
-go build -o auth_api.exe cmd/api/main.go
+go build -o golang-auth-api.exe cmd/api/main.go
 
 # 4. Start and watch logs
-./auth_api.exe
+./golang-auth-api.exe
 
 # Wait for "Database migration completed!"
 
 # 5. In new terminal, check database
 # (Use your actual database credentials)
-psql -U postgres -d auth_api_db -c "\d users"
+psql -U postgres -d golang-auth-api_db -c "\d users"
 
 # 6. Login via browser to populate data
 # Visit: http://localhost:8181/auth/google/login
@@ -294,8 +294,8 @@ Then restart the application and login again.
 **Fix:**
 
 1. ✅ Stop application
-2. ✅ Rebuild: `go build -o auth_api.exe cmd/api/main.go`
-3. ✅ Start: `./auth_api.exe`
+2. ✅ Rebuild: `go build -o golang-auth-api.exe cmd/api/main.go`
+3. ✅ Start: `./golang-auth-api.exe`
 4. ✅ Wait for "Database migration completed!"
 5. ✅ Login via social provider again
 6. ✅ Check profile - should have all fields now

@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/spf13/viper"
-	"github.com/yusufstar/auth_api/internal/email"
-	"github.com/yusufstar/auth_api/pkg/errors"
+	"github.com/yusufstar/golang-auth-api/internal/email"
+	"github.com/yusufstar/golang-auth-api/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
 

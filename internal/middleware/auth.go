@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/yusufstar/auth_api/internal/redis"
-	"github.com/yusufstar/auth_api/pkg/jwt"
+	"github.com/yusufstar/golang-auth-api/internal/redis"
+	"github.com/yusufstar/golang-auth-api/pkg/jwt"
 )
 
 // AuthMiddleware authenticates requests using JWT

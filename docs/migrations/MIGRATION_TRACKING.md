@@ -234,7 +234,7 @@ Now GORM will create the table if it doesn't exist!
 package main
 
 import (
-    "github.com/yusufstar/auth_api/pkg/models"
+    "github.com/yusufstar/golang-auth-api/pkg/models"
 )
 
 func checkMigrationStatus(db *gorm.DB) {

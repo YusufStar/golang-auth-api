@@ -26,7 +26,7 @@ Every social login:
 ```bash
 # 1. Change your profile picture on Google
 # 2. Rebuild and restart app
-go build -o auth_api.exe cmd/api/main.go && ./auth_api.exe
+go build -o golang-auth-api.exe cmd/api/main.go && ./golang-auth-api.exe
 
 # 3. Login via social
 http://localhost:8181/auth/google/login

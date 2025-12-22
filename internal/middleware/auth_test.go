@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	redisLib "github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
-	"github.com/yusufstar/auth_api/internal/redis"
-	"github.com/yusufstar/auth_api/pkg/jwt"
+	"github.com/yusufstar/golang-auth-api/internal/redis"
+	"github.com/yusufstar/golang-auth-api/pkg/jwt"
 )
 
 func TestMain(m *testing.M) {

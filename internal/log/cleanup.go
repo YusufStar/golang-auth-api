@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/yusufstar/auth_api/internal/config"
+	"github.com/yusufstar/golang-auth-api/internal/config"
 	"gorm.io/gorm"
 )
 

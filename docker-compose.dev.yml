@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: auth_api_dev
+    container_name: golang-auth-api_dev
     ports:
       - "8181:8181"
     volumes:

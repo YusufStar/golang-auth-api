@@ -6,12 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/yusufstar/auth_api/internal/log"
-	"github.com/yusufstar/auth_api/internal/redis"
-	"github.com/yusufstar/auth_api/internal/util"
-	"github.com/yusufstar/auth_api/pkg/dto"
-	"github.com/yusufstar/auth_api/pkg/errors"
-	"github.com/yusufstar/auth_api/pkg/jwt"
+	"github.com/yusufstar/golang-auth-api/internal/log"
+	"github.com/yusufstar/golang-auth-api/internal/redis"
+	"github.com/yusufstar/golang-auth-api/internal/util"
+	"github.com/yusufstar/golang-auth-api/pkg/dto"
+	"github.com/yusufstar/golang-auth-api/pkg/errors"
+	"github.com/yusufstar/golang-auth-api/pkg/jwt"
 )
 
 type Handler struct {

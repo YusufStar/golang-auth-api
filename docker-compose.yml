@@ -61,7 +61,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: auth_api
+    container_name: golang-auth-api
     ports:
       - "8181:8181"
     env_file:

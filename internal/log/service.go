@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/yusufstar/auth_api/internal/config"
-	"github.com/yusufstar/auth_api/internal/database"
-	"github.com/yusufstar/auth_api/pkg/models"
+	"github.com/yusufstar/golang-auth-api/internal/config"
+	"github.com/yusufstar/golang-auth-api/internal/database"
+	"github.com/yusufstar/golang-auth-api/pkg/models"
 )
 
 // Event types constants for consistency

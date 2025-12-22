@@ -159,7 +159,7 @@ psql -U postgres -d auth_db -c "\d activity_logs"
 docker-compose up -d
 
 # 5. Verify application started
-docker logs auth_api_dev | grep "Database migration completed"
+docker logs golang-auth-api_dev | grep "Database migration completed"
 ```
 
 ### Rollback Steps
@@ -435,7 +435,7 @@ Check cleanup is running:
 
 ```bash
 # Check logs
-docker logs auth_api_dev | grep -i cleanup
+docker logs golang-auth-api_dev | grep -i cleanup
 
 # Should see:
 # "Activity log cleanup service initialized (interval: 24h)"

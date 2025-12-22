@@ -154,7 +154,7 @@ grep -A 15 "dto.SocialAccountResponse:" docs/swagger.yaml
 
 ### Test in Swagger UI
 
-1. Start application: `./auth_api.exe`
+1. Start application: `./golang-auth-api.exe`
 2. Visit: `http://localhost:8181/swagger/index.html`
 3. Find **User** section
 4. Click on **GET /profile**

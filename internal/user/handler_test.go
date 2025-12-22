@@ -9,8 +9,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"github.com/yusufstar/auth_api/internal/email"
-	"github.com/yusufstar/auth_api/pkg/dto"
+	"github.com/yusufstar/golang-auth-api/internal/email"
+	"github.com/yusufstar/golang-auth-api/pkg/dto"
 )
 
 func setupTestHandler() *Handler {

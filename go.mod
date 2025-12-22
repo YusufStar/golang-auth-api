@@ -1,4 +1,4 @@
-module github.com/yusufstar/auth_api
+module github.com/yusufstar/golang-auth-api
 
 go 1.23.0
 

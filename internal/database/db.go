@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/yusufstar/auth_api/pkg/models"
+	"github.com/yusufstar/golang-auth-api/pkg/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

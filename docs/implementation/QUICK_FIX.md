@@ -16,14 +16,14 @@ Missing: `name`, `first_name`, `last_name`, `profile_picture`, `locale`, `social
 
 ```bash
 # Stop current app (Ctrl+C)
-cd /c/work/AI/Cursor/auth_api/v1.0.0
-go build -o auth_api.exe cmd/api/main.go
+cd /c/work/AI/Cursor/golang-auth-api/v1.0.0
+go build -o golang-auth-api.exe cmd/api/main.go
 ```
 
 ### 2. Start & Watch
 
 ```bash
-./auth_api.exe
+./golang-auth-api.exe
 
 # WAIT FOR THIS MESSAGE:
 # "Database migration completed!"

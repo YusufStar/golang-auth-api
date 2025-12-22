@@ -262,7 +262,7 @@ If issues arise, rollback is simple:
    ```bash
    git pull origin main
    go mod tidy
-   go build -o auth_api cmd/api/main.go
+   go build -o golang-auth-api cmd/api/main.go
    ```
 
 2. **Application Restart:**

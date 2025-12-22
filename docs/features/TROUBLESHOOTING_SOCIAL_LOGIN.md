@@ -16,10 +16,10 @@ User `gjovanovic.st@gmail.com` logged in via social login but data was not inser
 # Stop the running application (Ctrl+C or kill process)
 
 # Rebuild the application
-go build -o auth_api.exe cmd/api/main.go
+go build -o golang-auth-api.exe cmd/api/main.go
 
 # Start the application
-./auth_api.exe
+./golang-auth-api.exe
 ```
 
 **What to look for in logs:**
@@ -113,11 +113,11 @@ WHERE email = 'gjovanovic.st@gmail.com';
 
 ```bash
 # Check if build was successful
-go build -o auth_api.exe cmd/api/main.go
+go build -o golang-auth-api.exe cmd/api/main.go
 echo $?  # Should output: 0
 
 # Check if the new binary exists and is recent
-ls -lh auth_api.exe
+ls -lh golang-auth-api.exe
 
 # Verify the binary has today's date
 ```
@@ -167,10 +167,10 @@ You can check the application logs for output like:
 # Ctrl+C or kill the process
 
 # Rebuild
-go build -o auth_api.exe cmd/api/main.go
+go build -o golang-auth-api.exe cmd/api/main.go
 
 # Run
-./auth_api.exe
+./golang-auth-api.exe
 
 # Watch for:
 # "Database connected successfully!"
@@ -272,7 +272,7 @@ ERROR: column "name" of relation "users" does not exist
 
 **Solution:**
 
-1. Rebuild: `go build -o auth_api.exe cmd/api/main.go`
+1. Rebuild: `go build -o golang-auth-api.exe cmd/api/main.go`
 2. Stop old instance
 3. Start new instance
 4. Delete test user and try again
@@ -357,7 +357,7 @@ If the issue persists, gather this information:
 2. **Database schema** (output of `\d users` and `\d social_accounts`)
 3. **User record** (SELECT \* FROM users WHERE email = 'gjovanovic.st@gmail.com')
 4. **Social account record** (SELECT \* FROM social_accounts WHERE user_id = ...)
-5. **Application version** (check binary date: `ls -lh auth_api.exe`)
+5. **Application version** (check binary date: `ls -lh golang-auth-api.exe`)
 
 ## Most Likely Solution
 
@@ -372,8 +372,8 @@ If the issue persists, gather this information:
 
 ```bash
 # Stop application (Ctrl+C)
-go build -o auth_api.exe cmd/api/main.go
-./auth_api.exe
+go build -o golang-auth-api.exe cmd/api/main.go
+./golang-auth-api.exe
 # Wait for "Database migration completed!"
 # Delete test user from database
 # Try social login again

@@ -199,8 +199,8 @@ You can now check migration status in your Go code:
 package main
 
 import (
-    "github.com/yusufstar/auth_api/pkg/models"
-    "github.com/yusufstar/auth_api/internal/database"
+    "github.com/yusufstar/golang-auth-api/pkg/models"
+    "github.com/yusufstar/golang-auth-api/internal/database"
 )
 
 func main() {

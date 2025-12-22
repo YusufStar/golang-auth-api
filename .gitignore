@@ -52,7 +52,7 @@ Thumbs.db
 # Build outputs
 /api
 /main
-/auth_api
+/golang-auth-api
 /cmd/api/api
 
 # Test coverage

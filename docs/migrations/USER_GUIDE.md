@@ -11,6 +11,7 @@ This project uses a hybrid migration approach combining **GORM AutoMigrate** for
 ### Running Migrations
 
 **Automatic (Recommended for Development):**
+
 ```bash
 # Start the application - migrations run automatically
 make docker-dev
@@ -19,6 +20,7 @@ go run cmd/api/main.go
 ```
 
 **Manual (Recommended for Production):**
+
 ```bash
 # Apply specific SQL migration
 psql -U postgres -d auth_db -f migrations/YYYYMMDD_migration_name.sql
@@ -37,17 +39,20 @@ scripts\migrate.bat
 ### 1. GORM AutoMigrate (Automatic)
 
 **Used for:**
+
 - Adding new tables
 - Adding new columns
 - Adding indexes
 - Non-breaking schema changes
 
 **How it works:**
+
 - Runs automatically on application startup
 - Defined in `internal/database/db.go` → `MigrateDatabase()`
 - Based on model definitions in `pkg/models/`
 
 **Example:**
+
 ```go
 // Add new field to model
 type User struct {
@@ -59,6 +64,7 @@ type User struct {
 ```
 
 **Limitations:**
+
 - Cannot delete columns
 - Cannot change column types
 - Cannot add complex constraints
@@ -67,6 +73,7 @@ type User struct {
 ### 2. SQL Migrations (Manual)
 
 **Used for:**
+
 - Complex schema changes
 - Data transformations
 - Breaking changes
@@ -75,6 +82,7 @@ type User struct {
 **Location:** `migrations/` directory
 
 **Naming Convention:**
+
 ```
 YYYYMMDD_HHMMSS_description.sql         # Forward migration
 YYYYMMDD_HHMMSS_description_rollback.sql # Rollback
@@ -87,9 +95,9 @@ YYYYMMDD_HHMMSS_description.md          # Documentation
 
 ### Applied Migrations
 
-| Date | Migration | Type | Breaking | Status |
-|------|-----------|------|----------|--------|
-| 2024-01-03 | Smart Activity Logging | SQL | No | ✅ Applied |
+| Date       | Migration              | Type | Breaking | Status     |
+| ---------- | ---------------------- | ---- | -------- | ---------- |
+| 2024-01-03 | Smart Activity Logging | SQL  | No       | ✅ Applied |
 
 See [MIGRATIONS_LOG.md](migrations/MIGRATIONS_LOG.md) for complete history.
 
@@ -100,12 +108,14 @@ See [MIGRATIONS_LOG.md](migrations/MIGRATIONS_LOG.md) for complete history.
 ### Development Environment
 
 **Option 1: Automatic (Easiest)**
+
 ```bash
 # Just start the app - GORM AutoMigrate runs
 make docker-dev
 ```
 
 **Option 2: Interactive Script**
+
 ```bash
 # Unix/Mac
 ./scripts/migrate.sh
@@ -115,6 +125,7 @@ scripts\migrate.bat
 ```
 
 **Option 3: Make Commands**
+
 ```bash
 # Apply all pending migrations
 make migrate-up
@@ -129,12 +140,14 @@ make migrate-status
 ### Production Environment
 
 **Step 1: Backup Database**
+
 ```bash
 # Always backup first!
 pg_dump -U postgres -d auth_db > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 **Step 2: Apply Migration**
+
 ```bash
 # Test in staging first
 psql -U postgres -d auth_db_staging -f migrations/YYYYMMDD_migration.sql
@@ -144,12 +157,14 @@ psql -U postgres -d auth_db_production -f migrations/YYYYMMDD_migration.sql
 ```
 
 **Step 3: Verify**
+
 ```bash
 # Check migration succeeded
 psql -U postgres -d auth_db -c "\d table_name"
 ```
 
 **Step 4: Update Application**
+
 ```bash
 # Deploy new version
 docker-compose up -d
@@ -162,21 +177,25 @@ docker-compose up -d
 ### If Migration Fails
 
 **1. Stop the Application**
+
 ```bash
 docker-compose down
 ```
 
 **2. Apply Rollback**
+
 ```bash
 psql -U postgres -d auth_db -f migrations/YYYYMMDD_migration_rollback.sql
 ```
 
 **3. Restore from Backup (if needed)**
+
 ```bash
 psql -U postgres -d auth_db < backup_YYYYMMDD_HHMMSS.sql
 ```
 
 **4. Restart with Previous Version**
+
 ```bash
 git checkout previous-version
 docker-compose up -d
@@ -189,6 +208,7 @@ docker-compose up -d
 ### When to Use SQL Migrations
 
 Create SQL migration when:
+
 - ✅ Breaking schema changes
 - ✅ Data transformations needed
 - ✅ Complex constraints
@@ -199,6 +219,7 @@ Create SQL migration when:
 ### When to Use AutoMigrate
 
 Use AutoMigrate when:
+
 - ✅ Adding new nullable columns
 - ✅ Adding new tables
 - ✅ Adding indexes
@@ -208,11 +229,13 @@ Use AutoMigrate when:
 ### Creating SQL Migration
 
 **1. Use Template**
+
 ```bash
 cp migrations/TEMPLATE.md migrations/$(date +%Y%m%d_%H%M%S)_your_migration.md
 ```
 
 **2. Create SQL Files**
+
 ```sql
 -- migrations/20240103_120000_your_migration.sql
 -- Forward migration
@@ -229,6 +252,7 @@ ALTER TABLE users DROP COLUMN new_field;
 See [TEMPLATE.md](migrations/TEMPLATE.md) for documentation template.
 
 **4. Test Locally**
+
 ```bash
 # Apply
 psql -U postgres -d auth_db_test -f migrations/20240103_120000_your_migration.sql
@@ -244,6 +268,7 @@ psql -U postgres -d auth_db_test -c "\d users"
 ```
 
 **5. Update Documentation**
+
 - Add to [MIGRATIONS_LOG.md](migrations/MIGRATIONS_LOG.md)
 - Update [BREAKING_CHANGES.md](BREAKING_CHANGES.md) if breaking
 - Update [CHANGELOG.md](CHANGELOG.md)
@@ -253,6 +278,7 @@ psql -U postgres -d auth_db_test -c "\d users"
 ## Migration Checklist
 
 Before creating a migration:
+
 - [ ] Determine if SQL or AutoMigrate is appropriate
 - [ ] Create migration files (up + down)
 - [ ] Write migration documentation
@@ -270,6 +296,7 @@ Before creating a migration:
 ### Migration Failed
 
 **Error: "relation already exists"**
+
 ```bash
 # Check if table exists
 psql -U postgres -d auth_db -c "\dt"
@@ -278,6 +305,7 @@ psql -U postgres -d auth_db -c "\dt"
 ```
 
 **Error: "column already exists"**
+
 ```bash
 # Check existing columns
 psql -U postgres -d auth_db -c "\d table_name"
@@ -287,6 +315,7 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS new_field VARCHAR(100);
 ```
 
 **Error: "constraint violation"**
+
 ```bash
 # Check existing data
 SELECT * FROM table_name WHERE problematic_condition;
@@ -297,9 +326,10 @@ SELECT * FROM table_name WHERE problematic_condition;
 ### GORM AutoMigrate Not Working
 
 **Issue: Column not added**
+
 ```bash
 # Check GORM logs
-docker logs auth_api_dev | grep "ALTER TABLE"
+docker logs golang-auth-api_dev | grep "ALTER TABLE"
 
 # Verify model has correct tags
 type User struct {
@@ -308,6 +338,7 @@ type User struct {
 ```
 
 **Issue: Index not created**
+
 ```bash
 # Check indexes
 psql -U postgres -d auth_db -c "\di"
@@ -321,16 +352,19 @@ Field string `gorm:"index" json:"field"`  // ✅
 ## Best Practices
 
 ### 1. Always Backup First
+
 ```bash
 pg_dump -U postgres -d auth_db > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 ### 2. Test in Development
+
 ```bash
 # Test full cycle: apply → verify → rollback → verify
 ```
 
 ### 3. Use Transactions (SQL Migrations)
+
 ```sql
 BEGIN;
   -- Your migration here
@@ -340,16 +374,20 @@ COMMIT;
 ```
 
 ### 4. Make Migrations Reversible
+
 Always provide rollback scripts!
 
 ### 5. Document Everything
+
 Include:
+
 - What changed
 - Why it changed
 - How to rollback
 - Impact on application
 
 ### 6. Gradual Migrations for Breaking Changes
+
 ```sql
 -- Step 1: Add new nullable column
 ALTER TABLE users ADD COLUMN new_email VARCHAR(255);
@@ -368,10 +406,10 @@ ALTER TABLE users ADD COLUMN new_email VARCHAR(255);
 
 ## Version Compatibility
 
-| App Version | Min DB Version | Migrations Required |
-|-------------|----------------|---------------------|
-| v1.0.0 | v1.0.0 | None |
-| v1.1.0 | v1.0.0 | Smart Logging (2024-01-03) |
+| App Version | Min DB Version | Migrations Required        |
+| ----------- | -------------- | -------------------------- |
+| v1.0.0      | v1.0.0         | None                       |
+| v1.1.0      | v1.0.0         | Smart Logging (2024-01-03) |
 
 See [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md) for detailed upgrade instructions.
 
@@ -393,4 +431,3 @@ See [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md) for detailed upgrade instructions.
 - 🐛 Check [Troubleshooting](#troubleshooting) section above
 - 💬 Open an issue on GitHub
 - 📧 Contact maintainers
-

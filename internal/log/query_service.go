@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/yusufstar/auth_api/pkg/dto"
-	"github.com/yusufstar/auth_api/pkg/errors"
-	"github.com/yusufstar/auth_api/pkg/models"
+	"github.com/yusufstar/golang-auth-api/pkg/dto"
+	"github.com/yusufstar/golang-auth-api/pkg/errors"
+	"github.com/yusufstar/golang-auth-api/pkg/models"
 )
 
 type QueryService struct {

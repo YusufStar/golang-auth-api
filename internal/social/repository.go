@@ -1,7 +1,7 @@
 package social
 
 import (
-	"github.com/yusufstar/auth_api/pkg/models"
+	"github.com/yusufstar/golang-auth-api/pkg/models"
 	"gorm.io/gorm"
 )
 

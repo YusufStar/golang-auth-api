@@ -13,6 +13,7 @@ make migrate
 ```
 
 Choose from menu:
+
 1. Show migration status
 2. Apply migrations
 3. Rollback
@@ -82,7 +83,7 @@ docker-compose up -d
 
 ```bash
 # Check app logs
-docker logs auth_api_dev
+docker logs golang-auth-api_dev
 
 # Check migration status
 make migrate-status
@@ -109,6 +110,7 @@ touch migrations/${timestamp}_your_change_rollback.sql
 ### Step 2: Write Migration
 
 **Forward (migrations/YYYYMMDD_your_change.sql):**
+
 ```sql
 BEGIN;
 ALTER TABLE users ADD COLUMN preferences JSONB DEFAULT '{}';
@@ -117,6 +119,7 @@ COMMIT;
 ```
 
 **Rollback (migrations/YYYYMMDD_your_change_rollback.sql):**
+
 ```sql
 BEGIN;
 DROP INDEX IF EXISTS idx_users_preferences;
@@ -143,6 +146,7 @@ psql -U postgres -d auth_db_test -c "\d users"
 ### Step 4: Document
 
 Fill out the `.md` template with:
+
 - What changed
 - Why it changed
 - Impact assessment
@@ -171,45 +175,46 @@ Add "migration" label to PR.
 
 ### When to Create Migration?
 
-| Change | SQL Migration | GORM AutoMigrate |
-|--------|---------------|------------------|
-| Add nullable column | ✅ Either | ✅ Preferred |
-| Add NOT NULL column | ✅ Required | ❌ No |
-| Change column type | ✅ Required | ❌ No |
-| Remove column | ✅ Required | ❌ No |
-| Rename column | ✅ Required | ❌ No |
-| Add table | ✅ Either | ✅ Preferred |
-| Transform data | ✅ Required | ❌ No |
-| Breaking change | ✅ Required | ❌ No |
+| Change              | SQL Migration | GORM AutoMigrate |
+| ------------------- | ------------- | ---------------- |
+| Add nullable column | ✅ Either     | ✅ Preferred     |
+| Add NOT NULL column | ✅ Required   | ❌ No            |
+| Change column type  | ✅ Required   | ❌ No            |
+| Remove column       | ✅ Required   | ❌ No            |
+| Rename column       | ✅ Required   | ❌ No            |
+| Add table           | ✅ Either     | ✅ Preferred     |
+| Transform data      | ✅ Required   | ❌ No            |
+| Breaking change     | ✅ Required   | ❌ No            |
 
 ### Key Commands
 
-| Task | Command |
-|------|---------|
-| Interactive tool | `make migrate` |
-| Check status | `make migrate-status` |
-| Apply migrations | `make migrate-up` |
-| Rollback | `make migrate-down` |
-| List migrations | `make migrate-list` |
-| Backup database | `make migrate-backup` |
-| Test connection | `make migrate-test` |
+| Task             | Command               |
+| ---------------- | --------------------- |
+| Interactive tool | `make migrate`        |
+| Check status     | `make migrate-status` |
+| Apply migrations | `make migrate-up`     |
+| Rollback         | `make migrate-down`   |
+| List migrations  | `make migrate-list`   |
+| Backup database  | `make migrate-backup` |
+| Test connection  | `make migrate-test`   |
 
 ### Key Files
 
-| Need | Read |
-|------|------|
-| How to run migrations | [MIGRATIONS.md](../MIGRATIONS.md) |
-| How to upgrade | [UPGRADE_GUIDE.md](../UPGRADE_GUIDE.md) |
-| What breaks | [BREAKING_CHANGES.md](../BREAKING_CHANGES.md) |
-| How to create | [migrations/README.md](../migrations/README.md) |
-| Template | [migrations/TEMPLATE.md](../migrations/TEMPLATE.md) |
-| History | [migrations/MIGRATIONS_LOG.md](../migrations/MIGRATIONS_LOG.md) |
+| Need                  | Read                                                            |
+| --------------------- | --------------------------------------------------------------- |
+| How to run migrations | [MIGRATIONS.md](../MIGRATIONS.md)                               |
+| How to upgrade        | [UPGRADE_GUIDE.md](../UPGRADE_GUIDE.md)                         |
+| What breaks           | [BREAKING_CHANGES.md](../BREAKING_CHANGES.md)                   |
+| How to create         | [migrations/README.md](../migrations/README.md)                 |
+| Template              | [migrations/TEMPLATE.md](../migrations/TEMPLATE.md)             |
+| History               | [migrations/MIGRATIONS_LOG.md](../migrations/MIGRATIONS_LOG.md) |
 
 ---
 
 ## ⚠️ Important Rules
 
 ### Always Do
+
 - ✅ Backup before migrating
 - ✅ Test in development first
 - ✅ Use transactions (BEGIN/COMMIT)
@@ -218,6 +223,7 @@ Add "migration" label to PR.
 - ✅ Document everything
 
 ### Never Do
+
 - ❌ Skip backups
 - ❌ Test in production first
 - ❌ Forget rollback script
@@ -296,5 +302,4 @@ Before submitting PR:
 
 ---
 
-*Quick start guide - For full details see linked documentation*
-
+_Quick start guide - For full details see linked documentation_

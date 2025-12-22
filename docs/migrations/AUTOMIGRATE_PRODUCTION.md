@@ -486,7 +486,7 @@ git pull
 docker-compose up -d
 
 # 5. Monitor
-docker logs -f auth_api
+docker logs -f golang-auth-api
 # Check for: "Database migration completed!"
 
 # 6. Verify

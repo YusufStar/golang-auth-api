@@ -10,9 +10,9 @@ import (
 	"github.com/pquerna/otp/totp"
 	"github.com/skip2/go-qrcode"
 	"github.com/spf13/viper"
-	"github.com/yusufstar/auth_api/internal/redis"
-	"github.com/yusufstar/auth_api/internal/user"
-	"github.com/yusufstar/auth_api/pkg/errors"
+	"github.com/yusufstar/golang-auth-api/internal/redis"
+	"github.com/yusufstar/golang-auth-api/internal/user"
+	"github.com/yusufstar/golang-auth-api/pkg/errors"
 )
 
 type Service struct {

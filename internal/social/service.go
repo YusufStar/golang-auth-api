@@ -8,11 +8,11 @@ import (
 	"strconv"
 
 	"github.com/google/uuid"
-	"github.com/yusufstar/auth_api/internal/redis"
-	"github.com/yusufstar/auth_api/internal/user"
-	"github.com/yusufstar/auth_api/pkg/errors"
-	"github.com/yusufstar/auth_api/pkg/jwt"
-	"github.com/yusufstar/auth_api/pkg/models"
+	"github.com/yusufstar/golang-auth-api/internal/redis"
+	"github.com/yusufstar/golang-auth-api/internal/user"
+	"github.com/yusufstar/golang-auth-api/pkg/errors"
+	"github.com/yusufstar/golang-auth-api/pkg/jwt"
+	"github.com/yusufstar/golang-auth-api/pkg/models"
 )
 
 type Service struct {

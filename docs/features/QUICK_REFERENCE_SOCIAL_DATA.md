@@ -60,10 +60,10 @@ func (r *Repository) UpdateUser(user *models.User) error
 
 ```bash
 # Build application
-go build -o auth_api cmd/api/main.go
+go build -o golang-auth-api cmd/api/main.go
 
 # Run application (migration runs automatically)
-./auth_api
+./golang-auth-api
 
 # Test social login
 # 1. Visit: http://localhost:8181/auth/google/login

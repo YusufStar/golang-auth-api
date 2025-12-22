@@ -40,20 +40,25 @@ make migrate-down
 ## 📋 All Migration Commands (Docker-Compatible)
 
 ### `make migrate-status`
+
 Shows all database tables
+
 ```bash
 make migrate-status
 # Output: Lists users, activity_logs, social_accounts, etc.
 ```
 
 ### `make migrate-up`
+
 Applies pending migrations
+
 ```bash
 make migrate-up
 # Applies: 20240103_add_activity_log_smart_fields.sql
 ```
 
 **Expected output:**
+
 ```
 Applying migrations...
 Applying: 20240103_add_activity_log_smart_fields.sql
@@ -63,39 +68,49 @@ CREATE INDEX
 ✅ Migrations applied successfully!
 ```
 
-**If you see warnings about "already exists"** - This is **NORMAL and SAFE!** 
+**If you see warnings about "already exists"** - This is **NORMAL and SAFE!**
 It means GORM already created those columns from your models.
 
 ### `make migrate-down`
+
 Rolls back the last migration
+
 ```bash
 make migrate-down
 # Rolls back: 20240103_add_activity_log_smart_fields_rollback.sql
 ```
 
 ### `make migrate-check`
+
 Shows detailed database schema
+
 ```bash
 make migrate-check
 # Shows: Table structure, columns, indexes
 ```
 
 ### `make migrate-backup`
+
 Creates a database backup
+
 ```bash
 make migrate-backup
 # Creates: backups/backup_YYYYMMDD_HHMMSS.sql
 ```
 
 ### `make migrate-test`
+
 Tests database connection
+
 ```bash
 make migrate-test
 # ✅ Connection successful!
 ```
 
 ### `make migrate-list`
+
 Lists available migration files
+
 ```bash
 make migrate-list
 # Shows: All .sql files in migrations/
@@ -108,26 +123,31 @@ make migrate-list
 If you want to run SQL commands manually:
 
 ### Connect to Database Container
+
 ```bash
 docker exec -it auth_db psql -U postgres -d auth_db
 ```
 
 ### Run SQL File
+
 ```bash
 docker exec -i auth_db psql -U postgres -d auth_db < migrations/your_migration.sql
 ```
 
 ### Check Tables
+
 ```bash
 docker exec auth_db psql -U postgres -d auth_db -c "\dt"
 ```
 
 ### Check Table Structure
+
 ```bash
 docker exec auth_db psql -U postgres -d auth_db -c "\d activity_logs"
 ```
 
 ### Run SQL Query
+
 ```bash
 docker exec auth_db psql -U postgres -d auth_db -c "SELECT COUNT(*) FROM activity_logs;"
 ```
@@ -137,12 +157,14 @@ docker exec auth_db psql -U postgres -d auth_db -c "SELECT COUNT(*) FROM activit
 ## 🆚 Docker vs Local PostgreSQL
 
 ### If Database is in Docker (Your Setup)
+
 ✅ **Use:** `make migrate-*` commands (now Docker-aware)  
 ✅ **Use:** `docker exec` commands  
 ❌ **Don't use:** `psql` directly on host  
 ❌ **Don't use:** `scripts/migrate.sh` (requires local psql)
 
 ### If Database is Local (Not Your Setup)
+
 - Can use `psql` directly
 - Can use `scripts/migrate.sh`
 - No Docker commands needed
@@ -155,7 +177,7 @@ docker exec auth_db psql -U postgres -d auth_db -c "SELECT COUNT(*) FROM activit
 # 1. Start everything
 make docker-dev
 # ✅ PostgreSQL starts
-# ✅ Redis starts  
+# ✅ Redis starts
 # ✅ Application starts
 # ✅ GORM creates all tables automatically
 
@@ -184,11 +206,13 @@ make migrate-check
 ### Error: "Cannot connect to database"
 
 **Check if container is running:**
+
 ```bash
 docker ps | grep auth_db
 ```
 
 **If not running:**
+
 ```bash
 make docker-dev
 ```
@@ -198,6 +222,7 @@ make docker-dev
 **This means you're trying to use local psql.**
 
 **Solution:** Use Docker-aware commands:
+
 ```bash
 # ❌ Wrong: psql -U postgres -d auth_db
 # ✅ Right: docker exec auth_db psql -U postgres -d auth_db
@@ -210,6 +235,7 @@ make migrate-status
 ### Warning: "column already exists"
 
 **This is NORMAL!**
+
 - ✅ Your models already have these fields
 - ✅ GORM created them automatically
 - ✅ Migration is idempotent (safe to run)
@@ -218,6 +244,7 @@ make migrate-status
 ### Error: "No such container: auth_db"
 
 **Container name might be different:**
+
 ```bash
 # Check actual container name
 docker ps
@@ -231,32 +258,38 @@ docker exec -it YOUR_CONTAINER_NAME psql -U postgres -d auth_db
 ## 🎯 Common Tasks
 
 ### Check What Tables Exist
+
 ```bash
 make migrate-status
 ```
 
 ### Check if Smart Logging Fields Exist
+
 ```bash
 make migrate-check
 # Look for: severity, expires_at, is_anomaly
 ```
 
 ### Apply Migrations
+
 ```bash
 make migrate-up
 ```
 
 ### Create Backup Before Changes
+
 ```bash
 make migrate-backup
 ```
 
 ### Restore from Backup
+
 ```bash
 docker exec -i auth_db psql -U postgres -d auth_db < backups/backup_YYYYMMDD_HHMMSS.sql
 ```
 
 ### Delete All Tables (Clean Start)
+
 ```bash
 # ⚠️ WARNING: Destroys all data!
 docker-compose down -v
@@ -276,6 +309,7 @@ make docker-dev
 ## 💡 Pro Tips
 
 ### Tip 1: Use Make Commands
+
 ```bash
 # Easier to remember
 make migrate-up
@@ -285,6 +319,7 @@ docker exec -i auth_db psql -U postgres -d auth_db < migrations/file.sql
 ```
 
 ### Tip 2: Check Before Migrating
+
 ```bash
 make migrate-status    # See current state
 make migrate-backup    # Backup first
@@ -293,15 +328,17 @@ make migrate-check     # Verify results
 ```
 
 ### Tip 3: Database Logs
+
 ```bash
 # If migration fails, check database logs
 docker logs auth_db
 ```
 
 ### Tip 4: Application Logs
+
 ```bash
 # Check if GORM migrations ran
-docker logs auth_api_dev | grep -i migrate
+docker logs golang-auth-api_dev | grep -i migrate
 ```
 
 ---
@@ -318,4 +355,3 @@ make migrate-backup  # ✅ Works with Docker
 ```
 
 All commands automatically execute inside the `auth_db` container. No need to install PostgreSQL locally! 🎉
-

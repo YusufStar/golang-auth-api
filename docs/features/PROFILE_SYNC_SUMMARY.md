@@ -151,10 +151,10 @@ WHERE id = 'user-uuid'
 ```bash
 # Stop current application
 # Rebuild with new code
-go build -o auth_api.exe cmd/api/main.go
+go build -o golang-auth-api.exe cmd/api/main.go
 
 # Start application
-./auth_api.exe
+./golang-auth-api.exe
 ```
 
 ### Step 2: Change Your Social Profile

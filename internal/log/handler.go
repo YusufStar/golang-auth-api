@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/yusufstar/auth_api/pkg/dto"
+	"github.com/yusufstar/golang-auth-api/pkg/dto"
 )
 
 type Handler struct {
