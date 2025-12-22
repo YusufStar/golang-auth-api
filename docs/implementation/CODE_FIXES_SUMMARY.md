@@ -231,14 +231,14 @@ cd /c/work/AI/Cursor/golang-auth-api/v1.0.0
 ### 2. Login Again (To Populate Data if Needed)
 
 ```
-Visit: http://localhost:8181/auth/google/login
+Visit: http://localhost:8282/auth/google/login
 ```
 
 ### 3. Test Profile Endpoint
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-     http://localhost:8181/profile
+     http://localhost:8282/profile
 ```
 
 **Expected:** Full profile with all fields! ✅

@@ -85,7 +85,7 @@ Authorization: Bearer <jwt_token>
 The Permisio API now calls:
 
 ```go
-GET http://localhost:8181/auth/validate
+GET http://localhost:8282/auth/validate
 Authorization: Bearer <jwt_token>
 ```
 
@@ -102,7 +102,7 @@ You can test the new endpoint using curl:
 ```bash
 # Test with valid token
 curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-     http://localhost:8181/auth/validate
+     http://localhost:8282/auth/validate
 
 # Expected response:
 # {"valid":true,"userID":"uuid","email":"user@example.com"}

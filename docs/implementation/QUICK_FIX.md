@@ -32,7 +32,7 @@ go build -o golang-auth-api.exe cmd/api/main.go
 ### 3. Re-login
 
 ```
-Visit: http://localhost:8181/auth/google/login
+Visit: http://localhost:8282/auth/google/login
 Complete OAuth flow
 Get new token
 ```
@@ -41,7 +41,7 @@ Get new token
 
 ```bash
 curl -H "Authorization: Bearer YOUR_NEW_TOKEN" \
-     http://localhost:8181/profile
+     http://localhost:8282/profile
 ```
 
 **Should now show all fields!** ✅

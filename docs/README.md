@@ -144,7 +144,7 @@ Original project development phases and planning.
 ### Using the API
 
 - 📚 [API Documentation](API.md)
-- 🔍 [Swagger UI](http://localhost:8181/swagger/index.html) (when running)
+- 🔍 [Swagger UI](http://localhost:8282/swagger/index.html) (when running)
 - ✅ [Validation](guides/auth-api-validation-endpoint.md)
 
 ### Key Features

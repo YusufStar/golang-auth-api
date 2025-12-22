@@ -23,7 +23,7 @@ Google OAuth2 will be integrated using the `golang.org/x/oauth2` and `golang.org
 
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
-- `GOOGLE_REDIRECT_URL` (e.g., `http://localhost:8181/auth/google/callback`)
+- `GOOGLE_REDIRECT_URL` (e.g., `http://localhost:8282/auth/google/callback`)
 
 **Process Flow:**
 
@@ -260,7 +260,7 @@ Facebook OAuth2 integration will follow a similar pattern to Google, using the `
 
 - `FACEBOOK_CLIENT_ID`
 - `FACEBOOK_CLIENT_SECRET`
-- `FACEBOOK_REDIRECT_URL` (e.g., `http://localhost:8181/auth/facebook/callback`)
+- `FACEBOOK_REDIRECT_URL` (e.g., `http://localhost:8282/auth/facebook/callback`)
 
 **Process Flow:**
 
@@ -457,7 +457,7 @@ GitHub OAuth2 integration will also use the `golang.org/x/oauth2` package. We wi
 
 - `GITHUB_CLIENT_ID`
 - `GITHUB_CLIENT_SECRET`
-- `GITHUB_REDIRECT_URL` (e.g., `http://localhost:8181/auth/github/callback`)
+- `GITHUB_REDIRECT_URL` (e.g., `http://localhost:8282/auth/github/callback`)
 
 **Process Flow:**
 

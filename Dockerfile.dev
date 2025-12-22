@@ -20,7 +20,7 @@ RUN go mod download
 COPY . .
 
 # Expose the port the application runs on
-EXPOSE 8181
+EXPOSE 8282
 
 # Run Air for hot reload
 CMD ["air"]

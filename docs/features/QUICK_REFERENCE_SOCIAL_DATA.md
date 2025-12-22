@@ -66,9 +66,9 @@ go build -o golang-auth-api cmd/api/main.go
 ./golang-auth-api
 
 # Test social login
-# 1. Visit: http://localhost:8181/auth/google/login
+# 1. Visit: http://localhost:8282/auth/google/login
 # 2. Complete OAuth flow
-# 3. Get profile: curl -H "Authorization: Bearer {token}" http://localhost:8181/profile
+# 3. Get profile: curl -H "Authorization: Bearer {token}" http://localhost:8282/profile
 
 # Check database
 psql -U user -d authdb -c "SELECT name, first_name, profile_picture FROM users WHERE email='test@gmail.com';"

@@ -3,7 +3,7 @@
 echo "Starting Authentication API in Development Mode with Hot Reload..."
 echo ""
 echo "Services will be available at:"
-echo "- Auth API: http://localhost:8181"
+echo "- Auth API: http://localhost:8282"
 echo "- Redis Commander: http://localhost:8081"
 echo "- PostgreSQL: localhost:5433"
 echo ""

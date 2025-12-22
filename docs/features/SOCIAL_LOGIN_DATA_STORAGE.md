@@ -348,7 +348,7 @@ CREATE INDEX idx_social_accounts_provider ON social_accounts(provider);
 ```bash
 # Check user profile after social login
 curl -H "Authorization: Bearer {token}" \
-  http://localhost:8181/profile
+  http://localhost:8282/profile
 
 # Verify database schema
 psql -U user -d authdb -c "\d users"

@@ -53,7 +53,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8181
+// @host      localhost:8282
 // @BasePath  /
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -184,7 +184,7 @@ swag init
 
 ### 7.5 Accessing Swagger UI
 
-Once the application is running, you can access the Swagger UI in your browser at `http://localhost:8181/swagger/index.html` (or whatever host and port your API is running on).
+Once the application is running, you can access the Swagger UI in your browser at `http://localhost:8282/swagger/index.html` (or whatever host and port your API is running on).
 
 ### 7.6 Continuous Integration
 

@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: golang-auth-api_dev
     ports:
-      - "8181:8181"
+      - "8282:8282"
     volumes:
       - .:/app
       - /app/tmp # Exclude air tmp directory

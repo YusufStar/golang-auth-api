@@ -114,7 +114,7 @@ Works perfectly out-of-the-box:
 ✅ Migrations applied
 ✅ Cleanup service initialized (interval: 24h)
 ✅ Cleanup worker started
-✅ Server running on port 8181
+✅ Server running on port 8282
 ✅ Initial cleanup completed (35 logs deleted)
 ```
 

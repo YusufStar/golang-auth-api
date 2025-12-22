@@ -303,15 +303,15 @@ Profile sync is **always enabled** and cannot be disabled. This is intentional t
    ```bash
    # Go to Google account settings
    # Change profile picture
-   # Login to app: http://localhost:8181/auth/google/login
-   # Check profile: curl -H "Authorization: Bearer {token}" http://localhost:8181/profile
+   # Login to app: http://localhost:8282/auth/google/login
+   # Check profile: curl -H "Authorization: Bearer {token}" http://localhost:8282/profile
    # Verify picture URL updated
    ```
 
 2. **Change GitHub avatar:**
    ```bash
    # Update GitHub avatar
-   # Login to app: http://localhost:8181/auth/github/login
+   # Login to app: http://localhost:8282/auth/github/login
    # Check social account:
    SELECT profile_picture, updated_at
    FROM social_accounts

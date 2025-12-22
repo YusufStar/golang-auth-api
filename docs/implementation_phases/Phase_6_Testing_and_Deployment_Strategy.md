@@ -81,7 +81,7 @@ The API will be containerized using Docker for consistent and portable deploymen
       COPY --from=builder /go-auth-api .
 
       # Expose the port the application runs on
-      EXPOSE 8181
+      EXPOSE 8282
 
       # Run the application
       CMD ["./go-auth-api"]

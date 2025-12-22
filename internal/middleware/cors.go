@@ -14,7 +14,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		AllowOrigins: []string{
 			"http://localhost:3000",       // React dev server
 			"http://localhost:5173",       // Vite dev server
-			"http://localhost:8181",       // API server itself
+			"http://localhost:8282",       // API server itself
 			"https://accounts.google.com", // Google OAuth
 			"https://github.com",          // GitHub OAuth
 		},

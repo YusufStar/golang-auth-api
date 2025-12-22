@@ -26,7 +26,7 @@ WORKDIR /root/
 # Copy the built binary from the builder stage
 COPY --from=builder /go-auth-api .
 
-EXPOSE 8181
+EXPOSE 8282
 
 # Run the application
 CMD ["./go-auth-api"]

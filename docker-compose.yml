@@ -63,7 +63,7 @@ services:
       dockerfile: Dockerfile
     container_name: golang-auth-api
     ports:
-      - "8181:8181"
+      - "8282:8282"
     env_file:
       - .env
     depends_on:

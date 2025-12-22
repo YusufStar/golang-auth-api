@@ -53,7 +53,7 @@ go build -o golang-auth-api.exe cmd/api/main.go
 ```
 Database connected successfully!
 Database migration completed!  ← This adds the new columns
-Server starting on port 8181
+Server starting on port 8282
 ```
 
 ### Step 4: Verify Database Schema
@@ -82,7 +82,7 @@ Now that columns exist, login again to populate them:
 
 ```
 # Visit in browser
-http://localhost:8181/auth/google/login
+http://localhost:8282/auth/google/login
 
 # Complete OAuth flow
 # This will now populate the new fields
@@ -92,7 +92,7 @@ http://localhost:8181/auth/google/login
 
 ```bash
 curl -H "Authorization: Bearer YOUR_NEW_TOKEN" \
-     http://localhost:8181/profile
+     http://localhost:8282/profile
 ```
 
 **Expected result:**
@@ -247,10 +247,10 @@ go build -o golang-auth-api.exe cmd/api/main.go
 psql -U postgres -d golang-auth-api_db -c "\d users"
 
 # 6. Login via browser to populate data
-# Visit: http://localhost:8181/auth/google/login
+# Visit: http://localhost:8282/auth/google/login
 
 # 7. Get new token and check profile
-# curl -H "Authorization: Bearer NEW_TOKEN" http://localhost:8181/profile
+# curl -H "Authorization: Bearer NEW_TOKEN" http://localhost:8282/profile
 ```
 
 ## Alternative: Manual Migration

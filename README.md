@@ -9,7 +9,7 @@ A comprehensive authentication and authorization system with social login, email
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Supported-2496ED?style=flat&logo=docker)](https://www.docker.com/)
-[![Swagger](https://img.shields.io/badge/API-Swagger-85EA2D?style=flat&logo=swagger)](http://localhost:8181/swagger/index.html)
+[![Swagger](https://img.shields.io/badge/API-Swagger-85EA2D?style=flat&logo=swagger)](http://localhost:8282/swagger/index.html)
 
 [Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API Endpoints](#-api-endpoints) • [Contributing](#-contributing)
 
@@ -86,14 +86,14 @@ make docker-dev
 make migrate-up
 ```
 
-**🎉 That's it!** Your API is now running at `http://localhost:8181`
+**🎉 That's it!** Your API is now running at `http://localhost:8282`
 
 ### What Just Happened?
 
 - ✅ PostgreSQL & Redis started in Docker containers
 - ✅ Database tables created automatically (GORM AutoMigrate)
 - ✅ Application running with hot reload enabled
-- ✅ Swagger docs available at [http://localhost:8181/swagger/index.html](http://localhost:8181/swagger/index.html)
+- ✅ Swagger docs available at [http://localhost:8282/swagger/index.html](http://localhost:8282/swagger/index.html)
 
 ### Next Steps
 
@@ -198,7 +198,7 @@ make migrate-up
 | `/activity-logs/event-types` | GET    | Get available event types            | ✅        |
 | `/admin/activity-logs`       | GET    | Get all users' logs (admin)          | ✅        |
 
-**📖 Full API Documentation:** [Swagger UI](http://localhost:8181/swagger/index.html) (when running)
+**📖 Full API Documentation:** [Swagger UI](http://localhost:8282/swagger/index.html) (when running)
 
 ---
 
@@ -335,18 +335,18 @@ EMAIL_FROM=noreply@yourapp.com
 # Google OAuth2
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REDIRECT_URL=http://localhost:8181/auth/google/callback
+GOOGLE_REDIRECT_URL=http://localhost:8282/auth/google/callback
 
 # GitHub OAuth2
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
-GITHUB_REDIRECT_URL=http://localhost:8181/auth/github/callback
+GITHUB_REDIRECT_URL=http://localhost:8282/auth/github/callback
 ```
 
 ### Server
 
 ```bash
-PORT=8181
+PORT=8282
 GIN_MODE=debug          # Use 'release' for production
 ```
 
@@ -539,7 +539,7 @@ make test-totp
 ./test_api.sh
 
 # Or use interactive Swagger UI
-# Navigate to: http://localhost:8181/swagger/index.html
+# Navigate to: http://localhost:8282/swagger/index.html
 ```
 
 ### Test Coverage

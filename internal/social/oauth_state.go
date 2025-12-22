@@ -47,10 +47,10 @@ func IsAllowedRedirectURI(redirectURI string) bool {
 		allowedDomains = []string{
 			"localhost:3000",
 			"localhost:5173",
-			"localhost:8181",
+			"localhost:8282",
 			"127.0.0.1:3000",
 			"127.0.0.1:5173",
-			"127.0.0.1:8181",
+			"127.0.0.1:8282",
 			"https://api.shipstack.cloud",
 		}
 	}

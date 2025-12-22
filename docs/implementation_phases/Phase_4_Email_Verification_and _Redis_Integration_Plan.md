@@ -47,7 +47,7 @@ func NewService() *Service {
 func (s *Service) SendVerificationEmail(toEmail, token string) error {
 	from := viper.GetString("EMAIL_FROM")
 	subject := "Verify Your Email Address"
-	body := fmt.Sprintf("Please verify your email address by clicking on the link: http://localhost:8181/verify-email?token=%s", token)
+	body := fmt.Sprintf("Please verify your email address by clicking on the link: http://localhost:8282/verify-email?token=%s", token)
 
 	m := mail.NewMessage()
 	m.SetHeader("From", from)

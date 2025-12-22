@@ -33,7 +33,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8181
+// @host      localhost:8282
 // @BasePath  /
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -49,7 +49,7 @@ func main() {
 
 	// Initialize Viper for configuration management
 	viper.AutomaticEnv() // Read environment variables
-	viper.SetDefault("PORT", "8181")
+	viper.SetDefault("PORT", "8282")
 	viper.SetDefault("ACCESS_TOKEN_EXPIRATION_MINUTES", 15)
 	viper.SetDefault("REFRESH_TOKEN_EXPIRATION_HOURS", 720)
 
@@ -88,7 +88,6 @@ func main() {
 
 	// Setup Gin Router
 	r := gin.Default()
-	r.Run("0.0.0.0:8181")
 
 	// Add CORS middleware
 	r.Use(middleware.CORSMiddleware())
@@ -156,6 +155,8 @@ func main() {
 
 	// Add Swagger UI endpoint
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	r.Run("localhost:8282")
 
 	// Start the server
 	port := viper.GetString("PORT")

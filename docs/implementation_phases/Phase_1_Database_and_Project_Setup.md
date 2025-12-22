@@ -332,15 +332,15 @@ To initialize the project, navigate to your desired project directory and execut
 
     GOOGLE_CLIENT_ID=your_google_client_id
     GOOGLE_CLIENT_SECRET=your_google_client_secret
-    GOOGLE_REDIRECT_URL=http://localhost:8181/auth/google/callback
+    GOOGLE_REDIRECT_URL=http://localhost:8282/auth/google/callback
 
     FACEBOOK_CLIENT_ID=your_facebook_client_id
     FACEBOOK_CLIENT_SECRET=your_facebook_client_secret
-    FACEBOOK_REDIRECT_URL=http://localhost:8181/auth/facebook/callback
+    FACEBOOK_REDIRECT_URL=http://localhost:8282/auth/facebook/callback
 
     GITHUB_CLIENT_ID=your_github_client_id
     GITHUB_CLIENT_SECRET=your_github_client_secret
-    GITHUB_REDIRECT_URL=http://localhost:8181/auth/github/callback
+    GITHUB_REDIRECT_URL=http://localhost:8282/auth/github/callback
 
     EMAIL_HOST=smtp.example.com
     EMAIL_PORT=587

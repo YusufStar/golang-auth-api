@@ -175,7 +175,7 @@ go build -o golang-auth-api.exe cmd/api/main.go
 # Watch for:
 # "Database connected successfully!"
 # "Database migration completed!"
-# "Server starting on port 8181"
+# "Server starting on port 8282"
 ```
 
 ### Step 2: Verify Database Schema
@@ -216,7 +216,7 @@ DELETE FROM users WHERE email = 'gjovanovic.st@gmail.com';
 
 ### Step 4: Test Social Login Again
 
-1. Open browser: `http://localhost:8181/auth/google/login`
+1. Open browser: `http://localhost:8282/auth/google/login`
 2. Complete OAuth flow
 3. You should get redirected with access token
 4. Check database immediately:
@@ -328,14 +328,14 @@ ALTER TABLE social_accounts ADD COLUMN IF NOT EXISTS raw_data JSONB;
 
 ```bash
 # 1. Check if application is running
-curl http://localhost:8181/swagger/index.html
+curl http://localhost:8282/swagger/index.html
 
 # 2. Initiate Google login (in browser)
-# Visit: http://localhost:8181/auth/google/login
+# Visit: http://localhost:8282/auth/google/login
 
 # 3. After successful login, get profile with the token
 curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-     http://localhost:8181/profile
+     http://localhost:8282/profile
 
 # 4. Expected response should include:
 {

@@ -150,7 +150,7 @@ deploy:
 ```yaml
 # docker-compose.yml
 healthcheck:
-  test: ["CMD", "curl", "-f", "http://localhost:8181/health"]
+  test: ["CMD", "curl", "-f", "http://localhost:8282/health"]
   interval: 10s
   timeout: 5s
   retries: 3
@@ -375,7 +375,7 @@ make docker-dev
 services:
   app:
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8181/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8282/health"]
       start_period: 60s # Give time for migrations
 ```
 

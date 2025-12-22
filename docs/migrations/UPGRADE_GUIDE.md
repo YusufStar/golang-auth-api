@@ -121,10 +121,10 @@ docker logs golang-auth-api_dev
 
 ```bash
 # Test API
-curl http://localhost:8181/activity-logs/event-types
+curl http://localhost:8282/activity-logs/event-types
 
 # Check Swagger
-open http://localhost:8181/swagger/index.html
+open http://localhost:8282/swagger/index.html
 ```
 
 #### Option B: Manual Upgrade

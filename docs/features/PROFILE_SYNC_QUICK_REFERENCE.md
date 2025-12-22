@@ -29,10 +29,10 @@ Every social login:
 go build -o golang-auth-api.exe cmd/api/main.go && ./golang-auth-api.exe
 
 # 3. Login via social
-http://localhost:8181/auth/google/login
+http://localhost:8282/auth/google/login
 
 # 4. Check profile - picture should be updated
-curl -H "Authorization: Bearer TOKEN" http://localhost:8181/profile
+curl -H "Authorization: Bearer TOKEN" http://localhost:8282/profile
 ```
 
 ## 📊 What Gets Synced

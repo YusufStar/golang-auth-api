@@ -237,7 +237,7 @@ SELECT COUNT(*) FROM activity_logs WHERE expires_at IS NULL;
 
 ```bash
 # Create a new log entry
-curl -X POST http://localhost:8181/auth/login \
+curl -X POST http://localhost:8282/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"password"}'
 
