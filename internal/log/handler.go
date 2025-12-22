@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gjovanovicst/auth_api/pkg/dto"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/pkg/dto"
 )
 
 type Handler struct {

@@ -11,17 +11,20 @@ I've now created ALL the necessary files for the migration tracking system:
 ### 1. Migration SQL Files
 
 **migrations/00_create_migrations_table.sql**
+
 - Creates `schema_migrations` table
 - Tracks which migrations are applied
 - Stores version, name, timestamp, execution time, success status
 
 **migrations/00_create_migrations_table_rollback.sql**
+
 - Drops `schema_migrations` table
 - For rollback if needed
 
 ### 2. Go Model
 
 **pkg/models/schema_migration.go**
+
 - Go struct for `schema_migrations` table
 - Integrates with GORM
 - Can query migration status in code
@@ -29,6 +32,7 @@ I've now created ALL the necessary files for the migration tracking system:
 ### 3. Documentation
 
 **docs/MIGRATION_TRACKING.md**
+
 - Complete guide to migration tracking
 - How to initialize
 - How to use
@@ -37,11 +41,13 @@ I've now created ALL the necessary files for the migration tracking system:
 ### 4. Updated Files
 
 **Makefile**
+
 - Added `migrate-init` command
 - Added `migrate-status-tracked` command
 - Added `migrate-mark-applied` command
 
 **internal/database/db.go**
+
 - Added `&models.SchemaMigration{}` to AutoMigrate
 - Now GORM creates the tracking table automatically
 
@@ -60,6 +66,7 @@ make migrate-init
 ```
 
 **What happens:**
+
 - Creates `schema_migrations` table
 - Inserts initial record
 - Ready to track migrations
@@ -72,6 +79,7 @@ make migrate-status-tracked
 ```
 
 **Output:**
+
 ```
 📋 Migrations recorded in database:
  version         | name                       | applied_at          | duration
@@ -97,6 +105,7 @@ make migrate-status-tracked
 ```
 
 **Output:**
+
 ```
 📋 Migrations recorded in database:
  version         | name                       | applied_at          | duration
@@ -141,6 +150,7 @@ make migrate-status-tracked
 ### The Table
 
 **schema_migrations** tracks:
+
 - ✅ Which migrations applied
 - ✅ When they were applied
 - ✅ How long they took
@@ -189,8 +199,8 @@ You can now check migration status in your Go code:
 package main
 
 import (
-    "github.com/gjovanovicst/auth_api/pkg/models"
-    "github.com/gjovanovicst/auth_api/internal/database"
+    "github.com/yusufstar/auth_api/pkg/models"
+    "github.com/yusufstar/auth_api/internal/database"
 )
 
 func main() {
@@ -199,17 +209,17 @@ func main() {
     database.DB.Where("success = ?", true).
         Order("applied_at DESC").
         Find(&migrations)
-    
+
     for _, m := range migrations {
         fmt.Printf("✅ %s - %s\n", m.Version, m.Name)
     }
-    
+
     // Check if specific migration applied
     var count int64
     database.DB.Model(&models.SchemaMigration{}).
         Where("version = ? AND success = ?", "20240103_000000", true).
         Count(&count)
-    
+
     if count > 0 {
         fmt.Println("Smart logging is active!")
     }
@@ -221,17 +231,20 @@ func main() {
 ## 🆚 Two Systems Working Together
 
 ### GORM AutoMigrate (Automatic)
+
 - Creates base tables from models
 - Runs on every startup
 - Handles `users`, `activity_logs`, `social_accounts`, `schema_migrations`
 
 ### Manual SQL Migrations (Tracked)
+
 - Complex changes requiring control
 - Tracked in `schema_migrations` table
 - Applied via `make migrate-up`
 - Recorded via `make migrate-mark-applied`
 
 ### Both Work Together!
+
 - GORM creates foundation
 - SQL migrations enhance
 - Tracking table records both
@@ -244,11 +257,13 @@ func main() {
 All documentation is complete:
 
 1. **User Guides:**
+
    - [MIGRATIONS.md](MIGRATIONS.md) - How to run migrations
    - [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md) - How to upgrade versions
    - [docs/MIGRATIONS_DOCKER.md](docs/MIGRATIONS_DOCKER.md) - Docker-specific
 
 2. **Developer Guides:**
+
    - [migrations/README.md](migrations/README.md) - Creating migrations
    - [migrations/TEMPLATE.md](migrations/TEMPLATE.md) - Migration template
    - [docs/MIGRATION_TRACKING.md](docs/MIGRATION_TRACKING.md) - Tracking system
@@ -303,7 +318,7 @@ make migrate-status-tracked
 ✅ Go model (SchemaMigration)  
 ✅ Documentation (complete guide)  
 ✅ Makefile commands (init, status, mark)  
-✅ GORM integration (AutoMigrate updated)  
+✅ GORM integration (AutoMigrate updated)
 
 **Your migration tracking system is now COMPLETE and ready to use!** 🚀
 
@@ -312,11 +327,13 @@ make migrate-status-tracked
 ## 🚀 Next Steps
 
 1. **Initialize tracking:**
+
    ```bash
    make migrate-init
    ```
 
 2. **Mark existing migration:**
+
    ```bash
    make migrate-mark-applied VERSION=20240103_000000 NAME="add_activity_log_smart_fields"
    ```
@@ -328,4 +345,3 @@ make migrate-status-tracked
    - Verify: `make migrate-status-tracked`
 
 **Now your database knows exactly which migrations have been applied!** ✅
-

@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gjovanovicst/auth_api/internal/log"
-	"github.com/gjovanovicst/auth_api/internal/util"
-	"github.com/gjovanovicst/auth_api/pkg/dto"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/internal/log"
+	"github.com/yusufstar/auth_api/internal/util"
+	"github.com/yusufstar/auth_api/pkg/dto"
 )
 
 type Handler struct {

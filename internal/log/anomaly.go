@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"time"
 
-	"github.com/gjovanovicst/auth_api/internal/database"
-	"github.com/gjovanovicst/auth_api/pkg/models"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/internal/database"
+	"github.com/yusufstar/auth_api/pkg/models"
 	"gorm.io/gorm"
 )
 

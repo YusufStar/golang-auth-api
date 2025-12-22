@@ -51,6 +51,7 @@ func IsAllowedRedirectURI(redirectURI string) bool {
 			"127.0.0.1:3000",
 			"127.0.0.1:5173",
 			"127.0.0.1:8181",
+			"https://api.shipstack.cloud",
 		}
 	}
 

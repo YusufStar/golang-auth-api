@@ -5,10 +5,10 @@ import (
 	"math"
 	"time"
 
-	"github.com/gjovanovicst/auth_api/pkg/dto"
-	"github.com/gjovanovicst/auth_api/pkg/errors"
-	"github.com/gjovanovicst/auth_api/pkg/models"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/pkg/dto"
+	"github.com/yusufstar/auth_api/pkg/errors"
+	"github.com/yusufstar/auth_api/pkg/models"
 )
 
 type QueryService struct {

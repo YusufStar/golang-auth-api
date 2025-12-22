@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gjovanovicst/auth_api/internal/redis"
-	"github.com/gjovanovicst/auth_api/pkg/jwt"
 	redisLib "github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
+	"github.com/yusufstar/auth_api/internal/redis"
+	"github.com/yusufstar/auth_api/pkg/jwt"
 )
 
 func TestMain(m *testing.M) {

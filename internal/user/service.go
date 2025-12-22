@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gjovanovicst/auth_api/internal/email"
-	"github.com/gjovanovicst/auth_api/internal/redis"
-	"github.com/gjovanovicst/auth_api/pkg/dto"
-	"github.com/gjovanovicst/auth_api/pkg/errors"
-	"github.com/gjovanovicst/auth_api/pkg/jwt"
-	"github.com/gjovanovicst/auth_api/pkg/models"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/internal/email"
+	"github.com/yusufstar/auth_api/internal/redis"
+	"github.com/yusufstar/auth_api/pkg/dto"
+	"github.com/yusufstar/auth_api/pkg/errors"
+	"github.com/yusufstar/auth_api/pkg/jwt"
+	"github.com/yusufstar/auth_api/pkg/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -299,7 +299,7 @@ func (s *Service) RevokeAllUserTokens(userID string) *errors.AppError {
 func (s *Service) UpdateUserProfile(userID string, req dto.UpdateProfileRequest) *errors.AppError {
 	// Build updates map with only provided fields
 	updates := make(map[string]interface{})
-	
+
 	if req.Name != "" {
 		updates["name"] = req.Name
 	}

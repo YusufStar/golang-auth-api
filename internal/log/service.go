@@ -7,10 +7,10 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/gjovanovicst/auth_api/internal/config"
-	"github.com/gjovanovicst/auth_api/internal/database"
-	"github.com/gjovanovicst/auth_api/pkg/models"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/internal/config"
+	"github.com/yusufstar/auth_api/internal/database"
+	"github.com/yusufstar/auth_api/pkg/models"
 )
 
 // Event types constants for consistency

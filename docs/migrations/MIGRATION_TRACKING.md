@@ -55,10 +55,10 @@ CREATE TABLE schema_migrations (
 
 ### Example Data
 
-| version | name | applied_at | execution_time_ms | success |
-|---------|------|------------|-------------------|---------|
-| 00000000_000000 | create_migrations_table | 2024-01-03 10:00:00 | 0 | true |
-| 20240103_000000 | add_activity_log_smart_fields | 2024-01-03 10:01:00 | 1234 | true |
+| version         | name                          | applied_at          | execution_time_ms | success |
+| --------------- | ----------------------------- | ------------------- | ----------------- | ------- |
+| 00000000_000000 | create_migrations_table       | 2024-01-03 10:00:00 | 0                 | true    |
+| 20240103_000000 | add_activity_log_smart_fields | 2024-01-03 10:01:00 | 1234              | true    |
 
 ---
 
@@ -129,22 +129,26 @@ docker exec auth_db psql -U postgres -d auth_db -c \
 ## Benefits
 
 ### Know What's Applied
+
 - Database knows its own state
 - No confusion about what's been run
 - Team coordination easier
 
 ### Prevent Re-Running
+
 - Script automatically skips applied migrations
 - Safe to run multiple times
 - No accidental duplicates
 
 ### Audit Trail
+
 - When was each migration applied?
 - How long did it take?
 - Did it succeed or fail?
 - Complete history
 
 ### CI/CD Friendly
+
 ```bash
 # Check for pending migrations
 if docker exec auth_db psql -U postgres -d auth_db -c \
@@ -230,7 +234,7 @@ Now GORM will create the table if it doesn't exist!
 package main
 
 import (
-    "github.com/gjovanovicst/auth_api/pkg/models"
+    "github.com/yusufstar/auth_api/pkg/models"
 )
 
 func checkMigrationStatus(db *gorm.DB) {
@@ -239,18 +243,18 @@ func checkMigrationStatus(db *gorm.DB) {
     db.Where("success = ?", true).
         Order("applied_at DESC").
         Find(&migrations)
-    
+
     for _, m := range migrations {
-        fmt.Printf("✅ %s - %s (%v)\n", 
+        fmt.Printf("✅ %s - %s (%v)\n",
             m.Version, m.Name, m.AppliedAt)
     }
-    
+
     // Check if specific migration applied
     var count int64
     db.Model(&models.SchemaMigration{}).
         Where("version = ? AND success = ?", "20240103_000000", true).
         Count(&count)
-    
+
     if count > 0 {
         fmt.Println("Smart logging migration applied!")
     }
@@ -305,5 +309,4 @@ docker exec auth_db psql -U postgres -d auth_db -c \
 
 ---
 
-*Migration tracking ensures your database always knows its state* ✅
-
+_Migration tracking ensures your database always knows its state_ ✅

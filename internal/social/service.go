@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gjovanovicst/auth_api/internal/redis"
-	"github.com/gjovanovicst/auth_api/internal/user"
-	"github.com/gjovanovicst/auth_api/pkg/errors"
-	"github.com/gjovanovicst/auth_api/pkg/jwt"
-	"github.com/gjovanovicst/auth_api/pkg/models"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/internal/redis"
+	"github.com/yusufstar/auth_api/internal/user"
+	"github.com/yusufstar/auth_api/pkg/errors"
+	"github.com/yusufstar/auth_api/pkg/jwt"
+	"github.com/yusufstar/auth_api/pkg/models"
 )
 
 type Service struct {

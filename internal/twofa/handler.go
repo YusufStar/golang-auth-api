@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gjovanovicst/auth_api/internal/log"
-	"github.com/gjovanovicst/auth_api/internal/redis"
-	"github.com/gjovanovicst/auth_api/internal/util"
-	"github.com/gjovanovicst/auth_api/pkg/dto"
-	"github.com/gjovanovicst/auth_api/pkg/errors"
-	"github.com/gjovanovicst/auth_api/pkg/jwt"
 	"github.com/google/uuid"
+	"github.com/yusufstar/auth_api/internal/log"
+	"github.com/yusufstar/auth_api/internal/redis"
+	"github.com/yusufstar/auth_api/internal/util"
+	"github.com/yusufstar/auth_api/pkg/dto"
+	"github.com/yusufstar/auth_api/pkg/errors"
+	"github.com/yusufstar/auth_api/pkg/jwt"
 )
 
 type Handler struct {

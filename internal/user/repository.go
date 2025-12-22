@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/gjovanovicst/auth_api/pkg/models"
+	"github.com/yusufstar/auth_api/pkg/models"
 	"gorm.io/gorm"
 )
 

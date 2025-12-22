@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/gjovanovicst/auth_api/internal/config"
+	"github.com/yusufstar/auth_api/internal/config"
 	"gorm.io/gorm"
 )
 
