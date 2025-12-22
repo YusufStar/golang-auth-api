@@ -16,7 +16,6 @@ func CORSMiddleware() gin.HandlerFunc {
 			"http://localhost:5173",       // Vite dev server
 			"http://localhost:8080",       // API server itself
 			"https://accounts.google.com", // Google OAuth
-			"https://www.facebook.com",    // Facebook OAuth
 			"https://github.com",          // GitHub OAuth
 		},
 		AllowMethods: []string{
@@ -56,7 +55,6 @@ func CORSMiddleware() gin.HandlerFunc {
 			config.AllowOrigins = []string{
 				frontendURL,
 				"https://accounts.google.com",
-				"https://www.facebook.com",
 				"https://github.com",
 			}
 		}

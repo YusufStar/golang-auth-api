@@ -21,7 +21,7 @@ func (s *Service) SendVerificationEmail(toEmail, token string) error {
 	
 	from := viper.GetString("EMAIL_FROM")
 	subject := "Verify Your Email Address"
-	body := fmt.Sprintf("Please verify your email address by clicking on the link: http://localhost:8080/verify-email?token=%s", token)
+	body := fmt.Sprintf("Please verify your email address by clicking on the link: http://localhost:3000/verify-email?token=%s", token)
 
 	// Check if we're in development mode (no real SMTP configured)
 	emailHost := viper.GetString("EMAIL_HOST")
@@ -34,7 +34,7 @@ func (s *Service) SendVerificationEmail(toEmail, token string) error {
 		log.Printf("From: %s", from)
 		log.Printf("Subject: %s", subject)
 		log.Printf("Body: %s", body)
-		log.Printf("=== Verification link: http://localhost:8080/verify-email?token=%s ===", token)
+		log.Printf("=== Verification link: http://localhost:3000/verify-email?token=%s ===", token)
 		log.Printf("=== EMAIL END ===")
 		return nil
 	}
@@ -61,7 +61,7 @@ func (s *Service) SendVerificationEmail(toEmail, token string) error {
 		log.Printf("From: %s", from)
 		log.Printf("Subject: %s", subject)
 		log.Printf("Body: %s", body)
-		log.Printf("=== Verification link: http://localhost:8080/verify-email?token=%s ===", token)
+		log.Printf("=== Verification link: http://localhost:3000/verify-email?token=%s ===", token)
 		log.Printf("=== EMAIL END ===")
 		log.Printf("Note: Check server logs for the verification link above since email delivery failed")
 		return nil // Don't fail registration just because email failed

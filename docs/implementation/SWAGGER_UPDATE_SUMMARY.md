@@ -5,11 +5,13 @@
 The Swagger documentation has been regenerated to reflect the new profile data structure.
 
 ### Command Used
+
 ```bash
 make swag-init
 ```
 
 ### Files Updated
+
 - ✅ `docs/docs.go` - Generated Go documentation
 - ✅ `docs/swagger.json` - JSON schema
 - ✅ `docs/swagger.yaml` - YAML schema
@@ -31,15 +33,15 @@ dto.UserResponse:
       type: string
     email_verified:
       type: boolean
-    name:                    # ✨ NEW
+    name: # ✨ NEW
       type: string
-    first_name:              # ✨ NEW
+    first_name: # ✨ NEW
       type: string
-    last_name:               # ✨ NEW
+    last_name: # ✨ NEW
       type: string
-    profile_picture:         # ✨ NEW
+    profile_picture: # ✨ NEW
       type: string
-    locale:                  # ✨ NEW
+    locale: # ✨ NEW
       type: string
     two_fa_enabled:
       type: boolean
@@ -47,10 +49,10 @@ dto.UserResponse:
       type: string
     updated_at:
       type: string
-    social_accounts:         # ✨ NEW (array)
+    social_accounts: # ✨ NEW (array)
       type: array
       items:
-        $ref: '#/definitions/dto.SocialAccountResponse'
+        $ref: "#/definitions/dto.SocialAccountResponse"
 ```
 
 ### `dto.SocialAccountResponse` (New Type)
@@ -62,7 +64,7 @@ dto.SocialAccountResponse:
   properties:
     id:
       type: string
-    provider:              # google, facebook, github
+    provider: # google, github
       type: string
     provider_user_id:
       type: string
@@ -76,7 +78,7 @@ dto.SocialAccountResponse:
       type: string
     profile_picture:
       type: string
-    username:              # GitHub login, etc.
+    username: # GitHub login, etc.
       type: string
     locale:
       type: string
@@ -93,6 +95,7 @@ dto.SocialAccountResponse:
 ### Accessing Swagger UI
 
 Once the application is running:
+
 ```
 http://localhost:8080/swagger/index.html
 ```
@@ -102,6 +105,7 @@ http://localhost:8080/swagger/index.html
 **GET /profile**
 
 **Response 200 (application/json):**
+
 ```json
 {
   "id": "string",
@@ -203,7 +207,7 @@ When you test `/profile` in Swagger UI, you'll see:
 Swag tool generated/updated:
 
 1. **`dto.UserResponse`** - With 12 fields (was 6)
-2. **`dto.SocialAccountResponse`** - New type definition  
+2. **`dto.SocialAccountResponse`** - New type definition
 3. **Profile endpoint** - Updated response schema
 4. **All referenced DTOs** - Properly linked
 
@@ -211,15 +215,15 @@ Swag tool generated/updated:
 
 ## 🎯 Summary
 
-| Item | Status |
-|------|--------|
-| Swagger regenerated | ✅ |
-| `UserResponse` updated | ✅ (6 → 12 fields) |
-| `SocialAccountResponse` added | ✅ (new type) |
-| Profile endpoint schema | ✅ Updated |
-| docs/swagger.yaml | ✅ Updated |
-| docs/swagger.json | ✅ Updated |
-| docs/docs.go | ✅ Updated |
+| Item                          | Status             |
+| ----------------------------- | ------------------ |
+| Swagger regenerated           | ✅                 |
+| `UserResponse` updated        | ✅ (6 → 12 fields) |
+| `SocialAccountResponse` added | ✅ (new type)      |
+| Profile endpoint schema       | ✅ Updated         |
+| docs/swagger.yaml             | ✅ Updated         |
+| docs/swagger.json             | ✅ Updated         |
+| docs/docs.go                  | ✅ Updated         |
 
 ---
 
@@ -234,4 +238,3 @@ Swag tool generated/updated:
 **Swagger is now fully updated and reflects the new profile structure!** 🎉
 
 Test it at: `http://localhost:8080/swagger/index.html`
-

@@ -7,6 +7,7 @@ This document tracks all breaking changes in the Authentication API, providing c
 ## What is a Breaking Change?
 
 A breaking change is any modification that requires action from users to maintain compatibility:
+
 - Database schema changes requiring migration
 - API endpoint modifications
 - Configuration/environment variable changes
@@ -18,6 +19,7 @@ A breaking change is any modification that requires action from users to maintai
 ## Current Version: v1.1.0
 
 ### Summary
+
 - ✅ All changes backward compatible
 - ✅ Smart Activity Logging added (opt-in)
 - ✅ Zero breaking changes
@@ -38,12 +40,14 @@ A breaking change is any modification that requires action from users to maintai
 #### What Changed
 
 **Database Schema:**
+
 - Added `severity` column to `activity_logs` (VARCHAR, NOT NULL, DEFAULT 'INFORMATIONAL')
 - Added `expires_at` column to `activity_logs` (TIMESTAMP WITH TIME ZONE, NULLABLE)
 - Added `is_anomaly` column to `activity_logs` (BOOLEAN, NOT NULL, DEFAULT false)
 - Added indexes: `idx_activity_logs_expires`, `idx_activity_logs_cleanup`, `idx_activity_logs_user_timestamp`
 
 **New Features:**
+
 - Event severity classification (Critical/Important/Informational)
 - Anomaly detection for conditional logging
 - Automatic log retention and cleanup
@@ -51,6 +55,7 @@ A breaking change is any modification that requires action from users to maintai
 
 **Configuration (Optional):**
 New environment variables available (all optional):
+
 ```bash
 LOG_CLEANUP_ENABLED=true
 LOG_CLEANUP_INTERVAL=24h
@@ -67,6 +72,7 @@ LOG_RETENTION_INFORMATIONAL=90
 **Migration File:** `migrations/20240103_add_activity_log_smart_fields.sql`
 
 **Apply Migration:**
+
 ```bash
 # Docker/Development
 psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields.sql
@@ -78,6 +84,7 @@ make docker-dev
 #### Is This Breaking?
 
 **NO** - This is backward compatible:
+
 - ✅ All existing API endpoints work unchanged
 - ✅ Existing logs automatically updated with defaults
 - ✅ No code changes required
@@ -89,12 +96,14 @@ make docker-dev
 **Recommended but not required immediately**
 
 **Benefits:**
+
 - 80-95% reduction in database size
 - Automatic log cleanup
 - Better performance
 - Anomaly detection
 
 **Migration Path:**
+
 1. Backup database
 2. Apply migration SQL
 3. Restart application
@@ -103,6 +112,7 @@ make docker-dev
 #### Rollback
 
 If needed, rollback is available:
+
 ```bash
 psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields_rollback.sql
 ```
@@ -121,9 +131,10 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ## [v1.0.0] - Initial Release
 
 ### Initial Features
+
 - User registration and authentication
 - JWT access and refresh tokens
-- Social login (Google, Facebook, GitHub)
+- Social login (Google, GitHub)
 - Email verification
 - Password reset
 - Two-factor authentication (2FA)
@@ -140,6 +151,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### v1.2.0 (Planned)
 
 **Potential Changes:**
+
 - Role-based access control (RBAC)
 - Admin panel endpoints
 - API rate limiting
@@ -155,6 +167,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### For Users
 
 **Before Upgrading:**
+
 1. Read breaking changes for your target version
 2. Check migration requirements
 3. Backup your database
@@ -162,6 +175,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 5. Plan downtime if needed
 
 **During Upgrade:**
+
 1. Stop application
 2. Backup database
 3. Apply migrations
@@ -171,6 +185,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 7. Monitor logs
 
 **After Upgrade:**
+
 1. Test critical functionality
 2. Monitor application logs
 3. Monitor database performance
@@ -179,6 +194,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### For Contributors
 
 **When Making Breaking Changes:**
+
 1. Document in this file FIRST
 2. Provide migration path
 3. Add to UPGRADE_GUIDE.md
@@ -190,6 +206,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 9. Add tests for migration
 
 **Semver Guidelines:**
+
 - **Major version (2.0.0):** Breaking API changes
 - **Minor version (1.1.0):** New features, backward compatible
 - **Patch version (1.0.1):** Bug fixes, backward compatible
@@ -201,6 +218,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### 1. Database Schema Changes
 
 **Examples:**
+
 - Renaming columns/tables
 - Changing column types
 - Adding NOT NULL columns without defaults
@@ -208,6 +226,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 - Changing constraints
 
 **Required:**
+
 - Migration SQL (up + down)
 - Data migration scripts (if needed)
 - Testing on copy of production data
@@ -215,12 +234,14 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### 2. API Endpoint Changes
 
 **Examples:**
+
 - Changing endpoint URLs
 - Modifying request/response format
 - Removing endpoints
 - Changing authentication requirements
 
 **Required:**
+
 - API versioning (consider `/v2/` prefix)
 - Deprecation notice (minimum 1 version)
 - Updated Swagger documentation
@@ -229,12 +250,14 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### 3. Configuration Changes
 
 **Examples:**
+
 - Renamed environment variables
 - Required new environment variables
 - Changed configuration format
 - Removed configuration options
 
 **Required:**
+
 - Update .env.example
 - Backward compatibility check
 - Default values when possible
@@ -243,12 +266,14 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### 4. Behavior Changes
 
 **Examples:**
+
 - Changed authentication flow
 - Modified token expiration
 - Altered logging behavior
 - Changed error responses
 
 **Required:**
+
 - Clear documentation of changes
 - Reason for change
 - New expected behavior
@@ -257,11 +282,13 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### 5. Dependency Changes
 
 **Examples:**
+
 - Major version bumps of dependencies
 - Removed dependencies
 - Changed minimum version requirements
 
 **Required:**
+
 - Document new requirements
 - Update go.mod
 - Test compatibility
@@ -274,21 +301,25 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ### Deprecation Process
 
 **1. Announce (Version N)**
+
 - Mark feature as deprecated in docs
 - Add deprecation warnings in code
 - Provide alternative/migration path
 
 **2. Support (Version N+1)**
+
 - Feature still works but deprecated
 - Warnings in logs
 - Documentation clearly marked
 
 **3. Remove (Version N+2)**
+
 - Feature removed
 - Breaking change documented
 - Migration guide provided
 
 **Example:**
+
 ```
 v1.0.0: Feature X works normally
 v1.1.0: Feature X deprecated, use Feature Y instead (warnings added)
@@ -319,6 +350,7 @@ v2.0.0: Feature X removed (breaking change)
 ### Q: How long are old versions supported?
 
 **A:** Current policy:
+
 - Latest version: Full support
 - Previous version: Security fixes only (6 months)
 - Older versions: No support (upgrade recommended)
@@ -326,6 +358,7 @@ v2.0.0: Feature X removed (breaking change)
 ### Q: Can I contribute breaking changes?
 
 **A:** Yes! See [CONTRIBUTING.md](CONTRIBUTING.md) for the process. Breaking changes require:
+
 - Strong justification
 - Migration path
 - Full documentation
@@ -336,9 +369,9 @@ v2.0.0: Feature X removed (breaking change)
 ## Version Compatibility Matrix
 
 | App Version | Database Schema | Min Go Version | Min PostgreSQL | Breaking Changes |
-|-------------|-----------------|----------------|----------------|------------------|
-| v1.0.0 | v1.0.0 | 1.21+ | 12+ | - |
-| v1.1.0 | v1.1.0 | 1.21+ | 12+ | None |
+| ----------- | --------------- | -------------- | -------------- | ---------------- |
+| v1.0.0      | v1.0.0          | 1.21+          | 12+            | -                |
+| v1.1.0      | v1.1.0          | 1.21+          | 12+            | None             |
 
 ---
 
@@ -355,6 +388,7 @@ v2.0.0: Feature X removed (breaking change)
 ## Contributing
 
 When proposing breaking changes:
+
 1. Open an issue first for discussion
 2. Provide clear justification
 3. Document migration path
@@ -365,6 +399,5 @@ When proposing breaking changes:
 
 ---
 
-*Last Updated: 2024-01-03*
-*Next Review: 2024-04-03*
-
+_Last Updated: 2024-01-03_
+_Next Review: 2024-04-03_

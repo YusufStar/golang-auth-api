@@ -16,12 +16,39 @@ var DB *gorm.DB
 
 // ConnectDatabase establishes connection to PostgreSQL database
 func ConnectDatabase() {
+	// Get environment variables with validation
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
+
+	// Validate required environment variables
+	if dbHost == "" {
+		log.Fatal("DB_HOST environment variable is required")
+	}
+	if dbUser == "" {
+		log.Fatal("DB_USER environment variable is required")
+	}
+	if dbPassword == "" {
+		log.Fatal("DB_PASSWORD environment variable is required")
+	}
+	if dbName == "" {
+		log.Fatal("DB_NAME environment variable is required")
+	}
+
+	// Set default port if not specified
+	if dbPort == "" {
+		dbPort = "5432"
+		log.Println("DB_PORT not set, defaulting to 5432")
+	}
+
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=UTC",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PORT"),
+		dbHost,
+		dbUser,
+		dbPassword,
+		dbName,
+		dbPort,
 	)
 
 	newLogger := logger.New(

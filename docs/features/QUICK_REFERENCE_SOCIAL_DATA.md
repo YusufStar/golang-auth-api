@@ -7,6 +7,7 @@ Enhanced user and social account models to store complete profile data from soci
 ## What Changed?
 
 ### User Model - New Fields
+
 ```go
 Name           string  // Full name
 FirstName      string  // First name
@@ -16,6 +17,7 @@ Locale         string  // Language/locale
 ```
 
 ### Social Account Model - New Fields
+
 ```go
 Email          string          // Email from provider
 Name           string          // Name from provider
@@ -28,17 +30,17 @@ RawData        datatypes.JSON  // Complete provider response (JSONB)
 ```
 
 ### New Repository Method
+
 ```go
 func (r *Repository) UpdateUser(user *models.User) error
 ```
 
 ## Data Captured by Provider
 
-| Provider | Key Fields Captured |
-|----------|-------------------|
+| Provider   | Key Fields Captured                                                       |
+| ---------- | ------------------------------------------------------------------------- |
 | **Google** | id, email, verified_email, name, given_name, family_name, picture, locale |
-| **Facebook** | id, email, name, first_name, last_name, picture.data.url, locale |
-| **GitHub** | id, login, email, name, avatar_url, bio, location, company |
+| **GitHub** | id, login, email, name, avatar_url, bio, location, company                |
 
 ## Migration
 
@@ -88,7 +90,9 @@ psql -U user -d authdb -c "SELECT name, first_name, profile_picture FROM users W
       "provider": "google",
       "email": "john@gmail.com",
       "name": "John Doe",
-      "raw_data": { /* complete Google response */ }
+      "raw_data": {
+        /* complete Google response */
+      }
     }
   ]
 }
@@ -112,4 +116,3 @@ psql -U user -d authdb -c "SELECT name, first_name, profile_picture FROM users W
 - Full Details: [docs/SOCIAL_LOGIN_DATA_STORAGE.md](SOCIAL_LOGIN_DATA_STORAGE.md)
 - Migration: [docs/migrations/MIGRATION_SOCIAL_LOGIN_DATA.md](migrations/MIGRATION_SOCIAL_LOGIN_DATA.md)
 - Changelog: [CHANGELOG.md](../CHANGELOG.md)
-

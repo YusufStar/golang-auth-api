@@ -10,7 +10,7 @@
 
 Now **every time** you log in via social provider, the system:
 
-1. ✅ Fetches your **latest profile data** from the provider (Google/Facebook/GitHub)
+1. ✅ Fetches your **latest profile data** from the provider (Google/GitHub)
 2. ✅ Updates the **social_accounts** table with all new data
 3. ✅ Updates the **users** table with changed profile fields
 4. ✅ Stores the **complete provider response** for future reference
@@ -18,19 +18,21 @@ Now **every time** you log in via social provider, the system:
 ## 🔄 How It Works Now
 
 ### Before This Fix
+
 ```
 User logs in → Check if exists → Authenticate → Done
 (No data updated, profile stays stale)
 ```
 
 ### After This Fix
+
 ```
-User logs in 
-  → Check if exists 
+User logs in
+  → Check if exists
   → Fetch latest data from provider
   → Update social_accounts table ✨
   → Update users table (if changed) ✨
-  → Authenticate 
+  → Authenticate
   → Done
 ```
 
@@ -44,16 +46,6 @@ User logs in
 3. System fetches new picture URL from Google
 4. Updates database automatically
 5. GET /profile shows new picture immediately ✅
-```
-
-### Example 2: Name Change
-
-```
-1. You change name on Facebook (e.g., after marriage)
-2. You log into the app via Facebook
-3. System fetches: name, first_name, last_name
-4. Updates both tables automatically
-5. Your new name appears everywhere in the app ✅
 ```
 
 ### Example 3: GitHub Avatar
@@ -71,17 +63,18 @@ User logs in
 ### Files Modified
 
 1. **`internal/social/repository.go`**
+
    - Added `UpdateSocialAccount()` method
 
 2. **`internal/social/service.go`**
    - Added `log` import for error logging
    - Updated `HandleGoogleCallback()` - syncs profile on existing user login
-   - Updated `HandleFacebookCallback()` - syncs profile on existing user login
    - Updated `HandleGithubCallback()` - syncs profile on existing user login
 
 ### Code Changes (Google Example)
 
 **Before:**
+
 ```go
 // Check if social account already exists
 socialAccount, err := s.SocialRepo.GetSocialAccountByProviderAndUserID("google", googleUser.ID)
@@ -92,6 +85,7 @@ if err == nil {
 ```
 
 **After:**
+
 ```go
 // Check if social account already exists
 socialAccount, err := s.SocialRepo.GetSocialAccountByProviderAndUserID("google", googleUser.ID)
@@ -105,7 +99,7 @@ if err == nil {
     socialAccount.Locale = googleUser.Locale
     socialAccount.RawData = rawDataJSON
     s.SocialRepo.UpdateSocialAccount(socialAccount)
-    
+
     // 🆕 Update user profile with changed fields
     user, _ := s.UserRepo.GetUserByID(socialAccount.UserID.String())
     if user.ProfilePicture != googleUser.Picture {
@@ -113,7 +107,7 @@ if err == nil {
         s.UserRepo.UpdateUser(user)
     }
     // ... update other fields if changed
-    
+
     // Then authenticate
     return tokens...
 }
@@ -124,6 +118,7 @@ if err == nil {
 ### What Gets Updated
 
 **social_accounts table** (ALWAYS updated):
+
 ```sql
 UPDATE social_accounts SET
     email = 'latest@gmail.com',
@@ -139,6 +134,7 @@ WHERE id = 'social-account-uuid';
 ```
 
 **users table** (Only changed fields):
+
 ```sql
 UPDATE users SET
     name = 'Latest Name',
@@ -151,6 +147,7 @@ WHERE id = 'user-uuid'
 ## 🚀 Testing the Fix
 
 ### Step 1: Restart Application
+
 ```bash
 # Stop current application
 # Rebuild with new code
@@ -161,22 +158,26 @@ go build -o auth_api.exe cmd/api/main.go
 ```
 
 ### Step 2: Change Your Social Profile
-- Go to Google/Facebook/GitHub
+
+- Go to Google/GitHub
 - Change your profile picture or name
 - Save changes
 
 ### Step 3: Login to App
+
 ```
 http://localhost:8080/auth/google/login
 ```
 
 ### Step 4: Check Profile
+
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
      http://localhost:8080/profile
 ```
 
 **Expected Result:**
+
 ```json
 {
   "name": "Your New Name",
@@ -193,10 +194,11 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ```
 
 ### Step 5: Verify Database
+
 ```sql
 -- Check user profile
-SELECT name, profile_picture, updated_at 
-FROM users 
+SELECT name, profile_picture, updated_at
+FROM users
 WHERE email = 'gjovanovic.st@gmail.com';
 
 -- Check social account (should show recent update)
@@ -209,33 +211,32 @@ WHERE u.email = 'gjovanovic.st@gmail.com';
 ## 🔒 Safety Features
 
 ### Smart Updates
+
 - Only updates fields that **actually changed**
 - Empty provider values **don't overwrite** existing data
 - Preserves user data if provider returns nothing
 
 ### Non-Breaking
+
 - Profile update failures **don't prevent login**
 - Errors logged but authentication continues
 - User experience unaffected by update issues
 
 ### Performance
+
 - Minimal overhead (2-3 database queries)
 - Only updates when necessary
 - Uses efficient indexed queries
 
 ## 📝 Summary
 
-| Feature | Before | After |
-|---------|--------|-------|
-| **Profile Picture Sync** | ❌ Never | ✅ Every login |
-| **Name Sync** | ❌ Never | ✅ Every login |
-| **Data Freshness** | ❌ Stale | ✅ Always current |
-| **Manual Refresh Needed** | ❌ Yes | ✅ No |
-| **Provider Changes Reflected** | ❌ No | ✅ Yes |
-
-## 🎉 Result
-
-Your profile data now **automatically stays in sync** with your social accounts. Change your picture on Google? It updates in the app next time you log in. Change your name on Facebook? Same thing. **No manual refresh needed!**
+| Feature                        | Before   | After             |
+| ------------------------------ | -------- | ----------------- |
+| **Profile Picture Sync**       | ❌ Never | ✅ Every login    |
+| **Name Sync**                  | ❌ Never | ✅ Every login    |
+| **Data Freshness**             | ❌ Stale | ✅ Always current |
+| **Manual Refresh Needed**      | ❌ Yes   | ✅ No             |
+| **Provider Changes Reflected** | ❌ No    | ✅ Yes            |
 
 ## 📚 Documentation
 
@@ -246,4 +247,3 @@ Your profile data now **automatically stays in sync** with your social accounts.
 ---
 
 **Bottom Line:** The issue you identified has been fixed. Profile data now syncs automatically on every social login! 🎯✅
-

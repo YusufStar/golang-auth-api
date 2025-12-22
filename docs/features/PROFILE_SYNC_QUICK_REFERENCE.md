@@ -4,7 +4,7 @@
 
 **Profile data automatically syncs from social providers on every login!**
 
-Change your picture on Google/Facebook/GitHub → Log in to app → Picture updates automatically ✅
+Change your picture on Google/GitHub → Log in to app → Picture updates automatically ✅
 
 ## 🎯 Your Question
 
@@ -36,15 +36,15 @@ curl -H "Authorization: Bearer TOKEN" http://localhost:8080/profile
 
 ## 📊 What Gets Synced
 
-| Data | Google | Facebook | GitHub |
-|------|--------|----------|--------|
-| Profile Picture | ✅ | ✅ | ✅ |
-| Name | ✅ | ✅ | ✅ |
-| First/Last Name | ✅ | ✅ | - |
-| Email | ✅ | ✅ | ✅ |
-| Locale | ✅ | ✅ | - |
-| Username | - | - | ✅ |
-| Raw Data | ✅ | ✅ | ✅ |
+| Data | Google | GitHub |
+|------|--------|--------|
+| Profile Picture | ✅ | ✅ |
+| Name | ✅ | ✅ |
+| First/Last Name | ✅ | - |
+| Email | ✅ | ✅ |
+| Locale | ✅ | - |
+| Username | - | ✅ |
+| Raw Data | ✅ | ✅ |
 
 ## 🛠️ Files Changed
 

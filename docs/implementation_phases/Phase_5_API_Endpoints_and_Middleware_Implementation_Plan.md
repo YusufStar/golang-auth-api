@@ -8,31 +8,29 @@ We will define a set of RESTful API endpoints to handle user registration, login
 
 **Authentication Endpoints:**
 
-| HTTP Method | Path                        | Description                                     | Handler Function (Conceptual)           |
-|-------------|-----------------------------|-------------------------------------------------|-----------------------------------------|
-| `POST`      | `/register`                 | Register a new user.                            | `user.Register`                         |
-| `POST`      | `/login`                    | Authenticate user and issue JWTs.               | `user.Login`                            |
-| `POST`      | `/refresh-token`            | Refresh access token using refresh token.       | `user.RefreshToken`                     |
-| `GET`       | `/verify-email`             | Verify user email with token.                   | `user.VerifyEmail`                      |
-| `POST`      | `/forgot-password`          | Request password reset link.                    | `user.ForgotPassword`                   |
-| `POST`      | `/reset-password`           | Reset password with token.                      | `user.ResetPassword`                    |
+| HTTP Method | Path               | Description                               | Handler Function (Conceptual) |
+| ----------- | ------------------ | ----------------------------------------- | ----------------------------- |
+| `POST`      | `/register`        | Register a new user.                      | `user.Register`               |
+| `POST`      | `/login`           | Authenticate user and issue JWTs.         | `user.Login`                  |
+| `POST`      | `/refresh-token`   | Refresh access token using refresh token. | `user.RefreshToken`           |
+| `GET`       | `/verify-email`    | Verify user email with token.             | `user.VerifyEmail`            |
+| `POST`      | `/forgot-password` | Request password reset link.              | `user.ForgotPassword`         |
+| `POST`      | `/reset-password`  | Reset password with token.                | `user.ResetPassword`          |
 
 **Social Authentication Endpoints:**
 
-| HTTP Method | Path                        | Description                                     | Handler Function (Conceptual)           |
-|-------------|-----------------------------|-------------------------------------------------|-----------------------------------------|
-| `GET`       | `/auth/google/login`        | Initiate Google OAuth2 login.                   | `social.GoogleLogin`                    |
-| `GET`       | `/auth/google/callback`     | Google OAuth2 callback.                         | `social.GoogleCallback`                 |
-| `GET`       | `/auth/facebook/login`      | Initiate Facebook OAuth2 login.                 | `social.FacebookLogin`                  |
-| `GET`       | `/auth/facebook/callback`   | Facebook OAuth2 callback.                       | `social.FacebookCallback`               |
-| `GET`       | `/auth/github/login`        | Initiate GitHub OAuth2 login.                   | `social.GithubLogin`                    |
-| `GET`       | `/auth/github/callback`     | GitHub OAuth2 callback.                         | `social.GithubCallback`                 |
+| HTTP Method | Path                    | Description                   | Handler Function (Conceptual) |
+| ----------- | ----------------------- | ----------------------------- | ----------------------------- |
+| `GET`       | `/auth/google/login`    | Initiate Google OAuth2 login. | `social.GoogleLogin`          |
+| `GET`       | `/auth/google/callback` | Google OAuth2 callback.       | `social.GoogleCallback`       |
+| `GET`       | `/auth/github/login`    | Initiate GitHub OAuth2 login. | `social.GithubLogin`          |
+| `GET`       | `/auth/github/callback` | GitHub OAuth2 callback.       | `social.GithubCallback`       |
 
 **Protected Endpoints (Example):**
 
-| HTTP Method | Path                        | Description                                     | Handler Function (Conceptual)           |
-|-------------|-----------------------------|-------------------------------------------------|-----------------------------------------|
-| `GET`       | `/profile`                  | Get user profile (requires authentication).     | `user.GetProfile`                       |
+| HTTP Method | Path       | Description                                 | Handler Function (Conceptual) |
+| ----------- | ---------- | ------------------------------------------- | ----------------------------- |
+| `GET`       | `/profile` | Get user profile (requires authentication). | `user.GetProfile`             |
 
 ### 6.2 Middleware Implementation
 
@@ -43,6 +41,7 @@ Middleware functions will be used to handle cross-cutting concerns such as authe
 This middleware will intercept incoming requests, extract the JWT from the `Authorization` header, validate it, and if valid, set the user information in the Gin context for subsequent handlers.
 
 **Process Flow:**
+
 1.  **Extract Token:** Get the JWT from the `Authorization` header (e.g., `Bearer <token>`).
 2.  **Validate Token:** Use the `jwt.ParseToken` function to validate the token.
 3.  **Extract Claims:** If valid, extract the `user_id` from the token claims.
@@ -196,8 +195,6 @@ func main() {
 		// Social Auth Routes
 		public.GET("/auth/google/login", socialHandler.GoogleLogin)
 		public.GET("/auth/google/callback", socialHandler.GoogleCallback)
-		public.GET("/auth/facebook/login", socialHandler.FacebookLogin)
-		public.GET("/auth/facebook/callback", socialHandler.FacebookCallback)
 		public.GET("/auth/github/login", socialHandler.GithubLogin)
 		public.GET("/auth/github/callback", socialHandler.GithubCallback)
 	}
@@ -220,4 +217,3 @@ func main() {
 ```
 
 This phase establishes the API endpoints and integrates the necessary middleware for authentication and authorization, making the application functional and secure.
-

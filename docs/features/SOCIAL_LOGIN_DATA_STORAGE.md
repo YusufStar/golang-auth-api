@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes how social login data is captured and stored in the authentication API. The system now stores comprehensive profile information from social providers (Google, Facebook, GitHub) to enhance user experience and provide complete user profiles.
+This document describes how social login data is captured and stored in the authentication API. The system now stores comprehensive profile information from social providers (Google, GitHub) to enhance user experience and provide complete user profiles.
 
 ## Architecture
 
@@ -14,6 +14,7 @@ The system uses a dual-storage approach:
 2. **Social Account Model** (`social_accounts` table) - Stores provider-specific data and raw responses
 
 This design allows:
+
 - Single source of truth for user profile data
 - Provider-specific data retention for audit and debugging
 - Flexibility to sync data from multiple social providers
@@ -26,6 +27,7 @@ This design allows:
 **Endpoint:** `https://www.googleapis.com/oauth2/v2/userinfo`
 
 **Fields Captured:**
+
 ```json
 {
   "id": "string",
@@ -40,6 +42,7 @@ This design allows:
 ```
 
 **Mapping:**
+
 - `id` → `SocialAccount.ProviderUserID`
 - `email` → `User.Email`, `SocialAccount.Email`
 - `verified_email` → `User.EmailVerified`
@@ -50,40 +53,6 @@ This design allows:
 - `locale` → `User.Locale`, `SocialAccount.Locale`
 - Complete response → `SocialAccount.RawData` (JSONB)
 
-### Facebook Graph API
-
-**Endpoint:** `https://graph.facebook.com/v18.0/me`
-
-**Query Parameters:** `fields=id,name,email,first_name,last_name,picture.type(large),locale`
-
-**Fields Captured:**
-```json
-{
-  "id": "string",
-  "email": "string",
-  "name": "string",
-  "first_name": "string",
-  "last_name": "string",
-  "picture": {
-    "data": {
-      "url": "string"
-    }
-  },
-  "locale": "string"
-}
-```
-
-**Mapping:**
-- `id` → `SocialAccount.ProviderUserID`
-- `email` → `User.Email`, `SocialAccount.Email`
-- `name` → `User.Name`, `SocialAccount.Name`
-- `first_name` → `User.FirstName`, `SocialAccount.FirstName`
-- `last_name` → `User.LastName`, `SocialAccount.LastName`
-- `picture.data.url` → `User.ProfilePicture`, `SocialAccount.ProfilePicture`
-- `locale` → `User.Locale`, `SocialAccount.Locale`
-- Email assumed verified → `User.EmailVerified = true`
-- Complete response → `SocialAccount.RawData` (JSONB)
-
 ### GitHub API
 
 **Primary Endpoint:** `https://api.github.com/user`
@@ -91,6 +60,7 @@ This design allows:
 **Fallback Endpoint:** `https://api.github.com/user/emails` (if email is private)
 
 **Fields Captured:**
+
 ```json
 {
   "id": "integer",
@@ -105,6 +75,7 @@ This design allows:
 ```
 
 **Email Endpoint Response:**
+
 ```json
 [
   {
@@ -116,6 +87,7 @@ This design allows:
 ```
 
 **Mapping:**
+
 - `id` → `SocialAccount.ProviderUserID` (converted to string)
 - `email` → `User.Email`, `SocialAccount.Email`
 - `name` → `User.Name`, `SocialAccount.Name`
@@ -131,6 +103,7 @@ This design allows:
 ### Scenario 1: New User Registration via Social Login
 
 **Flow:**
+
 1. User authenticates with social provider
 2. System fetches user data from provider API
 3. Check if social account exists → **NOT FOUND**
@@ -144,6 +117,7 @@ This design allows:
 ### Scenario 2: Existing User Links Social Account
 
 **Flow:**
+
 1. User authenticates with social provider
 2. System fetches user data from provider API
 3. Check if social account exists → **NOT FOUND**
@@ -155,6 +129,7 @@ This design allows:
 **Result:** Existing user enriched with social profile data, new social account linked.
 
 **Smart Update Logic:**
+
 ```go
 // Only update if field is currently empty
 if user.Name == "" && socialData.Name != "" {
@@ -165,6 +140,7 @@ if user.Name == "" && socialData.Name != "" {
 ### Scenario 3: Existing User Re-authenticates via Social Login
 
 **Flow:**
+
 1. User authenticates with social provider
 2. System fetches user data from provider API
 3. Check if social account exists → **FOUND**
@@ -231,6 +207,7 @@ CREATE INDEX idx_social_accounts_provider ON social_accounts(provider);
 ### GET /profile
 
 **Response:**
+
 ```json
 {
   "id": "123e4567-e89b-12d3-a456-426614174000",
@@ -278,6 +255,7 @@ CREATE INDEX idx_social_accounts_provider ON social_accounts(provider);
 ### POST /auth/google/callback (Login Success)
 
 **Response:**
+
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -291,6 +269,7 @@ CREATE INDEX idx_social_accounts_provider ON social_accounts(provider);
 ### Data Privacy
 
 1. **Sensitive Fields Hidden:**
+
    - `password_hash` - Never exposed via JSON
    - `two_fa_secret` - Never exposed via JSON
    - `two_fa_recovery_codes` - Never exposed via JSON
@@ -319,6 +298,7 @@ CREATE INDEX idx_social_accounts_provider ON social_accounts(provider);
 ### For Developers
 
 1. **Always check fields exist** before using from `RawData`:
+
    ```go
    if rawData["field"] != nil {
        value := rawData["field"].(string)
@@ -343,25 +323,24 @@ CREATE INDEX idx_social_accounts_provider ON social_accounts(provider);
 ### Test Cases
 
 1. **New user registration:**
+
    - Via Google ✓
-   - Via Facebook ✓
    - Via GitHub ✓
    - Verify all fields populated
 
 2. **Existing user linking:**
+
    - Link Google to existing account ✓
-   - Link Facebook to existing account ✓
    - Link GitHub to existing account ✓
    - Verify profile enrichment
 
 3. **Multiple social accounts:**
-   - Same user with Google and Facebook ✓
+
    - Profile data from first provider preserved ✓
 
 4. **Edge cases:**
    - Missing optional fields (e.g., GitHub name)
    - Private GitHub email
-   - Facebook user without profile picture
    - Invalid/expired provider tokens
 
 ### Manual Testing Commands
@@ -385,21 +364,25 @@ psql -U user -d authdb -c \
 ### Planned Features
 
 1. **Profile Sync Endpoint**
+
    - `POST /profile/sync/:provider`
    - Refresh user data from social provider
    - Update stale profile information
 
 2. **Profile Picture Management**
+
    - Download and cache profile pictures
    - Allow user-uploaded pictures
    - CDN integration
 
 3. **Privacy Controls**
+
    - Let users choose which social data to display
    - Control profile picture visibility
    - Opt-out of data syncing
 
 4. **Additional Providers**
+
    - Twitter/X OAuth
    - LinkedIn OAuth
    - Microsoft OAuth
@@ -413,11 +396,13 @@ psql -U user -d authdb -c \
 ### Technical Improvements
 
 1. **Field Validation:**
+
    - URL validation for profile pictures
    - Locale format validation
    - Name length restrictions
 
 2. **Performance:**
+
    - Cache profile pictures
    - Index frequently queried fields
    - Optimize JSONB queries on `raw_data`
@@ -432,18 +417,22 @@ psql -U user -d authdb -c \
 ### Common Issues
 
 **Issue:** Profile picture not showing
+
 - **Cause:** Provider URL expired
 - **Solution:** Implement profile sync or download pictures
 
 **Issue:** GitHub email is null
+
 - **Cause:** User has private email settings
 - **Solution:** Request `user:email` scope and fetch from `/user/emails`
 
 **Issue:** Raw data too large
+
 - **Cause:** Provider response includes extra data
 - **Solution:** Increase JSONB column size or filter data before storage
 
 **Issue:** Duplicate social accounts
+
 - **Cause:** Unique constraint on (provider, provider_user_id)
 - **Solution:** Check if account exists before creating
 
@@ -453,4 +442,3 @@ psql -U user -d authdb -c \
 - [API Documentation](../README.md)
 - [Security Patterns](../.cursor/rules/security-patterns.mdc)
 - [Phase 3: Social Authentication](implementation_phases/Phase_3._Social_Authentication_Integration_Plan.md)
-

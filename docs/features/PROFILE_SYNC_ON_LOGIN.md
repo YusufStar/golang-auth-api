@@ -2,7 +2,7 @@
 
 ## Overview
 
-The authentication API now automatically synchronizes user profile data from social providers (Google, Facebook, GitHub) **every time** a user logs in. This ensures that profile information stays up-to-date with changes made on social platforms.
+The authentication API now automatically synchronizes user profile data from social providers (Google, GitHub) **every time** a user logs in. This ensures that profile information stays up-to-date with changes made on social platforms.
 
 ## Feature Description
 
@@ -11,6 +11,7 @@ The authentication API now automatically synchronizes user profile data from soc
 When a user logs in via social provider, the system updates:
 
 #### Both Social Account and User Profile:
+
 - **Profile Picture** - Always updated to latest from provider
 - **Name** - Full name from social profile
 - **First Name** - User's first name
@@ -18,6 +19,7 @@ When a user logs in via social provider, the system updates:
 - **Locale** - Language preference
 
 #### Social Account Only:
+
 - **Email** - Provider email (may differ from primary email)
 - **Username** - GitHub login, etc.
 - **Raw Data** - Complete provider response (JSONB)
@@ -35,6 +37,7 @@ The system uses a **smart update strategy**:
 ### Example Use Cases
 
 #### Use Case 1: User Changes Profile Picture on Google
+
 ```
 1. User changes profile picture on Google account
 2. User logs into your app via Google
@@ -44,17 +47,8 @@ The system uses a **smart update strategy**:
 6. User sees new picture in app immediately
 ```
 
-#### Use Case 2: User Changes Name on Facebook
-```
-1. User changes name on Facebook (e.g., after marriage)
-2. User logs into your app via Facebook
-3. System fetches new name data
-4. Updates social_accounts: name, first_name, last_name
-5. Updates users: name, first_name, last_name
-6. App displays updated name everywhere
-```
-
 #### Use Case 3: GitHub User Updates Avatar
+
 ```
 1. User updates GitHub avatar
 2. User logs into your app via GitHub
@@ -83,7 +77,7 @@ YES → Update Flow
     ├─ Update only changed fields in user profile
     ├─ Log any errors (but continue)
     └─ Generate tokens and authenticate
-    
+
 NO → New User/Link Flow
     └─ Create new records with data
 ```
@@ -91,6 +85,7 @@ NO → New User/Link Flow
 ### Google Profile Sync
 
 **Updated Fields:**
+
 ```go
 socialAccount.Email = googleUser.Email
 socialAccount.Name = googleUser.Name
@@ -103,6 +98,7 @@ socialAccount.AccessToken = latest_token
 ```
 
 **User Profile Updates:**
+
 ```go
 // Only updates if value changed and not empty
 if user.Name != googleUser.Name && googleUser.Name != "" {
@@ -111,15 +107,10 @@ if user.Name != googleUser.Name && googleUser.Name != "" {
 // Same for: FirstName, LastName, ProfilePicture, Locale
 ```
 
-### Facebook Profile Sync
-
-**Additional Facebook-Specific:**
-- Fetches large profile picture: `picture.type(large)`
-- Updates picture from nested structure: `facebookUser.Picture.Data.URL`
-
 ### GitHub Profile Sync
 
 **GitHub-Specific:**
+
 - Updates `Username` field with GitHub login
 - Handles private email scenario (fetches from `/user/emails`)
 - Stores avatar URL
@@ -129,11 +120,13 @@ if user.Name != googleUser.Name && googleUser.Name != "" {
 ### Updated Tables
 
 **social_accounts table:**
+
 - All profile fields updated on each login
 - `updated_at` timestamp reflects last login
 - `raw_data` contains latest provider response
 
 **users table:**
+
 - Profile fields updated only if changed
 - `updated_at` timestamp reflects last profile change
 - Preserves user data if provider data is empty
@@ -142,7 +135,7 @@ if user.Name != googleUser.Name && googleUser.Name != "" {
 
 ```sql
 -- Social account update
-UPDATE social_accounts 
+UPDATE social_accounts
 SET email = 'user@gmail.com',
     name = 'John Doe',
     first_name = 'John',
@@ -155,7 +148,7 @@ SET email = 'user@gmail.com',
 WHERE id = 'social-account-uuid';
 
 -- User profile update (only if changed)
-UPDATE users 
+UPDATE users
 SET profile_picture = 'https://new-picture-url',
     updated_at = CURRENT_TIMESTAMP
 WHERE id = 'user-uuid';
@@ -166,6 +159,7 @@ WHERE id = 'user-uuid';
 ### Login Response
 
 **No changes to API response structure:**
+
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -177,6 +171,7 @@ WHERE id = 'user-uuid';
 ### Profile Endpoint
 
 **GET /profile** now returns updated data:
+
 ```json
 {
   "id": "123e4567-e89b-12d3-a456-426614174000",
@@ -203,6 +198,7 @@ WHERE id = 'user-uuid';
 ### Database Operations
 
 **Per Social Login (existing user):**
+
 - 1 SELECT (check social account exists)
 - 1 UPDATE (social account)
 - 1 SELECT (get user profile)
@@ -210,6 +206,7 @@ WHERE id = 'user-uuid';
 - Total: 2-3 queries
 
 **Performance Impact:**
+
 - Negligible for typical use cases
 - Uses efficient indexed queries
 - Updates only when needed
@@ -217,6 +214,7 @@ WHERE id = 'user-uuid';
 ### Caching
 
 The system does NOT cache profile data because:
+
 - Users expect fresh data after social platform changes
 - Login frequency is relatively low
 - Database queries are fast (indexed)
@@ -238,6 +236,7 @@ if err := s.UserRepo.UpdateUser(user); err != nil {
 ### Logged Errors
 
 Errors are logged for monitoring:
+
 - Database connection issues
 - Update failures
 - Data validation problems
@@ -274,15 +273,17 @@ Profile sync is **always enabled** and cannot be disabled. This is intentional t
 ### Future Enhancement Ideas
 
 1. **User Preferences:**
+
    ```json
    {
      "sync_profile_on_login": true,
      "sync_profile_picture": true,
-     "sync_name": false  // User wants to keep custom name
+     "sync_name": false // User wants to keep custom name
    }
    ```
 
 2. **Admin Settings:**
+
    ```env
    ENABLE_PROFILE_SYNC=true
    SYNC_INTERVAL_HOURS=24  # Only sync if last update > 24h ago
@@ -298,6 +299,7 @@ Profile sync is **always enabled** and cannot be disabled. This is intentional t
 ### Manual Testing
 
 1. **Change profile picture on Google:**
+
    ```bash
    # Go to Google account settings
    # Change profile picture
@@ -306,23 +308,13 @@ Profile sync is **always enabled** and cannot be disabled. This is intentional t
    # Verify picture URL updated
    ```
 
-2. **Change name on Facebook:**
-   ```bash
-   # Update name on Facebook
-   # Login to app: http://localhost:8080/auth/facebook/login
-   # Query database:
-   SELECT name, first_name, last_name, updated_at 
-   FROM users WHERE email = 'your@email.com';
-   # Verify name fields updated
-   ```
-
-3. **Change GitHub avatar:**
+2. **Change GitHub avatar:**
    ```bash
    # Update GitHub avatar
    # Login to app: http://localhost:8080/auth/github/login
    # Check social account:
-   SELECT profile_picture, updated_at 
-   FROM social_accounts 
+   SELECT profile_picture, updated_at
+   FROM social_accounts
    WHERE provider = 'github' AND user_id = 'user-uuid';
    ```
 
@@ -358,7 +350,7 @@ func TestProfileSyncDoesNotFailAuth(t *testing.T) {
 
 ```sql
 -- Check last sync time
-SELECT 
+SELECT
     u.email,
     u.name,
     u.profile_picture,
@@ -372,7 +364,7 @@ JOIN social_accounts sa ON u.id = sa.user_id
 WHERE u.email = 'test@gmail.com';
 
 -- Verify sync happened
-SELECT 
+SELECT
     provider,
     COUNT(*) as login_count,
     MAX(updated_at) as last_sync
@@ -387,12 +379,14 @@ GROUP BY provider;
 **Symptoms:** User changes picture on Google, but it doesn't update in app
 
 **Possible Causes:**
+
 1. Application not restarted after code changes
 2. Database update failing (check logs)
 3. Provider API returning old data
 4. Caching somewhere (browser, CDN)
 
 **Debug Steps:**
+
 ```bash
 # 1. Check application logs for errors
 grep "Failed to update" application.log
@@ -412,6 +406,7 @@ UPDATE users SET profile_picture = 'new-url' WHERE email = 'user@gmail.com';
 **Cause:** Smart update logic only updates changed non-empty fields
 
 **Example:**
+
 ```go
 // If provider returns empty name, user's name is preserved
 if user.Name != googleUser.Name && googleUser.Name != "" {
@@ -426,11 +421,12 @@ if user.Name != googleUser.Name && googleUser.Name != "" {
 **Symptoms:** Social login becomes slow
 
 **Debug:**
+
 ```sql
 -- Check slow queries
-SELECT query, mean_exec_time 
-FROM pg_stat_statements 
-WHERE query LIKE '%social_accounts%' 
+SELECT query, mean_exec_time
+FROM pg_stat_statements
+WHERE query LIKE '%social_accounts%'
 ORDER BY mean_exec_time DESC;
 
 -- Verify indexes exist
@@ -460,7 +456,7 @@ if err == nil { // Social account found, user exists
     // if err := s.SocialRepo.UpdateSocialAccount(socialAccount); err != nil {
     //     return "", "", uuid.UUID{}, errors.NewAppError(...)
     // }
-    
+
     // Just authenticate without updates
     accessToken, err := jwt.GenerateAccessToken(socialAccount.UserID.String())
     // ... rest of authentication
@@ -476,11 +472,12 @@ if err == nil { // Social account found, user exists
 ## Changelog
 
 **Version 1.1.0 - 2025-11-08**
+
 - Added automatic profile sync on social login
 - Updates both social account and user profile data
 - Smart update strategy (only changed fields)
 - Non-blocking error handling
-- Support for Google, Facebook, and GitHub
+- Support for Google, and GitHub
 
 ---
 
@@ -490,5 +487,4 @@ if err == nil { // Social account found, user exists
 ✅ **Changes on social platforms** reflected immediately in app  
 ✅ **Smart updates** - only changed fields updated  
 ✅ **Non-breaking** - authentication succeeds even if update fails  
-✅ **All providers** - Google, Facebook, GitHub supported  
-
+✅ **All providers** - Google, GitHub supported

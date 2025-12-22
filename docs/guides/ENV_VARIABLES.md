@@ -71,14 +71,6 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URL=http://localhost:8080/auth/google/callback
 ```
 
-### Facebook OAuth
-
-```bash
-FACEBOOK_APP_ID=your-facebook-app-id
-FACEBOOK_APP_SECRET=your-facebook-app-secret
-FACEBOOK_REDIRECT_URL=http://localhost:8080/auth/facebook/callback
-```
-
 ### GitHub OAuth
 
 ```bash
@@ -258,4 +250,3 @@ After setting environment variables, verify they're loaded:
 - [Activity Logging Guide](ACTIVITY_LOGGING_GUIDE.md) - Detailed logging configuration
 - [API Documentation](API.md) - API endpoints and event types
 - [Migration Guide](../migrations/README_SMART_LOGGING.md) - Database migration instructions
-

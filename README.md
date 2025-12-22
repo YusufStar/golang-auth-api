@@ -22,7 +22,7 @@ A comprehensive authentication and authorization system with social login, email
 ### 🔑 Authentication & Authorization
 - ✅ **Secure Registration & Login** with JWT access/refresh tokens
 - ✅ **Two-Factor Authentication (2FA)** with TOTP and recovery codes
-- ✅ **Social Authentication** (Google, Facebook, GitHub OAuth2)
+- ✅ **Social Authentication** (Google, GitHub OAuth2)
 - ✅ **Email Verification** and password reset flows
 - ✅ **Token Blacklisting** for secure logout
 - ✅ **Role-Based Access Control** with middleware
@@ -164,8 +164,6 @@ make migrate-up
 |----------|--------|-------------|
 | `/auth/google/login` | GET | Initiate Google OAuth2 |
 | `/auth/google/callback` | GET | Google OAuth2 callback |
-| `/auth/facebook/login` | GET | Initiate Facebook OAuth2 |
-| `/auth/facebook/callback` | GET | Facebook OAuth2 callback |
 | `/auth/github/login` | GET | Initiate GitHub OAuth2 |
 | `/auth/github/callback` | GET | GitHub OAuth2 callback |
 
@@ -309,11 +307,6 @@ EMAIL_FROM=noreply@yourapp.com
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URL=http://localhost:8080/auth/google/callback
-
-# Facebook OAuth2
-FACEBOOK_CLIENT_ID=your_facebook_app_id
-FACEBOOK_CLIENT_SECRET=your_facebook_app_secret
-FACEBOOK_REDIRECT_URL=http://localhost:8080/auth/facebook/callback
 
 # GitHub OAuth2
 GITHUB_CLIENT_ID=your_github_client_id

@@ -6,7 +6,7 @@
 
 ## Overview
 
-This migration enhances the user and social account models to store complete profile data from social login providers (Google, Facebook, GitHub). Previously, only basic email information was being stored.
+This migration enhances the user and social account models to store complete profile data from social login providers (Google, GitHub). Previously, only basic email information was being stored.
 
 ## Changes
 
@@ -14,15 +14,16 @@ This migration enhances the user and social account models to store complete pro
 
 **Added Fields:**
 
-| Field Name | Data Type | Description | GORM Tag |
-|------------|-----------|-------------|----------|
-| `Name` | `string` | Full name from social login or user input | - |
-| `FirstName` | `string` | First name from social login | - |
-| `LastName` | `string` | Last name from social login | - |
-| `ProfilePicture` | `string` | Profile picture URL from social login | - |
-| `Locale` | `string` | User's locale/language preference | - |
+| Field Name       | Data Type | Description                               | GORM Tag |
+| ---------------- | --------- | ----------------------------------------- | -------- |
+| `Name`           | `string`  | Full name from social login or user input | -        |
+| `FirstName`      | `string`  | First name from social login              | -        |
+| `LastName`       | `string`  | Last name from social login               | -        |
+| `ProfilePicture` | `string`  | Profile picture URL from social login     | -        |
+| `Locale`         | `string`  | User's locale/language preference         | -        |
 
 **Impact:**
+
 - Adds 5 new nullable columns to the `users` table
 - No breaking changes to existing data
 - Existing users will have empty values for these fields
@@ -31,18 +32,19 @@ This migration enhances the user and social account models to store complete pro
 
 **Added Fields:**
 
-| Field Name | Data Type | Description | GORM Tag |
-|------------|-----------|-------------|----------|
-| `Email` | `string` | Email from social provider | - |
-| `Name` | `string` | Name from social provider | - |
-| `FirstName` | `string` | First name from social provider | - |
-| `LastName` | `string` | Last name from social provider | - |
-| `ProfilePicture` | `string` | Profile picture URL from social provider | - |
-| `Username` | `string` | Username/login from social provider (e.g., GitHub login) | - |
-| `Locale` | `string` | Locale from social provider | - |
-| `RawData` | `datatypes.JSON` | Complete raw JSON data from provider | `gorm:"type:jsonb"` |
+| Field Name       | Data Type        | Description                                              | GORM Tag            |
+| ---------------- | ---------------- | -------------------------------------------------------- | ------------------- |
+| `Email`          | `string`         | Email from social provider                               | -                   |
+| `Name`           | `string`         | Name from social provider                                | -                   |
+| `FirstName`      | `string`         | First name from social provider                          | -                   |
+| `LastName`       | `string`         | Last name from social provider                           | -                   |
+| `ProfilePicture` | `string`         | Profile picture URL from social provider                 | -                   |
+| `Username`       | `string`         | Username/login from social provider (e.g., GitHub login) | -                   |
+| `Locale`         | `string`         | Locale from social provider                              | -                   |
+| `RawData`        | `datatypes.JSON` | Complete raw JSON data from provider                     | `gorm:"type:jsonb"` |
 
 **Impact:**
+
 - Adds 8 new columns to the `social_accounts` table
 - The `RawData` column is a JSONB field storing the complete provider response
 - No breaking changes to existing data
@@ -51,18 +53,14 @@ This migration enhances the user and social account models to store complete pro
 ## Data Flow Changes
 
 ### Google Login
+
 - **Old Behavior:** Only stored `ID`, `Email`, and `Name` (name was discarded)
 - **New Behavior:** Stores `ID`, `Email`, `VerifiedEmail`, `Name`, `GivenName`, `FamilyName`, `Picture`, `Locale`
 - **API Call:** Modified to include all available fields
 - **Raw Data:** Complete Google user response stored in `RawData`
 
-### Facebook Login
-- **Old Behavior:** Only stored `ID`, `Email`, and `Name` (name was discarded)
-- **New Behavior:** Stores `ID`, `Email`, `Name`, `FirstName`, `LastName`, `Picture.Data.URL`, `Locale`
-- **API Call:** Modified to request extended fields: `id,name,email,first_name,last_name,picture.type(large),locale`
-- **Raw Data:** Complete Facebook user response stored in `RawData`
-
 ### GitHub Login
+
 - **Old Behavior:** Only stored `ID`, `Login`, and `Email`
 - **New Behavior:** Stores `ID`, `Login`, `Email`, `Name`, `AvatarURL`, `Bio`, `Location`, `Company`
 - **Raw Data:** Complete GitHub user response stored in `RawData`
@@ -72,20 +70,25 @@ This migration enhances the user and social account models to store complete pro
 ### User Repository (`internal/user/repository.go`)
 
 **Added Method:**
+
 ```go
 func (r *Repository) UpdateUser(user *models.User) error
 ```
+
 - Allows updating user profile data when linking social accounts
 - Uses GORM's `Save()` method for full model updates
 
 ### Social Service (`internal/social/service.go`)
 
 **Enhanced Behavior:**
+
 1. When creating new users via social login:
+
    - Populate all profile fields from provider data
    - Store complete provider response in `RawData`
 
 2. When linking social account to existing user:
+
    - Update user profile fields only if currently empty
    - Preserve existing user data if already set
    - Store complete provider response in `RawData`
@@ -97,11 +100,13 @@ func (r *Repository) UpdateUser(user *models.User) error
 ## Database Migration
 
 ### Migration Method
+
 - **Type:** GORM AutoMigrate
 - **Location:** `internal/database/db.go` - `MigrateDatabase()` function
 - **Execution:** Automatic on application startup (line 63 in `cmd/api/main.go`)
 
 ### Migration Process
+
 1. When application starts, `database.MigrateDatabase()` is called
 2. GORM detects new fields in models
 3. Automatically executes ALTER TABLE statements to add new columns
@@ -109,6 +114,7 @@ func (r *Repository) UpdateUser(user *models.User) error
 5. Existing data remains unchanged
 
 ### SQL Operations (Generated by GORM)
+
 ```sql
 -- Users table
 ALTER TABLE users ADD COLUMN name VARCHAR;
@@ -140,9 +146,11 @@ ALTER TABLE social_accounts ADD COLUMN raw_data JSONB;
 ## API Impact
 
 ### Existing Endpoints - No Breaking Changes
+
 All existing API endpoints continue to work as before. New fields are automatically included in JSON responses:
 
 **GET /profile**
+
 ```json
 {
   "id": "uuid",
@@ -161,6 +169,7 @@ All existing API endpoints continue to work as before. New fields are automatica
 ```
 
 **Social Account Objects**
+
 ```json
 {
   "id": "uuid",
@@ -184,16 +193,18 @@ All existing API endpoints continue to work as before. New fields are automatica
 ## Testing Recommendations
 
 1. **New Social Logins:**
+
    - Test Google login - verify all fields are populated
-   - Test Facebook login - verify all fields are populated
    - Test GitHub login - verify all fields are populated
 
 2. **Existing Social Accounts:**
+
    - Verify existing social logins still work
    - Verify authentication flow unchanged
    - Check that profile data displays correctly (empty for old accounts)
 
 3. **Account Linking:**
+
    - Test linking social account to existing email account
    - Verify user profile gets updated with social data
    - Test multiple social accounts for same user
@@ -219,8 +230,8 @@ If issues arise, rollback is simple:
 1. **Sensitive Data:** `RawData` contains complete provider response
    - Marked with `json:"raw_data"` so it's exposed in API responses
    - Consider if this should be `json:"-"` to hide from API responses
-   
 2. **Profile Pictures:** URLs are stored, not downloaded
+
    - No local storage of images
    - Links may expire based on provider policies
 
@@ -247,6 +258,7 @@ If issues arise, rollback is simple:
 ## Deployment Steps
 
 1. **Code Deployment:**
+
    ```bash
    git pull origin main
    go mod tidy
@@ -254,12 +266,14 @@ If issues arise, rollback is simple:
    ```
 
 2. **Application Restart:**
+
    - Stop current application
    - Start new version
    - GORM AutoMigrate runs automatically
    - Monitor logs for migration success
 
 3. **Verification:**
+
    ```bash
    # Check database schema
    psql -U [user] -d [dbname] -c "\d users"
@@ -276,4 +290,3 @@ If issues arise, rollback is simple:
 - [Phase 3: Social Authentication Integration Plan](../implementation_phases/Phase_3._Social_Authentication_Integration_Plan.md)
 - [Database Implementation](../DATABASE_IMPLEMENTATION.md)
 - [Security Patterns](../../.cursor/rules/security-patterns.mdc)
-

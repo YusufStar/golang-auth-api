@@ -7,6 +7,7 @@ This Auth API application uses **PostgreSQL** as the primary database with GORM 
 ## Database Architecture
 
 ### Technology Stack
+
 - **Primary Database**: PostgreSQL 15
 - **ORM**: GORM (Go Object-Relational Mapping)
 - **Cache Layer**: Redis 7
@@ -61,13 +62,13 @@ func ConnectDatabase() {
 
 The following environment variables are required for database connection:
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `DB_HOST` | PostgreSQL server host | `localhost` |
-| `DB_USER` | Database username | `postgres` |
-| `DB_PASSWORD` | Database password | `root` |
-| `DB_NAME` | Database name | `auth_db` |
-| `DB_PORT` | Database port | `5432` |
+| Variable      | Description            | Example     |
+| ------------- | ---------------------- | ----------- |
+| `DB_HOST`     | PostgreSQL server host | `localhost` |
+| `DB_USER`     | Database username      | `postgres`  |
+| `DB_PASSWORD` | Database password      | `root`      |
+| `DB_NAME`     | Database name          | `auth_db`   |
+| `DB_PORT`     | Database port          | `5432`      |
 
 ### Docker Configuration
 
@@ -115,6 +116,7 @@ type User struct {
 ```
 
 **Key Features:**
+
 - UUID primary key with automatic generation
 - Email uniqueness constraint
 - Password hashing (not stored in plain text)
@@ -141,7 +143,8 @@ type SocialAccount struct {
 ```
 
 **Key Features:**
-- Supports multiple OAuth providers (Google, Facebook, GitHub)
+
+- Supports multiple OAuth providers (Google, GitHub)
 - Composite unique index on provider and provider_user_id
 - Encrypted token storage
 - Foreign key relationship with User
@@ -163,6 +166,7 @@ type ActivityLog struct {
 ```
 
 **Key Features:**
+
 - Flexible JSONB details field
 - Indexed for efficient querying
 - Tracks security-relevant events
@@ -239,6 +243,7 @@ func MigrateDatabase() {
 ```
 
 **Migration Features:**
+
 - Creates tables if they don't exist
 - Adds missing columns
 - Creates missing indexes
@@ -248,6 +253,7 @@ func MigrateDatabase() {
 ### Production Considerations
 
 For production environments, consider using dedicated migration tools like:
+
 - `golang-migrate/migrate`
 - SQL-based migrations for better control
 - Version-controlled schema changes
@@ -291,11 +297,13 @@ func RevokeRefreshToken(userID, token string) error
 ### Tables Created
 
 1. **users**
+
    - Primary key: `id` (UUID)
    - Unique index: `email`
    - Indexes: Standard GORM indexes on timestamps
 
 2. **social_accounts**
+
    - Primary key: `id` (UUID)
    - Foreign key: `user_id` → `users.id`
    - Composite unique index: `provider` + `provider_user_id`
@@ -405,4 +413,4 @@ This database implementation provides a robust, scalable foundation for the auth
 - **Scalability**: PostgreSQL with Redis caching layer
 - **Development Efficiency**: Auto-migration and Docker setup
 
-The system is designed to handle authentication, social login, two-factor authentication, and comprehensive activity logging while maintaining security and performance standards. 
+The system is designed to handle authentication, social login, two-factor authentication, and comprehensive activity logging while maintaining security and performance standards.

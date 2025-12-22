@@ -18,9 +18,10 @@
 - **Database**: PostgreSQL, stores users, tokens, etc.
 - **Redis**: Session/token management, caching
 - **Email**: SMTP for verification and password reset
-- **Social Auth**: OAuth2 with Google, Facebook, GitHub
+- **Social Auth**: OAuth2 with Google, GitHub
 
 ## Key Components
+
 - `internal/auth` — Core authentication logic
 - `internal/user` — User management
 - `internal/social` — Social login
@@ -29,6 +30,7 @@
 - `pkg/jwt` — JWT helpers
 
 ## Flow Example
+
 1. User registers or logs in
 2. API validates credentials, issues JWT
 3. JWT used for protected endpoints
@@ -36,4 +38,5 @@
 5. Social login handled via OAuth2 callback
 
 ---
+
 For more details, see the code and comments in each package.

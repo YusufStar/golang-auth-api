@@ -112,10 +112,6 @@ func main() {
 		auth.GET("/google/login", socialHandler.GoogleLogin)
 		auth.GET("/google/callback", socialHandler.GoogleCallback)
 
-		// Facebook OAuth2
-		auth.GET("/facebook/login", socialHandler.FacebookLogin)
-		auth.GET("/facebook/callback", socialHandler.FacebookCallback)
-
 		// GitHub OAuth2
 		auth.GET("/github/login", socialHandler.GithubLogin)
 		auth.GET("/github/callback", socialHandler.GithubCallback)
