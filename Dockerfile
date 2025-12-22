@@ -30,7 +30,7 @@ WORKDIR /root/
 COPY --from=builder /go-auth-api .
 
 # Expose the port the application runs on
-EXPOSE 8080
+EXPOSE 8181
 
 # Run the application
 CMD ["./go-auth-api"]

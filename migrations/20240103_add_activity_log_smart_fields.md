@@ -12,6 +12,7 @@
 This migration implements a smart activity logging system that reduces database size by 80-95% while maintaining security and audit capabilities. It adds fields for severity classification, automatic expiration, and anomaly detection.
 
 **Key Benefits:**
+
 - 80-95% reduction in database size
 - Automatic log cleanup based on retention policies
 - Anomaly detection for conditional logging
@@ -25,9 +26,11 @@ This migration implements a smart activity logging system that reduces database 
 ### Database Schema
 
 **Tables Modified:**
+
 - `activity_logs` - Added smart logging fields
 
 **Columns Added:**
+
 - `activity_logs.severity` - VARCHAR(20) NOT NULL DEFAULT 'INFORMATIONAL'
   - Classifies log criticality (CRITICAL, IMPORTANT, INFORMATIONAL)
 - `activity_logs.expires_at` - TIMESTAMP WITH TIME ZONE
@@ -36,16 +39,19 @@ This migration implements a smart activity logging system that reduces database 
   - Marks logs created due to anomaly detection
 
 **Indexes Added:**
+
 - `idx_activity_logs_severity` - For filtering by severity
 - `idx_activity_logs_expires_at` - For efficient cleanup queries
 - `idx_activity_logs_is_anomaly` - For anomaly analysis
 
 **Comments Added:**
+
 - Detailed column descriptions for database documentation
 
 ### Data Changes
 
 **Existing Logs Updated:**
+
 - All existing logs classified by event type
 - Expiration dates set based on severity:
   - CRITICAL events: +365 days (LOGIN, PASSWORD_CHANGE, 2FA, etc.)
@@ -58,16 +64,19 @@ This migration implements a smart activity logging system that reduces database 
 ## Migration Files
 
 **Forward Migration:**
+
 ```
 migrations/20240103_add_activity_log_smart_fields.sql
 ```
 
 **Rollback Migration:**
+
 ```
 migrations/20240103_add_activity_log_smart_fields_rollback.sql
 ```
 
 **Documentation:**
+
 ```
 migrations/20240103_add_activity_log_smart_fields.md (this file)
 ```
@@ -81,6 +90,7 @@ migrations/20240103_add_activity_log_smart_fields.md (this file)
 **Is this breaking?** No
 
 **Why not:**
+
 - All new columns have default values
 - Existing API endpoints unchanged
 - No code changes required to use
@@ -91,7 +101,7 @@ migrations/20240103_add_activity_log_smart_fields.md (this file)
 
 - **Migration time:** < 1 second for < 100K logs, ~1 second per 100K logs
 - **Application downtime:** None required (migration runs on startup)
-- **Database size impact:** 
+- **Database size impact:**
   - Initial: Minimal (+3 columns)
   - After cleanup: -80% to -95% (if cleaning high-frequency logs)
 - **Query performance:** Improved (better indexes)
@@ -117,6 +127,7 @@ migrations/20240103_add_activity_log_smart_fields.md (this file)
 ### Applying Migration
 
 **Development (Automatic):**
+
 ```bash
 # Migration applies automatically on startup
 make docker-dev
@@ -126,12 +137,14 @@ go run cmd/api/main.go
 ```
 
 **Development (Manual):**
+
 ```bash
 # Apply migration directly
 psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields.sql
 ```
 
 **Production:**
+
 ```bash
 # 1. Backup
 pg_dump -U postgres -d auth_db > backup_$(date +%Y%m%d_%H%M%S).sql
@@ -179,6 +192,7 @@ docker-compose up -d
 ### Post-Migration Checks
 
 **Database Verification:**
+
 ```sql
 -- Check new columns exist
 \d activity_logs
@@ -197,8 +211,8 @@ docker-compose up -d
 -- idx_activity_logs_is_anomaly
 
 -- Check data was updated
-SELECT 
-    severity, 
+SELECT
+    severity,
     COUNT(*) as count,
     MIN(expires_at) as earliest_expiration,
     MAX(expires_at) as latest_expiration
@@ -211,6 +225,7 @@ SELECT COUNT(*) FROM activity_logs WHERE expires_at IS NULL;
 ```
 
 **Application Verification:**
+
 - [ ] Application starts successfully
 - [ ] No errors in logs
 - [ ] See message: "Database migration completed!"
@@ -219,16 +234,17 @@ SELECT COUNT(*) FROM activity_logs WHERE expires_at IS NULL;
 - [ ] API endpoints respond correctly
 
 **Test Activity Logging:**
+
 ```bash
 # Create a new log entry
-curl -X POST http://localhost:8080/auth/login \
+curl -X POST http://localhost:8181/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"password"}'
 
 # Check it has new fields
 docker exec -i auth_db psql -U postgres -d auth_db -c \
-  "SELECT id, event_type, severity, expires_at, is_anomaly 
-   FROM activity_logs 
+  "SELECT id, event_type, severity, expires_at, is_anomaly
+   FROM activity_logs
    ORDER BY timestamp DESC LIMIT 1;"
 ```
 
@@ -255,7 +271,7 @@ type ActivityLog struct {
     IPAddress string          `json:"ip_address"`
     UserAgent string          `json:"user_agent"`
     Details   json.RawMessage `gorm:"type:jsonb" json:"details"`
-    
+
     // NEW FIELDS:
     Severity  EventSeverity   `gorm:"index;size:20;default:'INFORMATIONAL'" json:"severity"`
     ExpiresAt *time.Time      `gorm:"index" json:"expires_at,omitempty"`
@@ -288,6 +304,7 @@ LOG_EVENT_LOGIN_RETENTION_DAYS=730             # Keep logins for 2 years
 ```
 
 **Defaults:**
+
 - All settings have sensible defaults
 - No configuration required to use
 - Configure only to customize behavior
@@ -299,12 +316,14 @@ LOG_EVENT_LOGIN_RETENTION_DAYS=730             # Keep logins for 2 years
 ### Test Cases
 
 **Unit Tests:**
+
 - [x] Model has new fields with correct tags
 - [x] GORM migrations work correctly
 - [x] Cleanup service initializes
 - [x] Anomaly detection logic works
 
 **Integration Tests:**
+
 - [x] Migration applies cleanly
 - [x] Rollback works correctly
 - [x] Existing logs are updated
@@ -312,6 +331,7 @@ LOG_EVENT_LOGIN_RETENTION_DAYS=730             # Keep logins for 2 years
 - [x] Cleanup service runs
 
 **Manual Testing:**
+
 ```bash
 # 1. Apply migration in test environment
 psql -U postgres -d auth_db_test -f migrations/20240103_add_activity_log_smart_fields.sql
@@ -327,8 +347,8 @@ psql -U postgres -d auth_db_test -c "
 
 # 4. Verify new fields populated
 psql -U postgres -d auth_db_test -c "
-  SELECT severity, expires_at, is_anomaly 
-  FROM activity_logs 
+  SELECT severity, expires_at, is_anomaly
+  FROM activity_logs
   ORDER BY timestamp DESC LIMIT 1;
 "
 
@@ -366,7 +386,7 @@ If you have many `TOKEN_REFRESH` or `PROFILE_ACCESS` logs:
 ```bash
 # Check current size
 docker exec -i auth_db psql -U postgres -d auth_db -c "
-  SELECT 
+  SELECT
     pg_size_pretty(pg_total_relation_size('activity_logs')) as current_size,
     COUNT(*) as total_logs,
     COUNT(*) FILTER (WHERE event_type IN ('TOKEN_REFRESH', 'PROFILE_ACCESS')) as high_freq_logs
@@ -375,7 +395,7 @@ docker exec -i auth_db psql -U postgres -d auth_db -c "
 
 # Delete old high-frequency logs (optional)
 docker exec -i auth_db psql -U postgres -d auth_db -c "
-  DELETE FROM activity_logs 
+  DELETE FROM activity_logs
   WHERE event_type IN ('TOKEN_REFRESH', 'PROFILE_ACCESS');
 "
 
@@ -389,6 +409,7 @@ docker exec -i auth_db psql -U postgres -d auth_db -c "
 ```
 
 **Expected Results:**
+
 - 80-95% size reduction if you had many high-frequency logs
 - Faster queries due to smaller table
 
@@ -448,8 +469,8 @@ CREATE INDEX idx_activity_logs_is_anomaly ON activity_logs (is_anomaly);
 UPDATE activity_logs SET
     severity = 'CRITICAL',
     expires_at = timestamp + INTERVAL '365 days'
-WHERE event_type IN ('LOGIN', 'REGISTER', 'PASSWORD_CHANGE', 'PASSWORD_RESET', 'EMAIL_CHANGE', 
-                      '2FA_ENABLE', '2FA_DISABLE', 'ACCOUNT_DELETION', 'RECOVERY_CODE_USED', 
+WHERE event_type IN ('LOGIN', 'REGISTER', 'PASSWORD_CHANGE', 'PASSWORD_RESET', 'EMAIL_CHANGE',
+                      '2FA_ENABLE', '2FA_DISABLE', 'ACCOUNT_DELETION', 'RECOVERY_CODE_USED',
                       'RECOVERY_CODE_GENERATE');
 
 UPDATE activity_logs SET
@@ -503,7 +524,6 @@ ALTER TABLE activity_logs DROP COLUMN IF EXISTS is_anomaly;
 
 ---
 
-*Migration Date: 2024-01-03*  
-*Version: v1.1.0*  
-*Author: System*
-
+_Migration Date: 2024-01-03_  
+_Version: v1.1.0_  
+_Author: System_

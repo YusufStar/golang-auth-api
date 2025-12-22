@@ -97,7 +97,7 @@ dto.SocialAccountResponse:
 Once the application is running:
 
 ```
-http://localhost:8080/swagger/index.html
+http://localhost:8181/swagger/index.html
 ```
 
 ### Profile Endpoint Documentation
@@ -155,7 +155,7 @@ grep -A 15 "dto.SocialAccountResponse:" docs/swagger.yaml
 ### Test in Swagger UI
 
 1. Start application: `./auth_api.exe`
-2. Visit: `http://localhost:8080/swagger/index.html`
+2. Visit: `http://localhost:8181/swagger/index.html`
 3. Find **User** section
 4. Click on **GET /profile**
 5. Click "Try it out"
@@ -237,4 +237,4 @@ Swag tool generated/updated:
 
 **Swagger is now fully updated and reflects the new profile structure!** 🎉
 
-Test it at: `http://localhost:8080/swagger/index.html`
+Test it at: `http://localhost:8181/swagger/index.html`

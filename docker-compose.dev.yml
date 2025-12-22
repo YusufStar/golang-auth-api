@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: auth_api_dev
     ports:
-      - "8080:8080"
+      - "8181:8181"
     volumes:
       - .:/app
       - /app/tmp # Exclude air tmp directory

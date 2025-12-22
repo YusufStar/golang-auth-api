@@ -3,6 +3,7 @@
 ## Problem
 
 Profile endpoint only returns:
+
 ```json
 {
   "id": "...",
@@ -19,6 +20,7 @@ Profile endpoint only returns:
 ## Root Cause
 
 The new database columns haven't been created yet because:
+
 - Code has been updated ✅
 - Database migration **has NOT run** ❌
 
@@ -47,10 +49,11 @@ go build -o auth_api.exe cmd/api/main.go
 ```
 
 **Watch for these log messages:**
+
 ```
 Database connected successfully!
 Database migration completed!  ← This adds the new columns
-Server starting on port 8080
+Server starting on port 8181
 ```
 
 ### Step 4: Verify Database Schema
@@ -59,7 +62,7 @@ Connect to your PostgreSQL database and run:
 
 ```sql
 -- Check if new columns exist
-SELECT column_name, data_type 
+SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'users'
   AND column_name IN ('name', 'first_name', 'last_name', 'profile_picture', 'locale')
@@ -79,7 +82,7 @@ Now that columns exist, login again to populate them:
 
 ```
 # Visit in browser
-http://localhost:8080/auth/google/login
+http://localhost:8181/auth/google/login
 
 # Complete OAuth flow
 # This will now populate the new fields
@@ -89,10 +92,11 @@ http://localhost:8080/auth/google/login
 
 ```bash
 curl -H "Authorization: Bearer YOUR_NEW_TOKEN" \
-     http://localhost:8080/profile
+     http://localhost:8181/profile
 ```
 
 **Expected result:**
+
 ```json
 {
   "id": "a65aec73-3c91-450c-b51f-a49391d6c3ba",
@@ -157,6 +161,7 @@ ls -lh auth_api.exe
 ### 2. Check Migration Ran
 
 Look in application logs for:
+
 ```
 2025/11/08 18:00:00 Database migration completed!
 ```
@@ -182,7 +187,7 @@ If you see this, migration ran successfully.
 ### 4. Check User Record
 
 ```sql
-SELECT 
+SELECT
     email,
     name,
     first_name,
@@ -194,23 +199,29 @@ WHERE email = 'gjovanovic.st@gmail.com';
 ```
 
 **If columns don't exist:** You'll get error:
+
 ```
 ERROR: column "name" does not exist
 ```
+
 → Migration hasn't run, restart application
 
 **If columns exist but data is NULL:**
+
 ```
 email                   | name | first_name | last_name | profile_picture | locale
 gjovanovic.st@gmail.com | NULL | NULL       | NULL      | NULL            | NULL
 ```
+
 → Columns exist, but you need to login again to populate them
 
 **If data exists:**
+
 ```
 email                   | name          | first_name | last_name  | profile_picture      | locale
 gjovanovic.st@gmail.com | Goran Jovanovic | Goran     | Jovanovic  | https://lh3.google... | en
 ```
+
 → Everything working! ✅
 
 ## Quick Fix Script
@@ -236,10 +247,10 @@ go build -o auth_api.exe cmd/api/main.go
 psql -U postgres -d auth_api_db -c "\d users"
 
 # 6. Login via browser to populate data
-# Visit: http://localhost:8080/auth/google/login
+# Visit: http://localhost:8181/auth/google/login
 
 # 7. Get new token and check profile
-# curl -H "Authorization: Bearer NEW_TOKEN" http://localhost:8080/profile
+# curl -H "Authorization: Bearer NEW_TOKEN" http://localhost:8181/profile
 ```
 
 ## Alternative: Manual Migration
@@ -275,11 +286,13 @@ Then restart the application and login again.
 ## Summary
 
 **Why you're seeing limited data:**
+
 - New columns don't exist in database yet
 - JSON serialization only outputs existing fields
 - Migration hasn't run
 
 **Fix:**
+
 1. ✅ Stop application
 2. ✅ Rebuild: `go build -o auth_api.exe cmd/api/main.go`
 3. ✅ Start: `./auth_api.exe`
@@ -288,6 +301,7 @@ Then restart the application and login again.
 6. ✅ Check profile - should have all fields now
 
 **After fix, your profile will look like:**
+
 ```json
 {
   "id": "a65aec73-3c91-450c-b51f-a49391d6c3ba",
@@ -304,4 +318,3 @@ Then restart the application and login again.
   "social_accounts": [...]             ← ✨
 }
 ```
-

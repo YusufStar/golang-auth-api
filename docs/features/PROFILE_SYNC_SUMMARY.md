@@ -166,14 +166,14 @@ go build -o auth_api.exe cmd/api/main.go
 ### Step 3: Login to App
 
 ```
-http://localhost:8080/auth/google/login
+http://localhost:8181/auth/google/login
 ```
 
 ### Step 4: Check Profile
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-     http://localhost:8080/profile
+     http://localhost:8181/profile
 ```
 
 **Expected Result:**

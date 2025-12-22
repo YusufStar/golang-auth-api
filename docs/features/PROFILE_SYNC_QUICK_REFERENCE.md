@@ -15,6 +15,7 @@ Change your picture on Google/GitHub → Log in to app → Picture updates autom
 ## 🔄 What Happens Now
 
 Every social login:
+
 1. Fetches latest data from provider
 2. Updates `social_accounts` table
 3. Updates `users` table (if changed)
@@ -28,23 +29,23 @@ Every social login:
 go build -o auth_api.exe cmd/api/main.go && ./auth_api.exe
 
 # 3. Login via social
-http://localhost:8080/auth/google/login
+http://localhost:8181/auth/google/login
 
 # 4. Check profile - picture should be updated
-curl -H "Authorization: Bearer TOKEN" http://localhost:8080/profile
+curl -H "Authorization: Bearer TOKEN" http://localhost:8181/profile
 ```
 
 ## 📊 What Gets Synced
 
-| Data | Google | GitHub |
-|------|--------|--------|
-| Profile Picture | ✅ | ✅ |
-| Name | ✅ | ✅ |
-| First/Last Name | ✅ | - |
-| Email | ✅ | ✅ |
-| Locale | ✅ | - |
-| Username | - | ✅ |
-| Raw Data | ✅ | ✅ |
+| Data            | Google | GitHub |
+| --------------- | ------ | ------ |
+| Profile Picture | ✅     | ✅     |
+| Name            | ✅     | ✅     |
+| First/Last Name | ✅     | -      |
+| Email           | ✅     | ✅     |
+| Locale          | ✅     | -      |
+| Username        | -      | ✅     |
+| Raw Data        | ✅     | ✅     |
 
 ## 🛠️ Files Changed
 
@@ -63,7 +64,7 @@ curl -H "Authorization: Bearer TOKEN" http://localhost:8080/profile
 
 ```sql
 -- Check if your data is syncing
-SELECT 
+SELECT
     u.email,
     u.profile_picture,
     u.updated_at as user_updated,
@@ -80,6 +81,7 @@ WHERE u.email = 'gjovanovic.st@gmail.com';
 ## 🚨 Troubleshooting
 
 **Data not updating?**
+
 1. ✓ Restart application with new code
 2. ✓ Check logs for errors
 3. ✓ Verify provider actually has new data
@@ -94,4 +96,3 @@ WHERE u.email = 'gjovanovic.st@gmail.com';
 ---
 
 **TL;DR:** Change your social profile → Login → Data updates automatically! 🎯
-

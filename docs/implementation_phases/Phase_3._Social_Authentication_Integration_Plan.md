@@ -20,28 +20,31 @@ The OAuth2 authorization code grant type is the most common and secure method fo
 Google OAuth2 will be integrated using the `golang.org/x/oauth2` and `golang.org/x/oauth2/google` packages. This involves configuring OAuth2 credentials in the Google Developer Console and setting up the necessary endpoints in our Go application.
 
 **Configuration (Environment Variables):**
--   `GOOGLE_CLIENT_ID`
--   `GOOGLE_CLIENT_SECRET`
--   `GOOGLE_REDIRECT_URL` (e.g., `http://localhost:8080/auth/google/callback`)
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `GOOGLE_REDIRECT_URL` (e.g., `http://localhost:8181/auth/google/callback`)
 
 **Process Flow:**
+
 1.  **Initiate Google Login (`GET /auth/google/login`):**
-    -   Construct the Google OAuth2 URL using `oauth2.Config`.
-    -   Redirect the user\"s browser to this URL.
+
+    - Construct the Google OAuth2 URL using `oauth2.Config`.
+    - Redirect the user\"s browser to this URL.
 
 2.  **Google Callback (`GET /auth/google/callback`):**
-    -   Receive the authorization code from Google in the query parameters.
-    -   Exchange the authorization code for an Access Token and ID Token using `oauth2.Config.Exchange`.
-    -   Use the Access Token to fetch user information from Google\"s `userinfo` endpoint (e.g., `https://www.googleapis.com/oauth2/v2/userinfo`).
-    -   Extract `email`, `name`, and `id` (Google\"s unique user ID) from the user info.
-    -   **Check for existing `SocialAccount`:** Query the database for a `SocialAccount` with `Provider=\"google\"` and `ProviderUserID` matching the Google ID.
-        -   If found: Authenticate the associated `User` and issue internal JWTs.
-        -   If not found:
-            -   **Check for existing `User` by email:** If the Google profile provides an email, check if a `User` with that email already exists.
-                -   If found: Link the new `SocialAccount` to this existing `User`.
-                -   If not found: Create a new `User` record and then link the new `SocialAccount` to this newly created `User`.
-    -   Issue internal JWTs (Access and Refresh Tokens) to the client.
-    -   Redirect the client to a success page or return tokens in the response.
+    - Receive the authorization code from Google in the query parameters.
+    - Exchange the authorization code for an Access Token and ID Token using `oauth2.Config.Exchange`.
+    - Use the Access Token to fetch user information from Google\"s `userinfo` endpoint (e.g., `https://www.googleapis.com/oauth2/v2/userinfo`).
+    - Extract `email`, `name`, and `id` (Google\"s unique user ID) from the user info.
+    - **Check for existing `SocialAccount`:** Query the database for a `SocialAccount` with `Provider=\"google\"` and `ProviderUserID` matching the Google ID.
+      - If found: Authenticate the associated `User` and issue internal JWTs.
+      - If not found:
+        - **Check for existing `User` by email:** If the Google profile provides an email, check if a `User` with that email already exists.
+          - If found: Link the new `SocialAccount` to this existing `User`.
+          - If not found: Create a new `User` record and then link the new `SocialAccount` to this newly created `User`.
+    - Issue internal JWTs (Access and Refresh Tokens) to the client.
+    - Redirect the client to a success page or return tokens in the response.
 
 **Example Code Snippets (Conceptual):**
 
@@ -254,28 +257,31 @@ func (s *Service) HandleGoogleCallback(googleAccessToken string) (string, string
 Facebook OAuth2 integration will follow a similar pattern to Google, using the `golang.org/x/oauth2` package. We will need to configure an app in the Facebook Developer Dashboard.
 
 **Configuration (Environment Variables):**
--   `FACEBOOK_CLIENT_ID`
--   `FACEBOOK_CLIENT_SECRET`
--   `FACEBOOK_REDIRECT_URL` (e.g., `http://localhost:8080/auth/facebook/callback`)
+
+- `FACEBOOK_CLIENT_ID`
+- `FACEBOOK_CLIENT_SECRET`
+- `FACEBOOK_REDIRECT_URL` (e.g., `http://localhost:8181/auth/facebook/callback`)
 
 **Process Flow:**
+
 1.  **Initiate Facebook Login (`GET /auth/facebook/login`):**
-    -   Construct the Facebook OAuth2 URL.
-    -   Redirect the user\"s browser to this URL.
+
+    - Construct the Facebook OAuth2 URL.
+    - Redirect the user\"s browser to this URL.
 
 2.  **Facebook Callback (`GET /auth/facebook/callback`):**
-    -   Receive the authorization code from Facebook.
-    -   Exchange the authorization code for an Access Token.
-    -   Use the Access Token to fetch user information from Facebook\"s Graph API (e.g., `https://graph.facebook.com/v18.0/me?fields=id,name,email`).
-    -   Extract `id` (Facebook\"s unique user ID), `name`, and `email`.
-    -   **Check for existing `SocialAccount`:** Query the database for a `SocialAccount` with `Provider=\"facebook\"` and `ProviderUserID` matching the Facebook ID.
-        -   If found: Authenticate the associated `User` and issue internal JWTs.
-        -   If not found:
-            -   **Check for existing `User` by email:** If the Facebook profile provides an email, check if a `User` with that email already exists.
-                -   If found: Link the new `SocialAccount` to this existing `User`.
-                -   If not found: Create a new `User` record and then link the new `SocialAccount` to this newly created `User`.
-    -   Issue internal JWTs (Access and Refresh Tokens) to the client.
-    -   Redirect the client to a success page or return tokens in the response.
+    - Receive the authorization code from Facebook.
+    - Exchange the authorization code for an Access Token.
+    - Use the Access Token to fetch user information from Facebook\"s Graph API (e.g., `https://graph.facebook.com/v18.0/me?fields=id,name,email`).
+    - Extract `id` (Facebook\"s unique user ID), `name`, and `email`.
+    - **Check for existing `SocialAccount`:** Query the database for a `SocialAccount` with `Provider=\"facebook\"` and `ProviderUserID` matching the Facebook ID.
+      - If found: Authenticate the associated `User` and issue internal JWTs.
+      - If not found:
+        - **Check for existing `User` by email:** If the Facebook profile provides an email, check if a `User` with that email already exists.
+          - If found: Link the new `SocialAccount` to this existing `User`.
+          - If not found: Create a new `User` record and then link the new `SocialAccount` to this newly created `User`.
+    - Issue internal JWTs (Access and Refresh Tokens) to the client.
+    - Redirect the client to a success page or return tokens in the response.
 
 **Example Code Snippets (Conceptual):**
 
@@ -448,28 +454,31 @@ func (s *Service) HandleFacebookCallback(facebookAccessToken string) (string, st
 GitHub OAuth2 integration will also use the `golang.org/x/oauth2` package. We will need to register an OAuth App in GitHub.
 
 **Configuration (Environment Variables):**
--   `GITHUB_CLIENT_ID`
--   `GITHUB_CLIENT_SECRET`
--   `GITHUB_REDIRECT_URL` (e.g., `http://localhost:8080/auth/github/callback`)
+
+- `GITHUB_CLIENT_ID`
+- `GITHUB_CLIENT_SECRET`
+- `GITHUB_REDIRECT_URL` (e.g., `http://localhost:8181/auth/github/callback`)
 
 **Process Flow:**
+
 1.  **Initiate GitHub Login (`GET /auth/github/login`):**
-    -   Construct the GitHub OAuth2 URL.
-    -   Redirect the user\"s browser to this URL.
+
+    - Construct the GitHub OAuth2 URL.
+    - Redirect the user\"s browser to this URL.
 
 2.  **GitHub Callback (`GET /auth/github/callback`):**
-    -   Receive the authorization code from GitHub.
-    -   Exchange the authorization code for an Access Token.
-    -   Use the Access Token to fetch user information from GitHub\"s API (e.g., `https://api.github.com/user`).
-    -   Extract `id` (GitHub\"s unique user ID), `login` (username), and `email` (if public or granted).
-    -   **Check for existing `SocialAccount`:** Query the database for a `SocialAccount` with `Provider=\"github\"` and `ProviderUserID` matching the GitHub ID.
-        -   If found: Authenticate the associated `User` and issue internal JWTs.
-        -   If not found:
-            -   **Check for existing `User` by email:** If the GitHub profile provides an email, check if a `User` with that email already exists.
-                -   If found: Link the new `SocialAccount` to this existing `User`.
-                -   If not found: Create a new `User` record and then link the new `SocialAccount` to this newly created `User`.
-    -   Issue internal JWTs (Access and Refresh Tokens) to the client.
-    -   Redirect the client to a success page or return tokens in the response.
+    - Receive the authorization code from GitHub.
+    - Exchange the authorization code for an Access Token.
+    - Use the Access Token to fetch user information from GitHub\"s API (e.g., `https://api.github.com/user`).
+    - Extract `id` (GitHub\"s unique user ID), `login` (username), and `email` (if public or granted).
+    - **Check for existing `SocialAccount`:** Query the database for a `SocialAccount` with `Provider=\"github\"` and `ProviderUserID` matching the GitHub ID.
+      - If found: Authenticate the associated `User` and issue internal JWTs.
+      - If not found:
+        - **Check for existing `User` by email:** If the GitHub profile provides an email, check if a `User` with that email already exists.
+          - If found: Link the new `SocialAccount` to this existing `User`.
+          - If not found: Create a new `User` record and then link the new `SocialAccount` to this newly created `User`.
+    - Issue internal JWTs (Access and Refresh Tokens) to the client.
+    - Redirect the client to a success page or return tokens in the response.
 
 **Example Code Snippets (Conceptual):**
 
@@ -690,12 +699,12 @@ The `HandleGoogleCallback`, `HandleFacebookCallback`, and `HandleGithubCallback`
 1.  **Check for existing `SocialAccount`:** The first step is to query the `SocialAccount` table using the `Provider` and `ProviderUserID` obtained from the social provider. If a matching record is found, it means the user has previously logged in with this social account. The system will then authenticate the associated `User` and issue internal JWTs.
 
 2.  **Check for existing `User` by email:** If no `SocialAccount` is found for the given `Provider` and `ProviderUserID`, the system will attempt to find an existing `User` record using the email address provided by the social provider. This handles scenarios where a user might have registered with email/password and later tries to link a social account with the same email.
-    -   If a `User` with the same email exists, a new `SocialAccount` record will be created and linked to this existing `User`.
-    -   The `EmailVerified` flag for the `User` can be set to `true` if the social provider confirms the email is verified.
+
+    - If a `User` with the same email exists, a new `SocialAccount` record will be created and linked to this existing `User`.
+    - The `EmailVerified` flag for the `User` can be set to `true` if the social provider confirms the email is verified.
 
 3.  **Create new `User` and `SocialAccount`:** If neither a matching `SocialAccount` nor an existing `User` with the same email is found, it indicates a new user. In this case, a new `User` record will be created (with `EmailVerified` set to `true` if the social provider verifies the email), and a new `SocialAccount` record will be created and linked to this new `User`.
 
 4.  **Issue Internal JWTs:** Regardless of whether it\"s an existing user, a linked account, or a new registration, the system will always issue its own internal Access and Refresh Tokens to the client upon successful social authentication. This ensures a consistent authentication mechanism across all login methods.
 
 This concludes the social authentication integration plan.
-

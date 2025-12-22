@@ -68,7 +68,7 @@ SMTP_FROM=noreply@yourapp.com
 ```bash
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URL=http://localhost:8080/auth/google/callback
+GOOGLE_REDIRECT_URL=http://localhost:8181/auth/google/callback
 ```
 
 ### GitHub OAuth
@@ -76,14 +76,14 @@ GOOGLE_REDIRECT_URL=http://localhost:8080/auth/google/callback
 ```bash
 GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-github-client-secret
-GITHUB_REDIRECT_URL=http://localhost:8080/auth/github/callback
+GITHUB_REDIRECT_URL=http://localhost:8181/auth/github/callback
 ```
 
 ## Application Settings
 
 ```bash
 # Server port
-PORT=8080
+PORT=8181
 
 # Application environment
 APP_ENV=development  # development, staging, production

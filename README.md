@@ -9,7 +9,7 @@ A comprehensive authentication and authorization system with social login, email
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Supported-2496ED?style=flat&logo=docker)](https://www.docker.com/)
-[![Swagger](https://img.shields.io/badge/API-Swagger-85EA2D?style=flat&logo=swagger)](http://localhost:8080/swagger/index.html)
+[![Swagger](https://img.shields.io/badge/API-Swagger-85EA2D?style=flat&logo=swagger)](http://localhost:8181/swagger/index.html)
 
 [Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API Endpoints](#-api-endpoints) • [Contributing](#-contributing)
 
@@ -20,6 +20,7 @@ A comprehensive authentication and authorization system with social login, email
 ## ✨ Features
 
 ### 🔑 Authentication & Authorization
+
 - ✅ **Secure Registration & Login** with JWT access/refresh tokens
 - ✅ **Two-Factor Authentication (2FA)** with TOTP and recovery codes
 - ✅ **Social Authentication** (Google, GitHub OAuth2)
@@ -28,6 +29,7 @@ A comprehensive authentication and authorization system with social login, email
 - ✅ **Role-Based Access Control** with middleware
 
 ### 📊 Smart Activity Logging
+
 - ✅ **Intelligent Event Categorization** (Critical/Important/Informational)
 - ✅ **Anomaly Detection** (new IP address, device detection)
 - ✅ **Automatic Log Retention** and cleanup (80-95% database size reduction)
@@ -35,6 +37,7 @@ A comprehensive authentication and authorization system with social login, email
 - ✅ **Configurable Logging** via environment variables
 
 ### 🛠️ Developer Experience
+
 - ✅ **Interactive Swagger Documentation** at `/swagger/index.html`
 - ✅ **Docker & Docker Compose** for easy setup
 - ✅ **Hot Reload** development with Air
@@ -45,6 +48,7 @@ A comprehensive authentication and authorization system with social login, email
 - ✅ **Professional Project Structure**
 
 ### 🚀 Production Ready
+
 - ✅ **Redis Integration** for caching and session management
 - ✅ **PostgreSQL Database** with GORM ORM
 - ✅ **Security Best Practices** (OWASP guidelines)
@@ -56,6 +60,7 @@ A comprehensive authentication and authorization system with social login, email
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - **Docker & Docker Compose** (recommended)
 - Or: Go 1.22+, PostgreSQL 13+, Redis 6+
 
@@ -81,15 +86,17 @@ make docker-dev
 make migrate-up
 ```
 
-**🎉 That's it!** Your API is now running at `http://localhost:8080`
+**🎉 That's it!** Your API is now running at `http://localhost:8181`
 
 ### What Just Happened?
+
 - ✅ PostgreSQL & Redis started in Docker containers
 - ✅ Database tables created automatically (GORM AutoMigrate)
 - ✅ Application running with hot reload enabled
-- ✅ Swagger docs available at [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+- ✅ Swagger docs available at [http://localhost:8181/swagger/index.html](http://localhost:8181/swagger/index.html)
 
 ### Next Steps
+
 - 📖 [Configure Environment Variables](#-environment-configuration)
 - 🔧 [Set up Social OAuth Providers](#social-authentication-setup)
 - 📊 [Configure Activity Logging](docs/features/QUICK_SETUP_LOGGING.md)
@@ -100,29 +107,33 @@ make migrate-up
 ## 📚 Documentation
 
 ### Quick Links
-| Document | Description |
-|----------|-------------|
-| 📖 **[Documentation Index](docs/README.md)** | Complete documentation overview |
-| 🏗️ **[Architecture](docs/ARCHITECTURE.md)** | System architecture and design |
-| 📡 **[API Reference](docs/API.md)** | Detailed API documentation |
-| 🔄 **[Migration Guide](docs/migrations/README.md)** | Database migration system |
-| 🤝 **[Contributing](CONTRIBUTING.md)** | Contribution guidelines |
-| 🛡️ **[Security Policy](SECURITY.md)** | Security and vulnerability reporting |
+
+| Document                                            | Description                          |
+| --------------------------------------------------- | ------------------------------------ |
+| 📖 **[Documentation Index](docs/README.md)**        | Complete documentation overview      |
+| 🏗️ **[Architecture](docs/ARCHITECTURE.md)**         | System architecture and design       |
+| 📡 **[API Reference](docs/API.md)**                 | Detailed API documentation           |
+| 🔄 **[Migration Guide](docs/migrations/README.md)** | Database migration system            |
+| 🤝 **[Contributing](CONTRIBUTING.md)**              | Contribution guidelines              |
+| 🛡️ **[Security Policy](SECURITY.md)**               | Security and vulnerability reporting |
 
 ### Documentation by Category
 
 #### 🎯 Getting Started
+
 - [Quick Start Guide](#-quick-start) (above)
 - [Environment Variables](docs/guides/ENV_VARIABLES.md)
 - [Docker Setup](docs/migrations/MIGRATIONS_DOCKER.md)
 
 #### 📦 Features
+
 - [Activity Logging Guide](docs/features/ACTIVITY_LOGGING_GUIDE.md)
 - [Social Login Setup](docs/features/SOCIAL_LOGIN_DATA_STORAGE.md)
 - [Profile Management](docs/features/PROFILE_SYNC_ON_LOGIN.md)
 - [Security Features](docs/features/SECURITY_TOKEN_BLACKLISTING.md)
 
 #### 🗄️ Database & Migrations
+
 - [Migration System Overview](docs/migrations/MIGRATIONS.md)
 - [User Migration Guide](docs/migrations/USER_GUIDE.md)
 - [Upgrade Guide](docs/migrations/UPGRADE_GUIDE.md)
@@ -130,6 +141,7 @@ make migrate-up
 - [Migration Quick Reference](docs/migrations/MIGRATION_QUICK_REFERENCE.md)
 
 #### 🔧 Development
+
 - [Architecture Documentation](docs/ARCHITECTURE.md)
 - [Implementation Phases](docs/implementation_phases/README.md)
 - [Database Implementation](docs/implementation/DATABASE_IMPLEMENTATION.md)
@@ -139,55 +151,61 @@ make migrate-up
 ## 🌐 API Endpoints
 
 ### Authentication
-| Endpoint | Method | Description | Protected |
-|----------|--------|-------------|-----------|
-| `/register` | POST | User registration | ❌ |
-| `/login` | POST | User login (with 2FA support) | ❌ |
-| `/logout` | POST | Logout and token revocation | ✅ |
-| `/refresh-token` | POST | Refresh JWT tokens | ❌ |
-| `/verify-email` | GET | Email verification | ❌ |
-| `/forgot-password` | POST | Request password reset | ❌ |
-| `/reset-password` | POST | Reset password with token | ❌ |
+
+| Endpoint           | Method | Description                   | Protected |
+| ------------------ | ------ | ----------------------------- | --------- |
+| `/register`        | POST   | User registration             | ❌        |
+| `/login`           | POST   | User login (with 2FA support) | ❌        |
+| `/logout`          | POST   | Logout and token revocation   | ✅        |
+| `/refresh-token`   | POST   | Refresh JWT tokens            | ❌        |
+| `/verify-email`    | GET    | Email verification            | ❌        |
+| `/forgot-password` | POST   | Request password reset        | ❌        |
+| `/reset-password`  | POST   | Reset password with token     | ❌        |
 
 ### Two-Factor Authentication (2FA)
-| Endpoint | Method | Description | Protected |
-|----------|--------|-------------|-----------|
-| `/2fa/generate` | POST | Generate 2FA secret and QR code | ✅ |
-| `/2fa/verify-setup` | POST | Verify initial 2FA setup | ✅ |
-| `/2fa/enable` | POST | Enable 2FA and get recovery codes | ✅ |
-| `/2fa/disable` | POST | Disable 2FA | ✅ |
-| `/2fa/login-verify` | POST | Verify 2FA code during login | ❌ |
-| `/2fa/recovery-codes` | POST | Generate new recovery codes | ✅ |
+
+| Endpoint              | Method | Description                       | Protected |
+| --------------------- | ------ | --------------------------------- | --------- |
+| `/2fa/generate`       | POST   | Generate 2FA secret and QR code   | ✅        |
+| `/2fa/verify-setup`   | POST   | Verify initial 2FA setup          | ✅        |
+| `/2fa/enable`         | POST   | Enable 2FA and get recovery codes | ✅        |
+| `/2fa/disable`        | POST   | Disable 2FA                       | ✅        |
+| `/2fa/login-verify`   | POST   | Verify 2FA code during login      | ❌        |
+| `/2fa/recovery-codes` | POST   | Generate new recovery codes       | ✅        |
 
 ### Social Authentication
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/auth/google/login` | GET | Initiate Google OAuth2 |
-| `/auth/google/callback` | GET | Google OAuth2 callback |
-| `/auth/github/login` | GET | Initiate GitHub OAuth2 |
-| `/auth/github/callback` | GET | GitHub OAuth2 callback |
+
+| Endpoint                | Method | Description            |
+| ----------------------- | ------ | ---------------------- |
+| `/auth/google/login`    | GET    | Initiate Google OAuth2 |
+| `/auth/google/callback` | GET    | Google OAuth2 callback |
+| `/auth/github/login`    | GET    | Initiate GitHub OAuth2 |
+| `/auth/github/callback` | GET    | GitHub OAuth2 callback |
 
 ### User Management
-| Endpoint | Method | Description | Protected |
-|----------|--------|-------------|-----------|
-| `/profile` | GET | Get user profile | ✅ |
-| `/auth/validate` | GET | Validate JWT token | ✅ |
+
+| Endpoint         | Method | Description        | Protected |
+| ---------------- | ------ | ------------------ | --------- |
+| `/profile`       | GET    | Get user profile   | ✅        |
+| `/auth/validate` | GET    | Validate JWT token | ✅        |
 
 ### Activity Logs
-| Endpoint | Method | Description | Protected |
-|----------|--------|-------------|-----------|
-| `/activity-logs` | GET | Get user's activity logs (paginated) | ✅ |
-| `/activity-logs/:id` | GET | Get specific activity log | ✅ |
-| `/activity-logs/event-types` | GET | Get available event types | ✅ |
-| `/admin/activity-logs` | GET | Get all users' logs (admin) | ✅ |
 
-**📖 Full API Documentation:** [Swagger UI](http://localhost:8080/swagger/index.html) (when running)
+| Endpoint                     | Method | Description                          | Protected |
+| ---------------------------- | ------ | ------------------------------------ | --------- |
+| `/activity-logs`             | GET    | Get user's activity logs (paginated) | ✅        |
+| `/activity-logs/:id`         | GET    | Get specific activity log            | ✅        |
+| `/activity-logs/event-types` | GET    | Get available event types            | ✅        |
+| `/admin/activity-logs`       | GET    | Get all users' logs (admin)          | ✅        |
+
+**📖 Full API Documentation:** [Swagger UI](http://localhost:8181/swagger/index.html) (when running)
 
 ---
 
 ## 🔐 Authentication Flow
 
 ### Standard Authentication
+
 ```
 1. POST /register or /login → Returns JWT access & refresh tokens
 2. Include token in header: Authorization: Bearer <token>
@@ -196,6 +214,7 @@ make migrate-up
 ```
 
 ### Two-Factor Authentication
+
 ```
 1. POST /2fa/generate → Get QR code and secret
 2. POST /2fa/verify-setup → Verify TOTP code
@@ -205,6 +224,7 @@ make migrate-up
 ```
 
 ### Social Authentication
+
 ```
 1. GET /auth/{provider}/login → Redirect to provider
 2. User authorizes on provider's site
@@ -217,23 +237,27 @@ make migrate-up
 ## 📊 Activity Logging System
 
 ### Overview
+
 A professional activity logging system that balances security auditing with database performance. Uses intelligent categorization, anomaly detection, and automatic cleanup to reduce database bloat by **80-95%** while maintaining critical security data.
 
 ### Event Categories
 
-| Severity | Events | Retention | Always Logged? |
-|----------|--------|-----------|----------------|
-| **CRITICAL** | LOGIN, LOGOUT, PASSWORD_CHANGE, 2FA_ENABLE/DISABLE | 1 year | ✅ Yes |
-| **IMPORTANT** | REGISTER, EMAIL_VERIFY, SOCIAL_LOGIN, PROFILE_UPDATE | 6 months | ✅ Yes |
-| **INFORMATIONAL** | TOKEN_REFRESH, PROFILE_ACCESS | 3 months | ⚠️ Only on anomalies |
+| Severity          | Events                                               | Retention | Always Logged?       |
+| ----------------- | ---------------------------------------------------- | --------- | -------------------- |
+| **CRITICAL**      | LOGIN, LOGOUT, PASSWORD_CHANGE, 2FA_ENABLE/DISABLE   | 1 year    | ✅ Yes               |
+| **IMPORTANT**     | REGISTER, EMAIL_VERIFY, SOCIAL_LOGIN, PROFILE_UPDATE | 6 months  | ✅ Yes               |
+| **INFORMATIONAL** | TOKEN_REFRESH, PROFILE_ACCESS                        | 3 months  | ⚠️ Only on anomalies |
 
 ### Anomaly Detection
+
 Automatically logs "informational" events when:
+
 - ✅ New IP address detected
 - ✅ New device/browser (user agent) detected
 - ✅ Configurable pattern analysis window (default: 30 days)
 
 ### Default Behavior
+
 - ✅ All critical security events logged
 - ✅ All important events logged
 - ❌ Token refreshes NOT logged (happens every 15 minutes)
@@ -270,6 +294,7 @@ LOG_CLEANUP_INTERVAL=24h
 ## ⚙️ Environment Configuration
 
 ### Database
+
 ```bash
 DB_HOST=postgres        # Use 'localhost' for local dev without Docker
 DB_PORT=5432
@@ -279,6 +304,7 @@ DB_NAME=auth_db
 ```
 
 ### Redis
+
 ```bash
 REDIS_ADDR=redis:6379   # Use 'localhost:6379' for local dev without Docker
 REDIS_PASSWORD=         # Optional
@@ -286,6 +312,7 @@ REDIS_DB=0
 ```
 
 ### JWT
+
 ```bash
 JWT_SECRET=your-strong-secret-key-here-change-in-production
 ACCESS_TOKEN_EXPIRATION_MINUTES=15
@@ -293,6 +320,7 @@ REFRESH_TOKEN_EXPIRATION_HOURS=720  # 30 days
 ```
 
 ### Email
+
 ```bash
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
@@ -302,21 +330,23 @@ EMAIL_FROM=noreply@yourapp.com
 ```
 
 ### Social Authentication Setup
+
 ```bash
 # Google OAuth2
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REDIRECT_URL=http://localhost:8080/auth/google/callback
+GOOGLE_REDIRECT_URL=http://localhost:8181/auth/google/callback
 
 # GitHub OAuth2
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
-GITHUB_REDIRECT_URL=http://localhost:8080/auth/github/callback
+GITHUB_REDIRECT_URL=http://localhost:8181/auth/github/callback
 ```
 
 ### Server
+
 ```bash
-PORT=8080
+PORT=8181
 GIN_MODE=debug          # Use 'release' for production
 ```
 
@@ -327,74 +357,82 @@ GIN_MODE=debug          # Use 'release' for production
 ## 🔧 Makefile Commands
 
 ### Development Commands
-| Command | Description |
-|---------|-------------|
-| `make setup` | Install dependencies and development tools |
-| `make dev` | Run with hot reload (Air) |
-| `make run` | Run without hot reload |
-| `make build` | Build binary to `bin/api.exe` |
-| `make build-prod` | Build production binary (Linux, static) |
-| `make clean` | Remove build artifacts and temporary files |
-| `make install-air` | Install Air for hot reloading |
+
+| Command            | Description                                |
+| ------------------ | ------------------------------------------ |
+| `make setup`       | Install dependencies and development tools |
+| `make dev`         | Run with hot reload (Air)                  |
+| `make run`         | Run without hot reload                     |
+| `make build`       | Build binary to `bin/api.exe`              |
+| `make build-prod`  | Build production binary (Linux, static)    |
+| `make clean`       | Remove build artifacts and temporary files |
+| `make install-air` | Install Air for hot reloading              |
 
 ### Testing Commands
-| Command | Description |
-|---------|-------------|
-| `make test` | Run all tests with verbose output |
-| `make test-totp` | Run TOTP-specific test |
-| `make fmt` | Format code with `go fmt` |
-| `make lint` | Run linter (requires golangci-lint) |
+
+| Command          | Description                         |
+| ---------------- | ----------------------------------- |
+| `make test`      | Run all tests with verbose output   |
+| `make test-totp` | Run TOTP-specific test              |
+| `make fmt`       | Format code with `go fmt`           |
+| `make lint`      | Run linter (requires golangci-lint) |
 
 ### Docker Commands
-| Command | Description |
-|---------|-------------|
-| `make docker-dev` | Start development environment (with hot reload) |
-| `make docker-compose-up` | Start production containers |
-| `make docker-compose-down` | Stop and remove all containers |
-| `make docker-compose-build` | Build Docker images |
-| `make docker-build` | Build single Docker image |
-| `make docker-run` | Run Docker container |
+
+| Command                     | Description                                     |
+| --------------------------- | ----------------------------------------------- |
+| `make docker-dev`           | Start development environment (with hot reload) |
+| `make docker-compose-up`    | Start production containers                     |
+| `make docker-compose-down`  | Stop and remove all containers                  |
+| `make docker-compose-build` | Build Docker images                             |
+| `make docker-build`         | Build single Docker image                       |
+| `make docker-run`           | Run Docker container                            |
 
 ### Database Migration Commands
-| Command | Description |
-|---------|-------------|
-| `make migrate` | Interactive migration tool |
-| `make migrate-status` | Check migration status (tracked in DB) |
-| `make migrate-up` | Apply pending migrations |
-| `make migrate-down` | Rollback last migration |
-| `make migrate-list` | List all available migrations |
-| `make migrate-backup` | Backup database to file |
-| `make migrate-init` | Initialize migration tracking table |
-| `make migrate-test` | Test migration scripts |
-| `make migrate-check` | Check migration file syntax |
-| `make migrate-mark-applied` | Manually mark migration as applied |
+
+| Command                     | Description                            |
+| --------------------------- | -------------------------------------- |
+| `make migrate`              | Interactive migration tool             |
+| `make migrate-status`       | Check migration status (tracked in DB) |
+| `make migrate-up`           | Apply pending migrations               |
+| `make migrate-down`         | Rollback last migration                |
+| `make migrate-list`         | List all available migrations          |
+| `make migrate-backup`       | Backup database to file                |
+| `make migrate-init`         | Initialize migration tracking table    |
+| `make migrate-test`         | Test migration scripts                 |
+| `make migrate-check`        | Check migration file syntax            |
+| `make migrate-mark-applied` | Manually mark migration as applied     |
 
 ### CI/CD Commands
-| Command | Description |
-|---------|-------------|
-| `act -j test` | Run test job locally with act |
-| `act -j build` | Run build job locally with act |
-| `act -j security-scan` | Run security scan locally with act |
-| `act -l` | List all available GitHub Actions jobs |
+
+| Command                | Description                            |
+| ---------------------- | -------------------------------------- |
+| `act -j test`          | Run test job locally with act          |
+| `act -j build`         | Run build job locally with act         |
+| `act -j security-scan` | Run security scan locally with act     |
+| `act -l`               | List all available GitHub Actions jobs |
 
 **Note**: Install [act](https://github.com/nektos/act) to run GitHub Actions workflows locally for testing CI/CD pipelines before pushing.
 
 ### Security Commands
-| Command | Description |
-|---------|-------------|
-| `make security` | Run all security checks (gosec + nancy) |
-| `make security-scan` | Run gosec security scanner |
-| `make vulnerability-scan` | Run nancy dependency vulnerability scanner |
-| `make install-security-tools` | Install security scanning tools |
+
+| Command                       | Description                                |
+| ----------------------------- | ------------------------------------------ |
+| `make security`               | Run all security checks (gosec + nancy)    |
+| `make security-scan`          | Run gosec security scanner                 |
+| `make vulnerability-scan`     | Run nancy dependency vulnerability scanner |
+| `make install-security-tools` | Install security scanning tools            |
 
 ### Documentation Commands
-| Command | Description |
-|---------|-------------|
+
+| Command          | Description                      |
+| ---------------- | -------------------------------- |
 | `make swag-init` | Regenerate Swagger documentation |
 
 ### Help
-| Command | Description |
-|---------|-------------|
+
+| Command     | Description                    |
+| ----------- | ------------------------------ |
 | `make help` | Display all available commands |
 
 **💡 Pro Tip:** Run `make help` in your terminal to see this list with descriptions!
@@ -406,7 +444,9 @@ GIN_MODE=debug          # Use 'release' for production
 ### Two-Tier Migration System
 
 #### 1. GORM AutoMigrate (Automatic)
+
 Runs on application startup:
+
 - ✅ Creates tables from Go models
 - ✅ Adds missing columns
 - ✅ Creates indexes
@@ -414,7 +454,9 @@ Runs on application startup:
 - ⚠️ Cannot handle: column renames, data transformations, complex constraints
 
 #### 2. SQL Migrations (Manual)
+
 For complex changes:
+
 - ✅ Complex data transformations
 - ✅ Column renames and type changes
 - ✅ Custom indexes and constraints
@@ -439,6 +481,7 @@ make migrate
 ```
 
 ### For New Contributors
+
 ```bash
 # 1. Start the project (GORM creates base tables automatically)
 make docker-dev
@@ -451,6 +494,7 @@ make dev
 ```
 
 ### Creating New Migrations
+
 ```bash
 # 1. Copy the template
 cp migrations/TEMPLATE.md migrations/YYYYMMDD_HHMMSS_your_migration.md
@@ -473,6 +517,7 @@ make migrate-up
 ## 🧪 Testing
 
 ### Run Tests
+
 ```bash
 # All tests with verbose output
 make test
@@ -488,16 +533,19 @@ make test-totp
 ```
 
 ### Manual API Testing
+
 ```bash
 # Using the test script
 ./test_api.sh
 
 # Or use interactive Swagger UI
-# Navigate to: http://localhost:8080/swagger/index.html
+# Navigate to: http://localhost:8181/swagger/index.html
 ```
 
 ### Test Coverage
+
 The project includes:
+
 - ✅ Unit tests for core logic
 - ✅ Integration tests for API endpoints
 - ✅ 2FA/TOTP verification tests
@@ -572,21 +620,21 @@ project-root/
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|----------|-----------|
-| **Language** | Go 1.22+ |
-| **Web Framework** | [Gin](https://github.com/gin-gonic/gin) |
-| **Database** | PostgreSQL 13+ with [GORM](https://gorm.io/) ORM |
-| **Cache & Sessions** | Redis 6+ with [go-redis](https://github.com/redis/go-redis) |
-| **Authentication** | JWT (golang-jwt/jwt), OAuth2 |
-| **2FA** | TOTP ([pquerna/otp](https://github.com/pquerna/otp)), QR codes |
-| **Validation** | [go-playground/validator](https://github.com/go-playground/validator) |
-| **Email** | [gopkg.in/mail.v2](https://gopkg.in/mail.v2) (SMTP) |
-| **Configuration** | [Viper](https://github.com/spf13/viper), [godotenv](https://github.com/joho/godotenv) |
-| **API Documentation** | [Swagger/Swaggo](https://github.com/swaggo/swag) |
-| **Development** | [Air](https://github.com/air-verse/air) (hot reload) |
-| **Containerization** | Docker, Docker Compose |
-| **Security Tools** | gosec, nancy |
+| Category              | Technology                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------- |
+| **Language**          | Go 1.22+                                                                              |
+| **Web Framework**     | [Gin](https://github.com/gin-gonic/gin)                                               |
+| **Database**          | PostgreSQL 13+ with [GORM](https://gorm.io/) ORM                                      |
+| **Cache & Sessions**  | Redis 6+ with [go-redis](https://github.com/redis/go-redis)                           |
+| **Authentication**    | JWT (golang-jwt/jwt), OAuth2                                                          |
+| **2FA**               | TOTP ([pquerna/otp](https://github.com/pquerna/otp)), QR codes                        |
+| **Validation**        | [go-playground/validator](https://github.com/go-playground/validator)                 |
+| **Email**             | [gopkg.in/mail.v2](https://gopkg.in/mail.v2) (SMTP)                                   |
+| **Configuration**     | [Viper](https://github.com/spf13/viper), [godotenv](https://github.com/joho/godotenv) |
+| **API Documentation** | [Swagger/Swaggo](https://github.com/swaggo/swag)                                      |
+| **Development**       | [Air](https://github.com/air-verse/air) (hot reload)                                  |
+| **Containerization**  | Docker, Docker Compose                                                                |
+| **Security Tools**    | gosec, nancy                                                                          |
 
 ---
 
@@ -595,70 +643,80 @@ project-root/
 We welcome contributions! Here's how to get started:
 
 ### 1. Read the Guidelines
-   - [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution process and standards
-   - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community guidelines
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution process and standards
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community guidelines
 
 ### 2. Fork & Clone
-   ```bash
-   git clone https://github.com/yourusername/auth-api.git
-   cd auth-api
-   ```
+
+```bash
+git clone https://github.com/yourusername/auth-api.git
+cd auth-api
+```
 
 ### 3. Set Up Development Environment
-   ```bash
-   # Install dependencies and tools
-   make setup
-   
-   # Copy and configure environment
-   cp .env.example .env
-   # Edit .env with your settings
-   
-   # Start development environment
-   make docker-dev
-   ```
+
+```bash
+# Install dependencies and tools
+make setup
+
+# Copy and configure environment
+cp .env.example .env
+# Edit .env with your settings
+
+# Start development environment
+make docker-dev
+```
 
 ### 4. Create a Branch
-   ```bash
-   git checkout -b feature/amazing-feature
-   # or
-   git checkout -b fix/bug-description
-   ```
+
+```bash
+git checkout -b feature/amazing-feature
+# or
+git checkout -b fix/bug-description
+```
 
 ### 5. Make Changes & Test
-   ```bash
-   # Format code
-   make fmt
-   
-   # Run linter
-   make lint
-   
-   # Run tests
-   make test
-   
-   # Security checks
-   make security
-   ```
+
+```bash
+# Format code
+make fmt
+
+# Run linter
+make lint
+
+# Run tests
+make test
+
+# Security checks
+make security
+```
 
 ### 6. Commit Your Changes
-   ```bash
-   git commit -m "feat(auth): add amazing feature"
-   ```
-   
-   Follow [Conventional Commits](https://www.conventionalcommits.org/):
-   - `feat(scope): description` - New feature
-   - `fix(scope): description` - Bug fix
-   - `docs(scope): description` - Documentation
-   - `refactor(scope): description` - Code refactoring
-   - `test(scope): description` - Tests
-   - `chore(scope): description` - Maintenance
+
+```bash
+git commit -m "feat(auth): add amazing feature"
+```
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat(scope): description` - New feature
+- `fix(scope): description` - Bug fix
+- `docs(scope): description` - Documentation
+- `refactor(scope): description` - Code refactoring
+- `test(scope): description` - Tests
+- `chore(scope): description` - Maintenance
 
 ### 7. Push & Create Pull Request
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-   Then create a Pull Request on GitHub
+
+```bash
+git push origin feature/amazing-feature
+```
+
+Then create a Pull Request on GitHub
 
 ### Development Workflow
+
 ```bash
 # Daily development
 make dev              # Start with hot reload
@@ -672,11 +730,13 @@ make security         # Security checks before commit
 ## 🛡️ Security
 
 ### Reporting Vulnerabilities
+
 **Please DO NOT create public issues for security vulnerabilities.**
 
 Read [SECURITY.md](SECURITY.md) for instructions on how to report security vulnerabilities privately.
 
 ### Security Features
+
 - ✅ **JWT Authentication** with access & refresh tokens
 - ✅ **Token Blacklisting** on logout for immediate invalidation
 - ✅ **Password Hashing** using bcrypt
@@ -690,6 +750,7 @@ Read [SECURITY.md](SECURITY.md) for instructions on how to report security vulne
 - ✅ **Security Headers** (recommended middleware)
 
 ### Security Tools & Scanning
+
 ```bash
 # Run all security checks
 make security
@@ -713,16 +774,19 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 📞 Support & Resources
 
 ### Documentation
+
 - 📖 **[Complete Documentation](docs/README.md)** - All documentation organized by topic
 - 🏗️ **[Architecture Guide](docs/ARCHITECTURE.md)** - System design and patterns
 - 📡 **[API Reference](docs/API.md)** - Detailed endpoint documentation
 
 ### Community
+
 - 🐛 **[GitHub Issues](https://github.com/yourusername/auth-api/issues)** - Bug reports and feature requests
 - 💬 **[GitHub Discussions](https://github.com/yourusername/auth-api/discussions)** - Questions and discussions
 - 🤝 **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
 
 ### Getting Help
+
 1. Check the [documentation](docs/README.md)
 2. Search [existing issues](https://github.com/yourusername/auth-api/issues)
 3. Create a new issue with details
@@ -735,6 +799,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 Built with modern Go practices and industry-standard security patterns.
 
 ### Special Thanks To:
+
 - [Gin Web Framework](https://github.com/gin-gonic/gin) - Fast HTTP web framework
 - [GORM](https://gorm.io/) - Powerful ORM library
 - [Swaggo](https://github.com/swaggo/swag) - Swagger documentation generator

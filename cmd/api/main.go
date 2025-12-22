@@ -33,7 +33,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      localhost:8181
 // @BasePath  /
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -49,7 +49,7 @@ func main() {
 
 	// Initialize Viper for configuration management
 	viper.AutomaticEnv() // Read environment variables
-	viper.SetDefault("PORT", "8080")
+	viper.SetDefault("PORT", "8181")
 	viper.SetDefault("ACCESS_TOKEN_EXPIRATION_MINUTES", 15)
 	viper.SetDefault("REFRESH_TOKEN_EXPIRATION_HOURS", 720)
 

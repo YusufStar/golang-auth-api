@@ -38,18 +38,19 @@ See [detailed instructions](#v100-to-v110) below.
 
 ### Overview
 
-| Item | Details |
-|------|---------|
-| **Release Date** | 2024-01-03 |
-| **Type** | Minor Release (Non-Breaking) |
-| **Breaking Changes** | None |
-| **Migration Required** | Yes (Automatic) |
-| **Downtime Required** | No |
-| **Rollback Difficulty** | Easy |
+| Item                    | Details                      |
+| ----------------------- | ---------------------------- |
+| **Release Date**        | 2024-01-03                   |
+| **Type**                | Minor Release (Non-Breaking) |
+| **Breaking Changes**    | None                         |
+| **Migration Required**  | Yes (Automatic)              |
+| **Downtime Required**   | No                           |
+| **Rollback Difficulty** | Easy                         |
 
 ### What's New
 
 ✨ **Smart Activity Logging System**
+
 - 80-95% reduction in database size
 - Automatic log cleanup
 - Anomaly detection
@@ -69,6 +70,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full details.
 #### Option A: Docker Upgrade (Recommended)
 
 **Step 1: Backup**
+
 ```bash
 # Backup database
 docker exec auth_db pg_dump -U postgres auth_db > backup_$(date +%Y%m%d_%H%M%S).sql
@@ -78,11 +80,13 @@ cp .env .env.backup
 ```
 
 **Step 2: Stop Services**
+
 ```bash
 docker-compose down
 ```
 
 **Step 3: Update Code**
+
 ```bash
 # Pull latest
 git pull origin main
@@ -93,6 +97,7 @@ git checkout v1.1.0
 ```
 
 **Step 4: Start Services**
+
 ```bash
 # Migration runs automatically on startup
 docker-compose up -d
@@ -102,6 +107,7 @@ make docker-dev
 ```
 
 **Step 5: Verify**
+
 ```bash
 # Check logs
 docker logs auth_api_dev
@@ -112,34 +118,39 @@ docker logs auth_api_dev
 ```
 
 **Step 6: Test**
+
 ```bash
 # Test API
-curl http://localhost:8080/activity-logs/event-types
+curl http://localhost:8181/activity-logs/event-types
 
 # Check Swagger
-open http://localhost:8080/swagger/index.html
+open http://localhost:8181/swagger/index.html
 ```
 
 #### Option B: Manual Upgrade
 
 **Step 1: Backup**
+
 ```bash
 pg_dump -U postgres -d auth_db > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 **Step 2: Update Code**
+
 ```bash
 git pull origin main
 git checkout v1.1.0
 ```
 
 **Step 3: Build**
+
 ```bash
 go mod download
 go build -o auth_api cmd/api/main.go
 ```
 
 **Step 4: Apply Migration**
+
 ```bash
 # Migration applies automatically on startup
 ./auth_api
@@ -149,6 +160,7 @@ psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields
 ```
 
 **Step 5: Configure (Optional)**
+
 ```bash
 # Add to .env (optional)
 echo "LOG_CLEANUP_ENABLED=true" >> .env
@@ -156,6 +168,7 @@ echo "LOG_CLEANUP_INTERVAL=24h" >> .env
 ```
 
 **Step 6: Start Application**
+
 ```bash
 ./auth_api
 ```
@@ -170,7 +183,7 @@ docker exec -i auth_db psql -U postgres -d auth_db -c "\d activity_logs"
 
 # Should show:
 # - severity
-# - expires_at  
+# - expires_at
 # - is_anomaly
 
 # Check indexes
@@ -192,6 +205,7 @@ This can reduce database size by 90%+!
 #### Optional: Configure Logging
 
 Add to your `.env` file:
+
 ```bash
 # Recommended settings
 LOG_CLEANUP_ENABLED=true
@@ -209,11 +223,13 @@ See [docs/QUICK_SETUP_LOGGING.md](docs/QUICK_SETUP_LOGGING.md) for more options.
 If you encounter issues:
 
 **Step 1: Stop Application**
+
 ```bash
 docker-compose down
 ```
 
 **Step 2: Rollback Database**
+
 ```bash
 # Apply rollback migration
 docker exec -i auth_db psql -U postgres -d auth_db -f migrations/20240103_add_activity_log_smart_fields_rollback.sql
@@ -223,11 +239,13 @@ docker exec -i auth_db psql -U postgres -d auth_db < backup_YYYYMMDD_HHMMSS.sql
 ```
 
 **Step 3: Revert Code**
+
 ```bash
 git checkout v1.0.0
 ```
 
 **Step 4: Restart**
+
 ```bash
 docker-compose up -d
 ```
@@ -235,12 +253,14 @@ docker-compose up -d
 ### Troubleshooting
 
 **Issue: "column already exists"**
+
 ```bash
 # Migration already applied, safe to continue
 # Just restart the application
 ```
 
 **Issue: Cleanup service not starting**
+
 ```bash
 # Check logs
 docker logs auth_api_dev | grep -i cleanup
@@ -250,6 +270,7 @@ docker exec -i auth_db psql -U postgres -d auth_db -c "\d activity_logs"
 ```
 
 **Issue: Old logs still present**
+
 ```bash
 # Automatic cleanup runs daily
 # For immediate cleanup, see "Optional: Clean Old Logs" above
@@ -264,6 +285,7 @@ docker exec -i auth_db psql -U postgres -d auth_db -c "\d activity_logs"
 **Yes**, but you must apply migrations in order.
 
 **Example: Upgrading from v1.0.0 to v1.2.0**
+
 ```bash
 # Apply v1.1.0 migration first
 psql -U postgres -d auth_db -f migrations/20240103_*.sql
@@ -277,11 +299,11 @@ git checkout v1.2.0
 
 ### Compatibility Matrix
 
-| Upgrade Path | Supported | Notes |
-|--------------|-----------|-------|
-| v1.0.0 → v1.1.0 | ✅ Yes | Direct upgrade |
-| v1.0.0 → v1.2.0 | ✅ Yes | Apply migrations in order |
-| v1.1.0 → v1.0.0 | ⚠️ Rollback | Use rollback scripts |
+| Upgrade Path    | Supported   | Notes                     |
+| --------------- | ----------- | ------------------------- |
+| v1.0.0 → v1.1.0 | ✅ Yes      | Direct upgrade            |
+| v1.0.0 → v1.2.0 | ✅ Yes      | Apply migrations in order |
+| v1.1.0 → v1.0.0 | ⚠️ Rollback | Use rollback scripts      |
 
 ---
 
@@ -353,6 +375,7 @@ make docker-dev
 ### 3. Use Staging Environment
 
 Always test in staging that mirrors production:
+
 - Same database size
 - Same configuration
 - Same load patterns
@@ -360,6 +383,7 @@ Always test in staging that mirrors production:
 ### 4. Plan for Rollback
 
 Know how to rollback before you start:
+
 - Have rollback scripts ready
 - Have backup verified
 - Know rollback procedure
@@ -368,6 +392,7 @@ Know how to rollback before you start:
 ### 5. Monitor During Upgrade
 
 Watch these metrics:
+
 - Application logs
 - Database queries
 - Response times
@@ -377,6 +402,7 @@ Watch these metrics:
 ### 6. Gradual Rollout (Blue-Green)
 
 For zero-downtime:
+
 1. Deploy new version alongside old
 2. Route small % of traffic to new
 3. Monitor for issues
@@ -387,9 +413,9 @@ For zero-downtime:
 
 ## Downtime Estimates
 
-| Upgrade | Est. Downtime | Database Size | Notes |
-|---------|---------------|---------------|-------|
-| v1.0.0 → v1.1.0 | 0 minutes | Any | No downtime needed |
+| Upgrade         | Est. Downtime | Database Size | Notes              |
+| --------------- | ------------- | ------------- | ------------------ |
+| v1.0.0 → v1.1.0 | 0 minutes     | Any           | No downtime needed |
 
 ---
 
@@ -398,16 +424,19 @@ For zero-downtime:
 ### Getting Help
 
 **Before Upgrading:**
+
 - Read [MIGRATIONS.md](MIGRATIONS.md)
 - Check [BREAKING_CHANGES.md](BREAKING_CHANGES.md)
 - Review [CHANGELOG.md](CHANGELOG.md)
 
 **During Upgrade:**
+
 - Check application logs
 - See [Troubleshooting](#troubleshooting) section
 - Search GitHub issues
 
 **After Upgrade:**
+
 - Monitor for 24 hours
 - Report any issues on GitHub
 - Share feedback
@@ -415,6 +444,7 @@ For zero-downtime:
 ### Report Issues
 
 When reporting upgrade issues, include:
+
 - Current version
 - Target version
 - Upgrade method used
@@ -424,6 +454,7 @@ When reporting upgrade issues, include:
 - Steps to reproduce
 
 **Template:**
+
 ```
 **Upgrading From:** v1.0.0
 **Upgrading To:** v1.1.0
@@ -466,6 +497,7 @@ A: Check application logs for "Database migration completed!" and "Activity log 
 ## Next Steps
 
 After upgrading:
+
 1. ✅ Read [docs/ACTIVITY_LOGGING_GUIDE.md](docs/ACTIVITY_LOGGING_GUIDE.md)
 2. ✅ Configure logging (optional): [docs/QUICK_SETUP_LOGGING.md](docs/QUICK_SETUP_LOGGING.md)
 3. ✅ Review [CHANGELOG.md](CHANGELOG.md) for all changes
@@ -474,6 +506,5 @@ After upgrading:
 
 ---
 
-*Last Updated: 2024-01-03*
-*For Version: v1.1.0*
-
+_Last Updated: 2024-01-03_
+_For Version: v1.1.0_

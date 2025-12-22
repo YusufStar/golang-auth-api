@@ -7,12 +7,14 @@ This phase focuses on implementing email verification for new user registrations
 Email verification ensures that the registered email address belongs to the user. This is typically done by sending a unique, time-limited token to the user's email, which they must click to activate their account.
 
 **Process Flow (Sending Verification Email):**
+
 1.  **Generate Verification Token:** After a user registers, generate a unique, cryptographically secure token (e.g., a UUID or a random string).
 2.  **Store Token in Redis:** Store this token in Redis, associated with the user's ID, and set an expiration time (e.g., 24 hours). This token should be single-use.
 3.  **Construct Verification Link:** Create a verification URL that includes the token (e.g., `http://your-api-domain/verify-email?token=YOUR_TOKEN`).
 4.  **Send Email:** Use an email sending library (e.g., `gopkg.in/mail.v2`) to send an email to the user's registered address. The email should contain the verification link and clear instructions.
 
 **Process Flow (Verifying Email):**
+
 1.  **Receive Verification Request:** The API endpoint (`GET /verify-email`) receives the verification token from the user's click.
 2.  **Validate Token:** Retrieve the user ID associated with the token from Redis. Check if the token exists and is not expired or already used.
 3.  **Update User Status:** If the token is valid, update the `EmailVerified` field for the corresponding user in the PostgreSQL database to `true`.
@@ -45,7 +47,7 @@ func NewService() *Service {
 func (s *Service) SendVerificationEmail(toEmail, token string) error {
 	from := viper.GetString("EMAIL_FROM")
 	subject := "Verify Your Email Address"
-	body := fmt.Sprintf("Please verify your email address by clicking on the link: http://localhost:8080/verify-email?token=%s", token)
+	body := fmt.Sprintf("Please verify your email address by clicking on the link: http://localhost:8181/verify-email?token=%s", token)
 
 	m := mail.NewMessage()
 	m.SetHeader("From", from)
@@ -199,15 +201,17 @@ func (h *Handler) VerifyEmail(c *gin.Context) {
 Redis will be used as an in-memory data store for temporary and frequently accessed data, specifically for JWT refresh tokens, email verification tokens, and password reset tokens. Its speed and support for time-to-live (TTL) make it ideal for these use cases.
 
 **Configuration:**
--   `REDIS_ADDR` (e.g., `localhost:6379`)
--   `REDIS_PASSWORD` (if any)
--   `REDIS_DB` (database number)
+
+- `REDIS_ADDR` (e.g., `localhost:6379`)
+- `REDIS_PASSWORD` (if any)
+- `REDIS_DB` (database number)
 
 **Key Operations:**
--   **Store Token with TTL:** Store a token (e.g., refresh token, verification token) as a key-value pair with an expiration time.
--   **Retrieve Token:** Retrieve a token by its key.
--   **Delete Token:** Remove a token from Redis (e.g., after it's used or revoked).
--   **Check Existence:** Check if a token exists.
+
+- **Store Token with TTL:** Store a token (e.g., refresh token, verification token) as a key-value pair with an expiration time.
+- **Retrieve Token:** Retrieve a token by its key.
+- **Delete Token:** Remove a token from Redis (e.g., after it's used or revoked).
+- **Check Existence:** Check if a token exists.
 
 **`internal/redis/redis.go` (Redis Client Setup and Functions):**
 
@@ -323,4 +327,3 @@ func DeletePasswordResetToken(token string) error {
 ```
 
 This phase completes the implementation of email verification and integrates Redis for efficient token management, laying the groundwork for secure and scalable authentication.
-

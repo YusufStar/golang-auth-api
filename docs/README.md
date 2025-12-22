@@ -7,6 +7,7 @@ Complete documentation for the Authentication API project.
 ## 📚 Core Documentation
 
 ### Main Docs
+
 - **[API.md](API.md)** - Complete API endpoints, request/response formats, and examples
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture, design patterns, and structure
 
@@ -15,9 +16,11 @@ Complete documentation for the Authentication API project.
 ## 🗂️ Documentation Categories
 
 ### 1. Features Documentation (`/features/`)
+
 Feature-specific implementation guides and references.
 
 #### Activity Logging
+
 - [ACTIVITY_LOGGING_GUIDE.md](features/ACTIVITY_LOGGING_GUIDE.md) - Complete activity logging guide
 - [QUICK_SETUP_LOGGING.md](features/QUICK_SETUP_LOGGING.md) - Quick setup guide
 - [SMART_LOGGING_IMPLEMENTATION.md](features/SMART_LOGGING_IMPLEMENTATION.md) - Implementation details
@@ -25,23 +28,27 @@ Feature-specific implementation guides and references.
 - [SMART_LOGGING_SUMMARY.md](features/SMART_LOGGING_SUMMARY.md) - Feature summary
 
 #### Social Authentication
+
 - [SOCIAL_LOGIN_DATA_STORAGE.md](features/SOCIAL_LOGIN_DATA_STORAGE.md) - Social login data handling
 - [QUICK_REFERENCE_SOCIAL_DATA.md](features/QUICK_REFERENCE_SOCIAL_DATA.md) - Quick reference
 - [TROUBLESHOOTING_SOCIAL_LOGIN.md](features/TROUBLESHOOTING_SOCIAL_LOGIN.md) - Common issues and fixes
 
 #### Profile Management
+
 - [PROFILE_MANAGEMENT_IMPLEMENTATION.md](features/PROFILE_MANAGEMENT_IMPLEMENTATION.md) - Profile management guide
 - [PROFILE_SYNC_ON_LOGIN.md](features/PROFILE_SYNC_ON_LOGIN.md) - Profile synchronization
 - [PROFILE_SYNC_QUICK_REFERENCE.md](features/PROFILE_SYNC_QUICK_REFERENCE.md) - Quick reference
 - [PROFILE_SYNC_SUMMARY.md](features/PROFILE_SYNC_SUMMARY.md) - Feature summary
 
 #### Security
+
 - [SECURITY_TOKEN_BLACKLISTING.md](features/SECURITY_TOKEN_BLACKLISTING.md) - Token blacklisting system
 - [SECURITY_PATCH_SUMMARY.md](features/SECURITY_PATCH_SUMMARY.md) - Security patches and updates
 
 ---
 
 ### 2. Setup Guides (`/guides/`)
+
 Configuration and setup documentation.
 
 - [ENV_VARIABLES.md](guides/ENV_VARIABLES.md) - Complete environment variables reference
@@ -51,11 +58,13 @@ Configuration and setup documentation.
 ---
 
 ### 3. Database Migrations (`/migrations/`)
+
 Complete migration system documentation and guides.
 
 **📖 [Start here: Migration Documentation Index →](migrations/README.md)**
 
 **Essential Migration Guides:**
+
 - [USER_GUIDE.md](migrations/USER_GUIDE.md) - User-facing migration guide
 - [UPGRADE_GUIDE.md](migrations/UPGRADE_GUIDE.md) - Version upgrade instructions
 - [SYSTEM_OVERVIEW.md](migrations/SYSTEM_OVERVIEW.md) - Migration system overview
@@ -70,6 +79,7 @@ Complete migration system documentation and guides.
 ---
 
 ### 4. Implementation Notes (`/implementation/`)
+
 Development implementation details and summaries.
 
 - [DATABASE_IMPLEMENTATION.md](implementation/DATABASE_IMPLEMENTATION.md) - Database setup and implementation
@@ -84,13 +94,14 @@ Development implementation details and summaries.
 ---
 
 ### 5. Implementation Phases (`/implementation_phases/`)
+
 Original project development phases and planning.
 
 - [README.md](implementation_phases/README.md) - Phases overview
 - [Phase_1_Database_and_Project_Setup.md](implementation_phases/Phase_1_Database_and_Project_Setup.md)
 - [Phase_2_Core_Authentication_Implementation_Plan.md](implementation_phases/Phase_2_Core_Authentication_Implementation_Plan.md)
-- [Phase_3._Social_Authentication_Integration_Plan.md](implementation_phases/Phase_3._Social_Authentication_Integration_Plan.md)
-- [Phase_4_Email_Verification_and _Redis_Integration_Plan.md](implementation_phases/Phase_4_Email_Verification_and _Redis_Integration_Plan.md)
+- [Phase_3.\_Social_Authentication_Integration_Plan.md](implementation_phases/Phase_3._Social_Authentication_Integration_Plan.md)
+- [Phase_4_Email_Verification_and _Redis_Integration_Plan.md](implementation_phases/Phase_4_Email_Verification_and \_Redis_Integration_Plan.md)
 - [Phase_5_API_Endpoints_and_Middleware_Implementation_Plan.md](implementation_phases/Phase_5_API_Endpoints_and_Middleware_Implementation_Plan.md)
 - [Phase_6_Testing_and_Deployment_Strategy.md](implementation_phases/Phase_6_Testing_and_Deployment_Strategy.md)
 - [Phase_7_Automatic_Swagger_Documentation.md](implementation_phases/Phase_7_Automatic_Swagger_Documentation.md)
@@ -102,17 +113,20 @@ Original project development phases and planning.
 ## 🎯 Quick Navigation by Role
 
 ### 👤 New Users
+
 1. **Start:** [../README.md](../README.md) - Project overview and quick start
 2. **API:** [API.md](API.md) - API endpoints and usage
 3. **Setup:** [guides/ENV_VARIABLES.md](guides/ENV_VARIABLES.md) - Environment configuration
 
 ### 👨‍💻 Contributors
+
 1. **Contributing:** [../CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines
 2. **Architecture:** [ARCHITECTURE.md](ARCHITECTURE.md) - System design
 3. **Features:** [features/](features/) - Feature documentation
 4. **Migrations:** [migrations/README.md](migrations/README.md) - Migration system
 
 ### 🔄 Upgrading
+
 1. **Breaking Changes:** [../BREAKING_CHANGES.md](../BREAKING_CHANGES.md) - Breaking changes tracker
 2. **Upgrade Guide:** [migrations/UPGRADE_GUIDE.md](migrations/UPGRADE_GUIDE.md) - Version upgrade instructions
 3. **Migrations:** [migrations/USER_GUIDE.md](migrations/USER_GUIDE.md) - Apply migrations
@@ -122,28 +136,33 @@ Original project development phases and planning.
 ## 📖 Quick Navigation by Topic
 
 ### Getting Started
+
 - 🚀 [Project Setup](../README.md#quick-start-docker)
 - ⚙️ [Environment Variables](guides/ENV_VARIABLES.md)
 - 🔧 [Docker Setup](../README.md#docker-setup)
 
 ### Using the API
+
 - 📚 [API Documentation](API.md)
-- 🔍 [Swagger UI](http://localhost:8080/swagger/index.html) (when running)
+- 🔍 [Swagger UI](http://localhost:8181/swagger/index.html) (when running)
 - ✅ [Validation](guides/auth-api-validation-endpoint.md)
 
 ### Key Features
+
 - 📊 [Activity Logging](features/ACTIVITY_LOGGING_GUIDE.md)
 - 🔐 [Social Login](features/SOCIAL_LOGIN_DATA_STORAGE.md)
 - 👤 [Profile Management](features/PROFILE_SYNC_ON_LOGIN.md)
 - 🛡️ [Security](features/SECURITY_TOKEN_BLACKLISTING.md)
 
 ### Database & Migrations
+
 - 📖 [Migration Guide](migrations/USER_GUIDE.md)
 - 🔄 [Upgrade Guide](migrations/UPGRADE_GUIDE.md)
 - ⚡ [Quick Reference](migrations/MIGRATION_QUICK_REFERENCE.md)
 - 🎯 [Migration Strategy](migrations/MIGRATION_STRATEGY.md)
 
 ### Development
+
 - 🏗️ [Architecture](ARCHITECTURE.md)
 - 📝 [Contributing](../CONTRIBUTING.md)
 - 🗄️ [Database Implementation](implementation/DATABASE_IMPLEMENTATION.md)
@@ -187,18 +206,18 @@ docs/
 
 ## 💡 Finding What You Need
 
-| I want to... | Go to... |
-|--------------|----------|
-| **Use the API** | [API.md](API.md) |
-| **Set up the project** | [../README.md](../README.md) |
-| **Configure environment** | [guides/ENV_VARIABLES.md](guides/ENV_VARIABLES.md) |
-| **Run migrations** | [migrations/USER_GUIDE.md](migrations/USER_GUIDE.md) |
-| **Contribute code** | [../CONTRIBUTING.md](../CONTRIBUTING.md) |
-| **Understand architecture** | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| **Configure logging** | [features/QUICK_SETUP_LOGGING.md](features/QUICK_SETUP_LOGGING.md) |
-| **Set up social login** | [features/SOCIAL_LOGIN_DATA_STORAGE.md](features/SOCIAL_LOGIN_DATA_STORAGE.md) |
-| **Upgrade version** | [migrations/UPGRADE_GUIDE.md](migrations/UPGRADE_GUIDE.md) |
-| **Troubleshoot issues** | [features/TROUBLESHOOTING_SOCIAL_LOGIN.md](features/TROUBLESHOOTING_SOCIAL_LOGIN.md) |
+| I want to...                | Go to...                                                                             |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| **Use the API**             | [API.md](API.md)                                                                     |
+| **Set up the project**      | [../README.md](../README.md)                                                         |
+| **Configure environment**   | [guides/ENV_VARIABLES.md](guides/ENV_VARIABLES.md)                                   |
+| **Run migrations**          | [migrations/USER_GUIDE.md](migrations/USER_GUIDE.md)                                 |
+| **Contribute code**         | [../CONTRIBUTING.md](../CONTRIBUTING.md)                                             |
+| **Understand architecture** | [ARCHITECTURE.md](ARCHITECTURE.md)                                                   |
+| **Configure logging**       | [features/QUICK_SETUP_LOGGING.md](features/QUICK_SETUP_LOGGING.md)                   |
+| **Set up social login**     | [features/SOCIAL_LOGIN_DATA_STORAGE.md](features/SOCIAL_LOGIN_DATA_STORAGE.md)       |
+| **Upgrade version**         | [migrations/UPGRADE_GUIDE.md](migrations/UPGRADE_GUIDE.md)                           |
+| **Troubleshoot issues**     | [features/TROUBLESHOOTING_SOCIAL_LOGIN.md](features/TROUBLESHOOTING_SOCIAL_LOGIN.md) |
 
 ---
 
@@ -214,4 +233,4 @@ docs/
 
 ---
 
-*Professional, organized documentation for the Authentication API project*
+_Professional, organized documentation for the Authentication API project_

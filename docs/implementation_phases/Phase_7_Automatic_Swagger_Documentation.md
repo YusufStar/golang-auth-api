@@ -12,6 +12,7 @@ For Go applications, `swag` (Swag: Go to Swagger 2.0) is a popular and widely us
 ### 7.2 Installation and Setup
 
 1.  **Install `swag` CLI:**
+
     ```bash
     go install github.com/swaggo/swag/cmd/swag@latest
     ```
@@ -52,7 +53,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      localhost:8181
 // @BasePath  /
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -183,11 +184,10 @@ swag init
 
 ### 7.5 Accessing Swagger UI
 
-Once the application is running, you can access the Swagger UI in your browser at `http://localhost:8080/swagger/index.html` (or whatever host and port your API is running on).
+Once the application is running, you can access the Swagger UI in your browser at `http://localhost:8181/swagger/index.html` (or whatever host and port your API is running on).
 
 ### 7.6 Continuous Integration
 
 To ensure documentation is always up-to-date, integrate `swag init` into your CI/CD pipeline. This can be run before building the application, ensuring that the latest API documentation is always part of your deployment.
 
 This phase provides a clear path to automatically generate and serve interactive API documentation, greatly enhancing the developer experience for anyone consuming your API.
-

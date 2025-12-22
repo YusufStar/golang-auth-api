@@ -95,7 +95,7 @@ docker-build:
 
 # Docker run
 docker-run:
-	docker run -p 8080:8080 --env-file .env auth-api
+	docker run -p 8181:8181 --env-file .env auth-api
 
 # Generate documentation using Swagger
 swag-init:

@@ -13,7 +13,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Base URL
-BASE_URL="http://localhost:8080"
+BASE_URL="http://localhost:8181"
 
 echo ""
 echo "📝 Step 1: Register a test user"

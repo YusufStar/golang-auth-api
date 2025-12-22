@@ -1,16 +1,19 @@
 # QUICK FIX - Profile Missing Fields
 
 ## Problem
+
 Profile only shows: `id`, `email`, `email_verified`, `two_fa_enabled`, `created_at`, `updated_at`
 
 Missing: `name`, `first_name`, `last_name`, `profile_picture`, `locale`, `social_accounts`
 
 ## Why
+
 **Database columns don't exist yet.** Migration needs to run.
 
 ## Fix (3 Steps)
 
 ### 1. Stop & Rebuild
+
 ```bash
 # Stop current app (Ctrl+C)
 cd /c/work/AI/Cursor/auth_api/v1.0.0
@@ -18,6 +21,7 @@ go build -o auth_api.exe cmd/api/main.go
 ```
 
 ### 2. Start & Watch
+
 ```bash
 ./auth_api.exe
 
@@ -26,16 +30,18 @@ go build -o auth_api.exe cmd/api/main.go
 ```
 
 ### 3. Re-login
+
 ```
-Visit: http://localhost:8080/auth/google/login
+Visit: http://localhost:8181/auth/google/login
 Complete OAuth flow
 Get new token
 ```
 
 ### 4. Check Profile
+
 ```bash
 curl -H "Authorization: Bearer YOUR_NEW_TOKEN" \
-     http://localhost:8080/profile
+     http://localhost:8181/profile
 ```
 
 **Should now show all fields!** ✅
@@ -45,12 +51,13 @@ curl -H "Authorization: Bearer YOUR_NEW_TOKEN" \
 ## Verify Migration Ran
 
 Check database has new columns:
+
 ```sql
 \d users
 
 -- Look for these columns:
 -- name
--- first_name  
+-- first_name
 -- last_name
 -- profile_picture
 -- locale
@@ -73,4 +80,3 @@ psql -U <user> -d <database> -c "SELECT column_name FROM information_schema.colu
 ---
 
 **TL;DR:** Restart app → Migration adds columns → Login again → All fields appear ✅
-

@@ -9,12 +9,14 @@
 ## ✅ What GORM AutoMigrate DOES (Safe)
 
 ### Safe Operations:
+
 1. ✅ **Creates new tables** - Safe
 2. ✅ **Adds new columns** (as NULL) - Safe
 3. ✅ **Creates missing indexes** - Safe (can be slow on large tables)
 4. ✅ **Updates column sizes** (if larger) - Safe
 
 ### Example:
+
 ```go
 // v1.0.0 model
 type User struct {
@@ -35,6 +37,7 @@ type User struct {
 ## ❌ What GORM AutoMigrate DOES NOT DO (Also Safe!)
 
 ### Protected Operations (GORM Won't Touch):
+
 1. ❌ **Remove columns** - GORM never deletes
 2. ❌ **Rename columns** - GORM can't detect renames
 3. ❌ **Change column types** - GORM doesn't modify existing types
@@ -50,6 +53,7 @@ type User struct {
 ### Issue 1: Large Table Index Creation
 
 **Problem:**
+
 ```go
 type ActivityLog struct {
     // Adding index to table with 10M rows
@@ -58,12 +62,14 @@ type ActivityLog struct {
 ```
 
 **What happens:**
+
 - GORM runs: `CREATE INDEX idx_activity_logs_user_id ON activity_logs(user_id)`
 - On large table: Can take minutes
 - **Locks table** during creation
 - May cause downtime
 
 **Solution:**
+
 ```go
 // Don't rely on GORM for production indexes
 // Use manual migration with CONCURRENTLY
@@ -71,13 +77,14 @@ type ActivityLog struct {
 
 ```sql
 -- migrations/create_index_concurrent.sql
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_activity_logs_user_id 
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_activity_logs_user_id
 ON activity_logs(user_id);
 ```
 
 ### Issue 2: Multiple App Instances
 
 **Problem:**
+
 ```
 App Instance 1 starts → Runs AutoMigrate
 App Instance 2 starts → Runs AutoMigrate (same time)
@@ -85,11 +92,13 @@ App Instance 3 starts → Runs AutoMigrate (same time)
 ```
 
 **Can cause:**
+
 - Race conditions
 - Duplicate index creation attempts
 - Lock contention
 
 **Solution:**
+
 - Use health checks / readiness probes
 - Rolling deployments (one at a time)
 - Or disable AutoMigrate in production
@@ -97,12 +106,14 @@ App Instance 3 starts → Runs AutoMigrate (same time)
 ### Issue 3: Zero Control Over Timing
 
 **Problem:**
+
 ```
 App starts → AutoMigrate runs → Takes 5 minutes on large table
 Meanwhile: API not responding (startup blocked)
 ```
 
 **Solution:**
+
 - Manual migrations first
 - Then deploy app
 - Or make AutoMigrate optional
@@ -114,6 +125,7 @@ Meanwhile: API not responding (startup blocked)
 ### Option 1: Keep AutoMigrate (Recommended for You) ✅
 
 **When it's safe:**
+
 - ✅ Small to medium databases (< 1M rows per table)
 - ✅ Adding simple columns
 - ✅ Controlled deployments
@@ -123,27 +135,30 @@ Meanwhile: API not responding (startup blocked)
 **How to make it safer:**
 
 **1. Rolling Deployments**
+
 ```yaml
 # docker-compose.yml or Kubernetes
 deploy:
   replicas: 3
   update_config:
-    parallelism: 1    # Update one at a time
-    delay: 10s        # Wait between updates
+    parallelism: 1 # Update one at a time
+    delay: 10s # Wait between updates
 ```
 
 **2. Health Checks**
+
 ```yaml
 # docker-compose.yml
 healthcheck:
-  test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+  test: ["CMD", "curl", "-f", "http://localhost:8181/health"]
   interval: 10s
   timeout: 5s
   retries: 3
-  start_period: 30s  # Wait for migrations
+  start_period: 30s # Wait for migrations
 ```
 
 **3. Manual Indexes First**
+
 ```bash
 # Before deploying new version
 # Create indexes manually (with CONCURRENTLY)
@@ -172,11 +187,11 @@ func MigrateDatabase() {
             &models.SocialAccount{},
             &models.SchemaMigration{},
         )
-        
+
         if err != nil {
             log.Fatalf("Failed to migrate database: %v", err)
         }
-        
+
         log.Println("Database migration completed!")
     } else {
         log.Println("Production mode: Skipping AutoMigrate")
@@ -186,6 +201,7 @@ func MigrateDatabase() {
 ```
 
 **Then use manual migrations only:**
+
 ```bash
 # Production deployment
 1. Stop app (or rolling deployment)
@@ -194,11 +210,13 @@ func MigrateDatabase() {
 ```
 
 **Pros:**
+
 - ✅ Full control
 - ✅ No surprises
 - ✅ Can schedule maintenance windows
 
 **Cons:**
+
 - ❌ More manual work
 - ❌ Must remember to run migrations
 - ❌ Models and DB can get out of sync
@@ -228,13 +246,13 @@ func MigrateDatabase() {
         &models.SocialAccount{},
         &models.SchemaMigration{},
     )
-    
+
     if err != nil {
         log.Fatalf("Failed to migrate database: %v", err)
     }
-    
+
     log.Println("Database migration completed!")
-    
+
     // Warn if manual migrations needed
     if os.Getenv("ENVIRONMENT") == "production" {
         log.Println("⚠️  Remember to run manual migrations if needed: make migrate-up")
@@ -243,6 +261,7 @@ func MigrateDatabase() {
 ```
 
 **Process:**
+
 ```bash
 # Production deployment
 1. Create complex indexes manually first:
@@ -278,6 +297,7 @@ type User struct {
 ```
 
 **Deployment:**
+
 ```bash
 docker-compose up -d
 # AutoMigrate runs:
@@ -304,6 +324,7 @@ type ActivityLog struct {
 ```
 
 **If you let AutoMigrate do it:**
+
 ```bash
 docker-compose up -d
 # AutoMigrate runs:
@@ -314,10 +335,11 @@ docker-compose up -d
 ```
 
 **Better approach:**
+
 ```bash
 # 1. Create index manually first (with CONCURRENTLY)
 docker exec -i auth_db psql -U postgres -d auth_db << 'EOF'
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_activity_logs_event_type 
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_activity_logs_event_type
 ON activity_logs(event_type);
 EOF
 
@@ -331,12 +353,14 @@ docker-compose up -d
 ## 🔒 Production Best Practices
 
 ### 1. Always Backup First
+
 ```bash
 make migrate-backup
 # Creates: backups/backup_YYYYMMDD_HHMMSS.sql
 ```
 
 ### 2. Test in Staging
+
 ```bash
 # Staging environment with production-size data
 git pull
@@ -345,29 +369,32 @@ make docker-dev
 ```
 
 ### 3. Use Health Checks
+
 ```yaml
 # docker-compose.yml
 services:
   app:
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      start_period: 60s  # Give time for migrations
+      test: ["CMD", "curl", "-f", "http://localhost:8181/health"]
+      start_period: 60s # Give time for migrations
 ```
 
 ### 4. Monitor Startup Time
+
 ```go
 // cmd/api/main.go
 func main() {
     start := time.Now()
-    
+
     database.ConnectDatabase()
     database.MigrateDatabase()
-    
+
     log.Printf("Database setup took: %v", time.Since(start))
 }
 ```
 
 ### 5. Create Complex Indexes Manually
+
 ```bash
 # For indexes on large tables
 # Use SQL migration with CONCURRENTLY
@@ -375,6 +402,7 @@ make migrate-up
 ```
 
 ### 6. Rolling Deployments
+
 ```bash
 # Deploy one instance at a time
 # Others handle traffic while first migrates
@@ -387,6 +415,7 @@ make migrate-up
 ### **Keep AutoMigrate Enabled** ✅
 
 **Why:**
+
 1. ✅ Your database is small/medium (not millions of rows yet)
 2. ✅ Your changes are mostly safe (adding columns)
 3. ✅ You have manual migrations for complex cases
@@ -396,11 +425,13 @@ make migrate-up
 **But follow these rules:**
 
 ### ✅ Let AutoMigrate Handle:
+
 - New tables
 - New nullable columns
 - Small tables (< 100K rows)
 
 ### ⚠️ Use Manual Migrations For:
+
 - Indexes on large tables (> 100K rows)
 - NOT NULL columns
 - Data transformations
@@ -417,7 +448,7 @@ type User struct {
 
 // 2. But create index manually
 // migrations/20240115_add_user_phone_index.sql
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_phone 
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_users_phone
 ON users(phone) WHERE phone IS NOT NULL;
 ```
 
@@ -426,6 +457,7 @@ ON users(phone) WHERE phone IS NOT NULL;
 ## 🚨 When to Disable AutoMigrate
 
 Consider disabling if:
+
 - ❌ Tables > 10M rows
 - ❌ Critical 24/7 system (no tolerance for startup delays)
 - ❌ Multiple app instances racing on startup
@@ -470,12 +502,14 @@ curl https://api.yourapp.com/health
 ## 🎓 Industry Perspective
 
 ### Companies Using AutoMigrate in Production:
+
 - Many startups
 - Small to medium SaaS companies
 - Internal tools
 - Projects prioritizing speed
 
 ### Companies NOT Using AutoMigrate:
+
 - Large scale (millions of users)
 - Financial services
 - Healthcare (compliance)
@@ -488,6 +522,7 @@ curl https://api.yourapp.com/health
 ## ✅ Summary & Recommendation
 
 ### Your Current Setup:
+
 ```
 GORM AutoMigrate (enabled) + Manual migrations (for complex cases)
 ```
@@ -506,9 +541,11 @@ GORM AutoMigrate (enabled) + Manual migrations (for complex cases)
 5. **Use health checks with adequate startup time**
 
 ### If Your Database Grows Large (> 10M rows):
+
 **Then consider disabling AutoMigrate and going full manual.**
 
 ### For Now:
+
 **AutoMigrate is perfectly fine for your auth API!** 🎉
 
 ---
@@ -522,4 +559,3 @@ GORM AutoMigrate (enabled) + Manual migrations (for complex cases)
 ---
 
 **Bottom Line:** AutoMigrate is safe for production in most cases, especially for projects like yours. Just be smart about complex changes! ✅
-

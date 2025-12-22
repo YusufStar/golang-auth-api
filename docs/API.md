@@ -289,4 +289,4 @@ LOG_RETENTION_INFORMATIONAL=90        # Informational events retention (default:
 
 ---
 
-For detailed API specifications including request/response schemas and authentication requirements, see the [Swagger documentation](http://localhost:8080/swagger/index.html) when the API is running.
+For detailed API specifications including request/response schemas and authentication requirements, see the [Swagger documentation](http://localhost:8181/swagger/index.html) when the API is running.

@@ -3,9 +3,11 @@
 ## ✅ Issues Found and Fixed
 
 ### Issue 1: DTO Missing New Fields ❌
+
 **File:** `pkg/dto/auth.go`
 
 **Problem:**
+
 ```go
 type UserResponse struct {
     ID            string `json:"id"`
@@ -19,6 +21,7 @@ type UserResponse struct {
 ```
 
 **Fixed:** ✅
+
 ```go
 type UserResponse struct {
     ID             string                  `json:"id"`
@@ -55,9 +58,11 @@ type SocialAccountResponse struct {
 ---
 
 ### Issue 2: Repository Not Loading Social Accounts ❌
+
 **File:** `internal/user/repository.go`
 
 **Problem:**
+
 ```go
 func (r *Repository) GetUserByID(id string) (*models.User, error) {
     var user models.User
@@ -68,6 +73,7 @@ func (r *Repository) GetUserByID(id string) (*models.User, error) {
 ```
 
 **Fixed:** ✅
+
 ```go
 func (r *Repository) GetUserByID(id string) (*models.User, error) {
     var user models.User
@@ -79,9 +85,11 @@ func (r *Repository) GetUserByID(id string) (*models.User, error) {
 ---
 
 ### Issue 3: Handler Not Returning New Fields ❌
+
 **File:** `internal/user/handler.go`
 
 **Problem:**
+
 ```go
 c.JSON(http.StatusOK, dto.UserResponse{
     ID:            user.ID.String(),
@@ -95,6 +103,7 @@ c.JSON(http.StatusOK, dto.UserResponse{
 ```
 
 **Fixed:** ✅
+
 ```go
 // Convert social accounts to DTO
 socialAccounts := make([]dto.SocialAccountResponse, len(user.SocialAccounts))
@@ -135,18 +144,19 @@ c.JSON(http.StatusOK, dto.UserResponse{
 
 ## 🎯 Summary of Changes
 
-| File | Change | Status |
-|------|--------|--------|
-| `pkg/dto/auth.go` | Added `UserResponse` fields: name, first_name, last_name, profile_picture, locale, social_accounts | ✅ |
-| `pkg/dto/auth.go` | Created new `SocialAccountResponse` DTO | ✅ |
-| `internal/user/repository.go` | Added `.Preload("SocialAccounts")` to `GetUserByID()` | ✅ |
-| `internal/user/handler.go` | Updated `GetProfile()` to return all new fields and social accounts | ✅ |
+| File                          | Change                                                                                             | Status |
+| ----------------------------- | -------------------------------------------------------------------------------------------------- | ------ |
+| `pkg/dto/auth.go`             | Added `UserResponse` fields: name, first_name, last_name, profile_picture, locale, social_accounts | ✅     |
+| `pkg/dto/auth.go`             | Created new `SocialAccountResponse` DTO                                                            | ✅     |
+| `internal/user/repository.go` | Added `.Preload("SocialAccounts")` to `GetUserByID()`                                              | ✅     |
+| `internal/user/handler.go`    | Updated `GetProfile()` to return all new fields and social accounts                                | ✅     |
 
 ---
 
 ## 📊 Before vs After
 
 ### Before (Only 6 Fields)
+
 ```json
 {
   "id": "a65aec73-3c91-450c-b51f-a49391d6c3ba",
@@ -159,6 +169,7 @@ c.JSON(http.StatusOK, dto.UserResponse{
 ```
 
 ### After (Complete Profile with Social Accounts) ✨
+
 ```json
 {
   "id": "a65aec73-3c91-450c-b51f-a49391d6c3ba",
@@ -205,6 +216,7 @@ c.JSON(http.StatusOK, dto.UserResponse{
 ## 🚀 Next Steps
 
 ### 1. Restart Application
+
 ```bash
 cd /c/work/AI/Cursor/auth_api/v1.0.0
 
@@ -217,14 +229,16 @@ cd /c/work/AI/Cursor/auth_api/v1.0.0
 ```
 
 ### 2. Login Again (To Populate Data if Needed)
+
 ```
-Visit: http://localhost:8080/auth/google/login
+Visit: http://localhost:8181/auth/google/login
 ```
 
 ### 3. Test Profile Endpoint
+
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-     http://localhost:8080/profile
+     http://localhost:8181/profile
 ```
 
 **Expected:** Full profile with all fields! ✅
@@ -244,6 +258,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ## 🎉 Result
 
 **Profile endpoint now returns complete user data:**
+
 - ✅ All user fields (name, profile picture, locale, etc.)
 - ✅ All linked social accounts with their data
 - ✅ Clean DTO structure
@@ -253,4 +268,3 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ---
 
 **The code is now complete and correct!** 🎯
-

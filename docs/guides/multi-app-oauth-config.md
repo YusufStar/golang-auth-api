@@ -13,7 +13,7 @@ Add these variables to your `.env` file:
 ```env
 # Multi-Application Support
 # Comma-separated list of allowed redirect domains for OAuth callbacks
-ALLOWED_REDIRECT_DOMAINS=localhost:3000,localhost:5173,localhost:8080,example.com,.example.com
+ALLOWED_REDIRECT_DOMAINS=localhost:3000,localhost:5173,localhost:8181,example.com,.example.com
 
 # Default redirect URI when none is specified
 DEFAULT_REDIRECT_URI=http://localhost:5173/auth/callback
@@ -29,7 +29,7 @@ FRONTEND_URL=https://your-production-domain.com
 For local development, include all your local ports:
 
 ```env
-ALLOWED_REDIRECT_DOMAINS=localhost:3000,localhost:5173,localhost:8080,127.0.0.1:3000,127.0.0.1:5173
+ALLOWED_REDIRECT_DOMAINS=localhost:3000,localhost:5173,localhost:8181,127.0.0.1:3000,127.0.0.1:5173
 ```
 
 #### Production
@@ -136,7 +136,7 @@ DEFAULT_REDIRECT_URI=https://app.mycompany.com/auth/callback
 
 ```env
 # Support local development
-ALLOWED_REDIRECT_DOMAINS=localhost:3000,localhost:5173,localhost:8080
+ALLOWED_REDIRECT_DOMAINS=localhost:3000,localhost:5173,localhost:8181
 DEFAULT_REDIRECT_URI=http://localhost:5173/auth/callback
 ```
 

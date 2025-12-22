@@ -6,14 +6,14 @@ This phase focuses on defining the database schemas for user management and soci
 
 The `User` model will represent the core user entity in our system. It will store essential user information required for authentication and identification. The following fields are proposed for the `User` model:
 
-| Field Name      | Data Type       | Description                                       | Constraints/Notes                                |
-|-----------------|-----------------|---------------------------------------------------|--------------------------------------------------|
-| `ID`            | `UUID`          | Unique identifier for the user.                   | Primary Key, Auto-generated, Indexed             |
-| `Email`         | `string`        | User's email address.                             | Unique, Indexed, Required                        |
-| `PasswordHash`  | `string`        | Hashed password for secure storage.               | Required for traditional login                   |
-| `EmailVerified` | `boolean`       | Indicates if the user's email has been verified.  | Default to `false`                               |
-| `CreatedAt`     | `time.Time`     | Timestamp of user creation.                       | Auto-generated                                   |
-| `UpdatedAt`     | `time.Time`     | Timestamp of last update.                         | Auto-updated                                     |
+| Field Name      | Data Type   | Description                                      | Constraints/Notes                    |
+| --------------- | ----------- | ------------------------------------------------ | ------------------------------------ |
+| `ID`            | `UUID`      | Unique identifier for the user.                  | Primary Key, Auto-generated, Indexed |
+| `Email`         | `string`    | User's email address.                            | Unique, Indexed, Required            |
+| `PasswordHash`  | `string`    | Hashed password for secure storage.              | Required for traditional login       |
+| `EmailVerified` | `boolean`   | Indicates if the user's email has been verified. | Default to `false`                   |
+| `CreatedAt`     | `time.Time` | Timestamp of user creation.                      | Auto-generated                       |
+| `UpdatedAt`     | `time.Time` | Timestamp of last update.                        | Auto-updated                         |
 
 **GORM Model Definition (GoLang):**
 
@@ -33,17 +33,17 @@ type User struct {
 
 The `SocialAccount` model will store information related to a user's social media logins (e.g., Google, Facebook, GitHub). This model will link social profiles to our internal `User` accounts, allowing users to sign in using their preferred social providers.
 
-| Field Name         | Data Type       | Description                                       | Constraints/Notes                                |
-|--------------------|-----------------|---------------------------------------------------|--------------------------------------------------|
-| `ID`               | `UUID`          | Unique identifier for the social account.         | Primary Key, Auto-generated, Indexed             |
-| `UserID`           | `UUID`          | Foreign key linking to the `User` model.          | Required, Indexed                                |
-| `Provider`         | `string`        | Name of the social provider (e.g., "google", "facebook", "github"). | Required, Indexed                                |
-| `ProviderUserID`   | `string`        | Unique ID of the user from the social provider.   | Unique per provider, Required, Indexed           |
-| `AccessToken`      | `string`        | Access token obtained from the social provider.   | Encrypted storage recommended                    |
-| `RefreshToken`     | `string`        | Refresh token for renewing access tokens.         | Encrypted storage recommended, Optional          |
-| `ExpiresAt`        | `time.Time`     | Expiration time of the access token.              | Optional                                         |
-| `CreatedAt`        | `time.Time`     | Timestamp of social account creation.             | Auto-generated                                   |
-| `UpdatedAt`        | `time.Time`     | Timestamp of last update.                         | Auto-updated                                     |
+| Field Name       | Data Type   | Description                                                         | Constraints/Notes                       |
+| ---------------- | ----------- | ------------------------------------------------------------------- | --------------------------------------- |
+| `ID`             | `UUID`      | Unique identifier for the social account.                           | Primary Key, Auto-generated, Indexed    |
+| `UserID`         | `UUID`      | Foreign key linking to the `User` model.                            | Required, Indexed                       |
+| `Provider`       | `string`    | Name of the social provider (e.g., "google", "facebook", "github"). | Required, Indexed                       |
+| `ProviderUserID` | `string`    | Unique ID of the user from the social provider.                     | Unique per provider, Required, Indexed  |
+| `AccessToken`    | `string`    | Access token obtained from the social provider.                     | Encrypted storage recommended           |
+| `RefreshToken`   | `string`    | Refresh token for renewing access tokens.                           | Encrypted storage recommended, Optional |
+| `ExpiresAt`      | `time.Time` | Expiration time of the access token.                                | Optional                                |
+| `CreatedAt`      | `time.Time` | Timestamp of social account creation.                               | Auto-generated                          |
+| `UpdatedAt`      | `time.Time` | Timestamp of last update.                                           | Auto-updated                            |
 
 **GORM Model Definition (GoLang):**
 
@@ -68,7 +68,7 @@ There will be a one-to-many relationship between the `User` and `SocialAccount` 
 - `User` has many `SocialAccount`s.
 - `SocialAccount` belongs to one `User`.
 
-This relationship is defined in the `User` struct with `SocialAccounts []SocialAccount `gorm:"foreignKey:UserID"` and in the `SocialAccount` struct with `UserID uuid.UUID`.
+This relationship is defined in the `User` struct with `SocialAccounts []SocialAccount `gorm:"foreignKey:UserID"`and in the`SocialAccount`struct with`UserID uuid.UUID`.
 
 ### 1.4 GORM Setup and Migrations
 
@@ -129,7 +129,7 @@ func MigrateDatabase() {
 	// AutoMigrate will create tables, missing columns, and missing indexes
 	// It will NOT change existing column types or delete unused columns
 	err := DB.AutoMigrate(&User{}, &SocialAccount{})
-	
+
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
@@ -169,7 +169,6 @@ func main() {
 ```
 
 This setup ensures that the database schema is automatically created or updated based on the Go models when the application starts. This completes the first phase of the implementation plan.
-
 
 ## Phase 2: Project Structure and Dependencies
 
@@ -232,17 +231,17 @@ We will adopt a common and recommended project layout for Go applications, which
 
 - **`cmd/`**: Contains the main application entry points. Each subdirectory here represents a distinct executable. `cmd/api/main.go` will be our primary application.
 - **`internal/`**: This directory is for private application and library code. It's intended for code that cannot be imported by other applications or libraries outside of this project. This is where our core business logic, handlers, services, and repositories will reside.
-    - `auth/`, `user/`, `social/`: These subdirectories represent distinct domains or features within the application, each containing its handlers (HTTP request handling), services (business logic), and repositories (database interactions).
-    - `email/`: Service for sending emails.
-    - `middleware/`: Custom HTTP middleware functions.
-    - `config/`: Handles loading and managing application configurations.
-    - `database/`: Database connection and migration logic.
-    - `util/`: General utility functions.
+  - `auth/`, `user/`, `social/`: These subdirectories represent distinct domains or features within the application, each containing its handlers (HTTP request handling), services (business logic), and repositories (database interactions).
+  - `email/`: Service for sending emails.
+  - `middleware/`: Custom HTTP middleware functions.
+  - `config/`: Handles loading and managing application configurations.
+  - `database/`: Database connection and migration logic.
+  - `util/`: General utility functions.
 - **`pkg/`**: This directory is for library code that's safe to be used by external applications. While our current project might not have external consumers, it's good practice to separate reusable components here.
-    - `models/`: GORM struct definitions for database tables.
-    - `dto/`: Data Transfer Objects (DTOs) for request and response payloads.
-    - `errors/`: Custom error definitions for consistent error handling.
-    - `jwt/`: Logic for JWT token creation, parsing, and validation.
+  - `models/`: GORM struct definitions for database tables.
+  - `dto/`: Data Transfer Objects (DTOs) for request and response payloads.
+  - `errors/`: Custom error definitions for consistent error handling.
+  - `jwt/`: Logic for JWT token creation, parsing, and validation.
 - **`migrations/`**: If using a dedicated migration tool like `golang-migrate`, SQL migration files will be stored here.
 - **`vendor/`**: Managed by Go modules, this directory stores copies of dependent packages.
 - **`.env`**: File for storing environment variables, especially sensitive ones like database credentials and API keys, for local development.
@@ -254,40 +253,44 @@ We will adopt a common and recommended project layout for Go applications, which
 
 Here's a list of essential Go packages required for building the authentication and authorization API:
 
-| Category           | Package Name           | Description                                                                 | Purpose in Project                                       |
-|--------------------|------------------------|-----------------------------------------------------------------------------|----------------------------------------------------------|
-| **Web Framework**  | `github.com/gin-gonic/gin` | A high-performance HTTP web framework.                                      | Routing, request handling, middleware management         |
-| **ORM**            | `gorm.io/gorm`         | The ORM library for Go.                                                     | Database interactions, model mapping                     |
-| **PostgreSQL Driver**| `gorm.io/driver/postgres` | PostgreSQL driver for GORM.                                                 | Connecting to PostgreSQL database                        |
-| **UUID Generation**| `github.com/google/uuid` | UUID package for Go.                                                        | Generating unique IDs for users and social accounts      |
-| **Password Hashing**| `golang.org/x/crypto/bcrypt` | bcrypt hashing algorithm for secure password storage.                       | Hashing and verifying user passwords                     |
-| **JWT**            | `github.com/golang-jwt/jwt/v5` | JSON Web Token (JWT) implementation for Go.                                 | Creating, signing, and validating JWTs                   |
-| **Environment Variables**| `github.com/spf13/viper` | A complete configuration solution for Go applications.                      | Loading configuration from `.env`, files, etc.           |
-| **Redis Client**   | `github.com/go-redis/redis/v8` | A powerful and feature-rich Redis client for Go.                            | Storing tokens, email verification codes, rate limiting  |
-| **OAuth2 Client**  | `golang.org/x/oauth2`  | Go OAuth2 client library.                                                   | Handling OAuth2 flows for Google, Facebook, GitHub       |
-| **Google OAuth2**  | `golang.org/x/oauth2/google` | Google-specific OAuth2 endpoints.                                           | Google social login                                      |
-| **Facebook OAuth2**| (Custom implementation or a specific library if available) | Facebook-specific OAuth2 endpoints.                                         | Facebook social login                                      |
-| **GitHub OAuth2**  | `github.com/google/go-github/github` (for API) | GitHub-specific OAuth2 endpoints. (The `go-github` library is for GitHub API, not directly OAuth2) | GitHub social login                                      |
-| **Email Sending**  | `gopkg.in/mail.v2`     | A Go package for sending emails.                                            | Sending verification emails                               |
-| **Validation**     | `github.com/go-playground/validator/v10` | Go Struct and Field validation, including Cross Field, Cross Struct, and Field level validations. | Validating request payloads                              |
-| **Dotenv**         | `github.com/joho/godotenv` | Loads environment variables from a `.env` file.                             | Convenient local environment setup                       |
+| Category                  | Package Name                                               | Description                                                                                        | Purpose in Project                                      |
+| ------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **Web Framework**         | `github.com/gin-gonic/gin`                                 | A high-performance HTTP web framework.                                                             | Routing, request handling, middleware management        |
+| **ORM**                   | `gorm.io/gorm`                                             | The ORM library for Go.                                                                            | Database interactions, model mapping                    |
+| **PostgreSQL Driver**     | `gorm.io/driver/postgres`                                  | PostgreSQL driver for GORM.                                                                        | Connecting to PostgreSQL database                       |
+| **UUID Generation**       | `github.com/google/uuid`                                   | UUID package for Go.                                                                               | Generating unique IDs for users and social accounts     |
+| **Password Hashing**      | `golang.org/x/crypto/bcrypt`                               | bcrypt hashing algorithm for secure password storage.                                              | Hashing and verifying user passwords                    |
+| **JWT**                   | `github.com/golang-jwt/jwt/v5`                             | JSON Web Token (JWT) implementation for Go.                                                        | Creating, signing, and validating JWTs                  |
+| **Environment Variables** | `github.com/spf13/viper`                                   | A complete configuration solution for Go applications.                                             | Loading configuration from `.env`, files, etc.          |
+| **Redis Client**          | `github.com/go-redis/redis/v8`                             | A powerful and feature-rich Redis client for Go.                                                   | Storing tokens, email verification codes, rate limiting |
+| **OAuth2 Client**         | `golang.org/x/oauth2`                                      | Go OAuth2 client library.                                                                          | Handling OAuth2 flows for Google, Facebook, GitHub      |
+| **Google OAuth2**         | `golang.org/x/oauth2/google`                               | Google-specific OAuth2 endpoints.                                                                  | Google social login                                     |
+| **Facebook OAuth2**       | (Custom implementation or a specific library if available) | Facebook-specific OAuth2 endpoints.                                                                | Facebook social login                                   |
+| **GitHub OAuth2**         | `github.com/google/go-github/github` (for API)             | GitHub-specific OAuth2 endpoints. (The `go-github` library is for GitHub API, not directly OAuth2) | GitHub social login                                     |
+| **Email Sending**         | `gopkg.in/mail.v2`                                         | A Go package for sending emails.                                                                   | Sending verification emails                             |
+| **Validation**            | `github.com/go-playground/validator/v10`                   | Go Struct and Field validation, including Cross Field, Cross Struct, and Field level validations.  | Validating request payloads                             |
+| **Dotenv**                | `github.com/joho/godotenv`                                 | Loads environment variables from a `.env` file.                                                    | Convenient local environment setup                      |
 
 ### 2.3 Initial Project Setup
 
 To initialize the project, navigate to your desired project directory and execute the following commands:
 
 1.  **Initialize Go Module:**
+
     ```bash
     go mod init github.com/your_username/your_project_name
     ```
+
     Replace `github.com/your_username/your_project_name` with your actual module path.
 
 2.  **Create Core Directories:**
+
     ```bash
     mkdir -p cmd/api internal/auth internal/user internal/social internal/email internal/middleware internal/config internal/database internal/util pkg/models pkg/dto pkg/errors pkg/jwt
     ```
 
 3.  **Install Dependencies:**
+
     ```bash
     go get github.com/gin-gonic/gin \
            gorm.io/gorm gorm.io/driver/postgres \
@@ -301,13 +304,17 @@ To initialize the project, navigate to your desired project directory and execut
            github.com/go-playground/validator/v10 \
            github.com/joho/godotenv
     ```
-    *Note: For Facebook and GitHub OAuth2, specific client libraries might be needed or a direct implementation using `golang.org/x/oauth2` will be used. The `go-github` library is primarily for interacting with the GitHub API, not directly for OAuth2 authentication flow, but can be useful post-authentication.* 
+
+    _Note: For Facebook and GitHub OAuth2, specific client libraries might be needed or a direct implementation using `golang.org/x/oauth2` will be used. The `go-github` library is primarily for interacting with the GitHub API, not directly for OAuth2 authentication flow, but can be useful post-authentication._
 
 4.  **Create a `.env` file (for local development):**
+
     ```bash
     touch .env
     ```
+
     Add placeholder environment variables to `.env`:
+
     ```
     DB_HOST=localhost
     DB_PORT=5432
@@ -325,15 +332,15 @@ To initialize the project, navigate to your desired project directory and execut
 
     GOOGLE_CLIENT_ID=your_google_client_id
     GOOGLE_CLIENT_SECRET=your_google_client_secret
-    GOOGLE_REDIRECT_URL=http://localhost:8080/auth/google/callback
+    GOOGLE_REDIRECT_URL=http://localhost:8181/auth/google/callback
 
     FACEBOOK_CLIENT_ID=your_facebook_client_id
     FACEBOOK_CLIENT_SECRET=your_facebook_client_secret
-    FACEBOOK_REDIRECT_URL=http://localhost:8080/auth/facebook/callback
+    FACEBOOK_REDIRECT_URL=http://localhost:8181/auth/facebook/callback
 
     GITHUB_CLIENT_ID=your_github_client_id
     GITHUB_CLIENT_SECRET=your_github_client_secret
-    GITHUB_REDIRECT_URL=http://localhost:8080/auth/github/callback
+    GITHUB_REDIRECT_URL=http://localhost:8181/auth/github/callback
 
     EMAIL_HOST=smtp.example.com
     EMAIL_PORT=587
@@ -343,4 +350,3 @@ To initialize the project, navigate to your desired project directory and execut
     ```
 
 This structured approach ensures that the project is set up for efficient development and future scalability. The next phase will delve into the core authentication implementation.
-

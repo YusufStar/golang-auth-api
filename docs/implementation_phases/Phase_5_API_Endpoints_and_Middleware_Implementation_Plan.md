@@ -158,7 +158,7 @@ func main() {
 
 	// Initialize Viper for configuration management
 	vip.AutomaticEnv() // Read environment variables
-	vip.SetDefault("PORT", "8080")
+	vip.SetDefault("PORT", "8181")
 	vip.SetDefault("ACCESS_TOKEN_EXPIRATION_MINUTES", 15)
 	vip.SetDefault("REFRESH_TOKEN_EXPIRATION_HOURS", 720)
 
