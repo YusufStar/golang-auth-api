@@ -156,7 +156,7 @@ func main() {
 	// Add Swagger UI endpoint
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Run("localhost:8282")
+	r.Run("0.0.0.0:8282")
 
 	// Start the server
 	port := viper.GetString("PORT")
